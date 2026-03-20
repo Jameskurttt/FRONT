@@ -3,51 +3,66 @@ using UnityEngine;
 public class Shooting : MonoBehaviour
 {
     [Header("Bullet Settings")]
-    [SerializeField] private GameObject bullet;
-    [SerializeField] private float destroyAfter = 2f;
+    [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletSpeed = 50f;
+    [SerializeField] private float bulletLifetime = 2f;
+    [SerializeField] private Transform firePoint;
 
     [Header("AI Settings")]
-    [SerializeField] private bool ai = true; // enable AI
-    [SerializeField] private float aiShootingTime = 1f; // shoots every 1 sec
-    [SerializeField] private Transform player; // assign player here
+    [SerializeField] private bool useAI = true;
+    [SerializeField] private float shootInterval = 1f;
+    [SerializeField] private Transform playerTarget;
 
-    private float timer;
+    private float shootTimer;
 
     void Update()
     {
-        if (ai)
+        if (!useAI) return;
+        if (playerTarget == null) return;
+
+        shootTimer += Time.deltaTime;
+
+        FacePlayer();
+
+        if (shootTimer >= shootInterval)
         {
-            timer += Time.deltaTime;
-            if (timer >= aiShootingTime)
-            {
-                timer = 0f;
+            shootTimer = 0f;
+            Shoot();
+        }
+    }
 
-                // Make enemy face player
-                if (player != null)
-                    transform.LookAt(player);
+    void FacePlayer()
+    {
+        Vector3 direction = playerTarget.position - transform.position;
+        direction.y = 0f;
 
-                Shoot();
-            }
+        if (direction != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(direction);
         }
     }
 
     void Shoot()
     {
-        GameObject bulletObj = Instantiate(
-            bullet,
-            transform.position + transform.forward,
-            transform.rotation
-        );
+        Transform shootFrom = firePoint != null ? firePoint : transform;
 
-        Rigidbody rb = bulletObj.GetComponent<Rigidbody>();
-        if (rb != null)
-            rb.AddForce(transform.forward * bulletSpeed, ForceMode.VelocityChange);
+        Vector3 spawnPosition = shootFrom.position;
+        Quaternion spawnRotation = shootFrom.rotation;
 
-        Bullet bulletScript = bulletObj.GetComponent<Bullet>();
+        GameObject newBullet = Instantiate(bulletPrefab, spawnPosition, spawnRotation);
+
+        Rigidbody bulletRb = newBullet.GetComponent<Rigidbody>();
+        if (bulletRb != null)
+        {
+            bulletRb.linearVelocity = shootFrom.forward * bulletSpeed;
+        }
+
+        Bullet bulletScript = newBullet.GetComponent<Bullet>();
         if (bulletScript != null)
-            bulletScript.SetDontCollide(gameObject); // enemy won't shoot itself
+        {
+            bulletScript.SetDontCollide(gameObject);
+        }
 
-        Destroy(bulletObj, destroyAfter);
+        Destroy(newBullet, bulletLifetime);
     }
 }

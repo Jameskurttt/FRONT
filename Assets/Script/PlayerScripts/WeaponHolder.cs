@@ -34,6 +34,9 @@ public class Weapon : MonoBehaviour
         isDropped = false;
 
         rb.isKinematic = true;
+        rb.useGravity = false;
+        rb.constraints = RigidbodyConstraints.None; // reset just in case
+
         col.enabled = false;
 
         transform.SetParent(holder);
@@ -44,10 +47,21 @@ public class Weapon : MonoBehaviour
     public void Drop(Vector3 dropPosition)
     {
         transform.SetParent(null);
-        transform.position = dropPosition;
+
+        // Spawn slightly above ground
+        transform.position = dropPosition + Vector3.up * 1f;
 
         rb.isKinematic = false;
+        rb.useGravity = true;
+
         col.enabled = true;
+
+        // Reset movement
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        // Small forward force (optional)
+        rb.AddForce(transform.forward * 2f, ForceMode.Impulse);
 
         isDropped = true;
         destroyTimer = destroyAfterDrop;

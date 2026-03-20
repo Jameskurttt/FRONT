@@ -2,8 +2,12 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
+    [Header("Enemy Stats")]
     public int maxHealth = 100;
-    public int xpReward = 20; // XP player gains when killed
+    public int expReward = 3;
+
+    public delegate void MonsterDefeated(int exp);
+    public static event MonsterDefeated OnMonsterDefeated;
 
     private int currentHealth;
 
@@ -12,11 +16,10 @@ public class EnemyHealth : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-    // Call this from sword or bullet
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        Debug.Log($"{gameObject.name} took {damage} damage. Health: {currentHealth}");
+        Debug.Log($"{gameObject.name} took {damage} damage. Health left: {currentHealth}");
 
         if (currentHealth <= 0)
         {
@@ -28,13 +31,7 @@ public class EnemyHealth : MonoBehaviour
     {
         Debug.Log($"{gameObject.name} died");
 
-        // Give XP to the player safely
-        PlayerStats player = FindObjectOfType<PlayerStats>();
-        if (player != null)
-        {
-            player.GainXP(xpReward);
-        }
-
+        OnMonsterDefeated?.Invoke(expReward);
         Destroy(gameObject);
     }
 }

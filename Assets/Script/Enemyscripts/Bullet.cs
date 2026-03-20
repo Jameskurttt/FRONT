@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    private GameObject dontCollideObj;
-
+    public float damage = 5f;
     public float lifeTime = 3f;
+
+    private GameObject dontCollideObj;
 
     public void SetDontCollide(GameObject obj)
     {
@@ -23,13 +24,22 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("Bullet hit: " + collision.gameObject.name);
+
         if (collision.gameObject == dontCollideObj)
             return;
 
-        PlayerStats stats = collision.gameObject.GetComponentInParent<PlayerStats>();
+        PlayerHealth stats = collision.gameObject.GetComponent<PlayerHealth>();
+
+        if (stats == null)
+        {
+            stats = collision.gameObject.GetComponentInParent<PlayerHealth>();
+        }
+
         if (stats != null)
         {
-            stats.TakeDamage(5f);
+            Debug.Log("HIT PLAYER!");
+            stats.TakeDamage(damage);
         }
 
         DisableBullet();
