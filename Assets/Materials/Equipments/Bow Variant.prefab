@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &2201744864077480397
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3117340797649125844, guid: c9b997a4a0dd5034a90414428bdf0578, type: 3}
+      propertyPath: weaponIcon
+      value: 
+      objectReference: {fileID: 21300000, guid: cf3f658f843903f41825031c11fd8a81, type: 3}
+    - target: {fileID: 3117340797649125844, guid: c9b997a4a0dd5034a90414428bdf0578, type: 3}
+      propertyPath: equipLocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3117340797649125844, guid: c9b997a4a0dd5034a90414428bdf0578, type: 3}
+      propertyPath: equipLocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3117340797649125844, guid: c9b997a4a0dd5034a90414428bdf0578, type: 3}
+      propertyPath: equipLocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3881909180078590582, guid: c9b997a4a0dd5034a90414428bdf0578, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3881909180078590582, guid: c9b997a4a0dd5034a90414428bdf0578, type: 3}
+      propertyPath: m_Constraints
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 3881909180078590582, guid: c9b997a4a0dd5034a90414428bdf0578, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325689339961176022, guid: c9b997a4a0dd5034a90414428bdf0578, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -39.614
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325689339961176022, guid: c9b997a4a0dd5034a90414428bdf0578, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.115
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325689339961176022, guid: c9b997a4a0dd5034a90414428bdf0578, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -149.916
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325689339961176022, guid: c9b997a4a0dd5034a90414428bdf0578, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.31599623
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325689339961176022, guid: c9b997a4a0dd5034a90414428bdf0578, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.11265307
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325689339961176022, guid: c9b997a4a0dd5034a90414428bdf0578, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.6409278
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325689339961176022, guid: c9b997a4a0dd5034a90414428bdf0578, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.690411
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325689339961176022, guid: c9b997a4a0dd5034a90414428bdf0578, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -54.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325689339961176022, guid: c9b997a4a0dd5034a90414428bdf0578, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -74.731
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325689339961176022, guid: c9b997a4a0dd5034a90414428bdf0578, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -87.901
+      objectReference: {fileID: 0}
+    - target: {fileID: 6666044725384721772, guid: c9b997a4a0dd5034a90414428bdf0578, type: 3}
+      propertyPath: m_Name
+      value: Bow Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 6666044725384721772, guid: c9b997a4a0dd5034a90414428bdf0578, type: 3}
+      propertyPath: m_TagString
+      value: weapon
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c9b997a4a0dd5034a90414428bdf0578, type: 3}

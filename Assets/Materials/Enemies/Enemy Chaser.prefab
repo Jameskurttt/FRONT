@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 5428842220280642981}
   - component: {fileID: 4871315240640101516}
   - component: {fileID: 4363177011758756954}
+  - component: {fileID: -8632843811650630592}
   m_Layer: 8
   m_Name: Enemy Chaser
   m_TagString: Untagged
@@ -213,8 +214,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a5d0f5292956634b9a762097b45ad81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  ExpReward: 3
   maxHealth: 100
+  expReward: 3
+  goldReward: 10
 --- !u!114 &4363177011758756954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,8 +230,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyChaseAndShoot
   agent: {fileID: 5428842220280642981}
-  chaseRange: 20
   stoppingDistance: 12
+--- !u!114 &-8632843811650630592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2964791885923004404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c896a6af1de54e4db0b63354baa3dc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyShooter
+  chaseScript: {fileID: 4363177011758756954}
+  bulletPrefab: {fileID: 87373302734933610, guid: e5b49f3f1a28ef4409796b70b2a12af9, type: 3}
+  firePoint: {fileID: 3025548135394485546}
+  shootRange: 10
+  shootCooldown: 1.5
+  bulletSpeed: 20
   rotationSpeed: 8
 --- !u!1 &8216764196757946480
 GameObject:

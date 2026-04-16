@@ -3,33 +3,50 @@ using UnityEngine;
 public class ThirdPersonCamera : MonoBehaviour
 {
     public Transform player;
-    public float mouseSensitivity = 300f;
-    public float distance = 4f;
-    public float height = 2f;
 
-    float xRotation = 0f;
-    float yRotation = 0f;
+    public float distance = 3.5f;
+    public float sideOffset = 1.0f;
+    public float height = 1.7f;
+
+    public float mouseSensitivity = 140f;
+    public float minPitch = -15f;
+    public float maxPitch = 45f;
+
+    float yaw;
+    float pitch;
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        if (player != null)
+            yaw = player.eulerAngles.y;
     }
 
     void LateUpdate()
     {
+        if (player == null) return;
+
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-        yRotation += mouseX;
-        xRotation -= mouseY;
+        yaw += mouseX;
+        pitch -= mouseY;
+        pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
 
-        xRotation = Mathf.Clamp(xRotation, -35f, 60f);
+        Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
 
-        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, 0);
+        Vector3 targetPoint = player.position + Vector3.up * height;
 
-        Vector3 offset = rotation * new Vector3(0, height, -distance);
-        transform.position = player.position + offset;
+        Vector3 wantedPosition =
+            targetPoint
+            - rotation * Vector3.forward * distance
+            + rotation * Vector3.right * sideOffset;
 
-        transform.LookAt(player.position + Vector3.up * 1.5f);
+        //  NO SMOOTH = NO SHAKE
+        transform.position = wantedPosition;
+
+        transform.rotation = rotation;
     }
 }

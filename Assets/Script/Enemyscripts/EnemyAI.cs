@@ -1,57 +1,123 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyChasePro : MonoBehaviour
+public class EnemyChase : MonoBehaviour
 {
     [Header("References")]
     public NavMeshAgent agent;
 
+    [Header("Player")]
+    public string playerTag = "Player";
+    public Transform player;
+
     [Header("Chase Settings")]
-    public float chaseRange = 20f;
+    public float detectionRange = 20f;
     public float stoppingDistance = 2f;
     public float rotationSpeed = 8f;
 
-    private Transform player;
-    private bool isChasing;
-
-    void Awake()
+    private void Awake()
     {
         if (agent == null)
             agent = GetComponent<NavMeshAgent>();
 
-        agent.stoppingDistance = stoppingDistance;
-        agent.updateRotation = false; // we rotate manually
+        if (agent != null)
+        {
+            agent.stoppingDistance = stoppingDistance;
+            agent.updateRotation = false;
+        }
+        else
+        {
+            Debug.LogError($"{gameObject.name} has no NavMeshAgent.");
+        }
     }
 
-    void Update()
+    private void Start()
     {
-        if (!isChasing || player == null)
+        FindPlayer();
+    }
+
+    private void Update()
+    {
+        if (agent == null)
             return;
+
+        if (player == null)
+        {
+            FindPlayer();
+            return;
+        }
+
+        // Make sure stopping distance always matches inspector value
+        agent.stoppingDistance = stoppingDistance;
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        // Only move if player is farther than stopping distance
+        // Only chase when player is close enough
+        if (distanceToPlayer > detectionRange)
+        {
+            if (!agent.isStopped)
+            {
+                agent.isStopped = true;
+                agent.ResetPath();
+            }
+            return;
+        }
+
+        // Chase player
         if (distanceToPlayer > stoppingDistance)
         {
             agent.isStopped = false;
             agent.SetDestination(player.position);
+
+            Vector3 moveDirection = agent.desiredVelocity;
+            moveDirection.y = 0f;
+
+            if (moveDirection.sqrMagnitude > 0.01f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+                transform.rotation = Quaternion.Slerp(
+                    transform.rotation,
+                    targetRotation,
+                    rotationSpeed * Time.deltaTime
+                );
+            }
         }
         else
         {
             agent.isStopped = true;
+            FaceTarget(player.position);
         }
-
-        FacePlayer();
     }
 
-    void FacePlayer()
+    private void FindPlayer()
     {
-        if (player == null) return;
+        GameObject playerObject = GameObject.FindGameObjectWithTag(playerTag);
 
-        Vector3 direction = player.position - transform.position;
+        if (playerObject != null)
+        {
+            player = playerObject.transform;
+        }
+    }
+
+    public Transform GetTarget()
+    {
+        if (player == null)
+            return null;
+
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        if (distanceToPlayer <= detectionRange)
+            return player;
+
+        return null;
+    }
+
+    public void FaceTarget(Vector3 targetPosition)
+    {
+        Vector3 direction = targetPosition - transform.position;
         direction.y = 0f;
 
-        if (direction.sqrMagnitude < 0.01f) return;
+        if (direction.sqrMagnitude < 0.01f)
+            return;
 
         Quaternion targetRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(
@@ -59,19 +125,5 @@ public class EnemyChasePro : MonoBehaviour
             targetRotation,
             rotationSpeed * Time.deltaTime
         );
-    }
-
-    public void StartChasing(Transform target)
-    {
-        player = target;
-        isChasing = true;
-    }
-
-    public void StopChasing()
-    {
-        isChasing = false;
-        player = null;
-        agent.isStopped = true;
-        agent.ResetPath();
     }
 }

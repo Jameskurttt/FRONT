@@ -25,7 +25,7 @@ public class SwordDamage : MonoBehaviour
 
     void Attack()
     {
-        Debug.Log("ATTACK!");
+       
 
         Collider[] hits = Physics.OverlapSphere(transform.position, attackRadius, enemyLayer);
 
