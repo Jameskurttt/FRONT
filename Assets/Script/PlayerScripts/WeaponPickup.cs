@@ -21,24 +21,36 @@ public class PlayerWeaponPickup : MonoBehaviour
     public GameObject pickupDescriptionPanel;
 
     [Header("Equipped UI")]
-    public TMP_Text equippedWeaponNameText;
     public Image equippedWeaponSlotImage;
     public Sprite emptySlotSprite;
 
+    [Header("Player Stats")]
+    public PlayerHealth playerStats;
+
     private Weapon currentWeapon;
     private ItemDropData currentItemData;
+    private int currentWeaponDamageBonus;
 
     private Weapon targetWeapon;
     private ChestInteractable targetChest;
     private WorldLootDrop targetLootDrop;
+    private ArmorPickup targetArmorPickup;
+    private PlayerArmorEquipment armorEquipment;
 
     private void Start()
     {
         if (playerCamera == null)
             playerCamera = Camera.main;
 
+        if (playerStats == null)
+            playerStats = GetComponent<PlayerHealth>();
+
+        if (armorEquipment == null)
+            armorEquipment = GetComponent<PlayerArmorEquipment>();
+
         HidePickupUI();
         RefreshEquippedUI();
+        RefreshStatsUI();
     }
 
     private void Update()
@@ -57,6 +69,7 @@ public class PlayerWeaponPickup : MonoBehaviour
         targetWeapon = null;
         targetChest = null;
         targetLootDrop = null;
+        targetArmorPickup = null;
 
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         RaycastHit hit;
@@ -72,7 +85,7 @@ public class PlayerWeaponPickup : MonoBehaviour
                     interactUIText.text = "Press E to <color=#FFD700>Pick Up</color>";
 
                 if (pickupDescriptionText != null)
-                    pickupDescriptionText.text = lootDrop.itemData.description;
+                    pickupDescriptionText.text = lootDrop.itemData.description + "\nDamage: " + lootDrop.GetRolledWeaponDamage();
 
                 ShowPickupUI();
                 return;
@@ -87,7 +100,22 @@ public class PlayerWeaponPickup : MonoBehaviour
                     interactUIText.text = "Press E to <color=#FFD700>Equip</color>";
 
                 if (pickupDescriptionText != null)
-                    pickupDescriptionText.text = weapon.description;
+                    pickupDescriptionText.text = weapon.description + "\nDamage: " + weapon.GetWeaponDamage();
+
+                ShowPickupUI();
+                return;
+            }
+
+            ArmorPickup armorPickup = hit.collider.GetComponent<ArmorPickup>();
+            if (armorPickup != null && armorPickup.armorData != null)
+            {
+                targetArmorPickup = armorPickup;
+
+                if (interactUIText != null)
+                    interactUIText.text = armorPickup.interactMessage;
+
+                if (pickupDescriptionText != null)
+                    pickupDescriptionText.text = armorPickup.GetDescription();
 
                 ShowPickupUI();
                 return;
@@ -128,6 +156,23 @@ public class PlayerWeaponPickup : MonoBehaviour
             return;
         }
 
+        if (targetArmorPickup != null)
+        {
+            if (armorEquipment != null)
+            {
+                armorEquipment.EquipArmor(targetArmorPickup.armorData);
+                Destroy(targetArmorPickup.gameObject);
+            }
+            else
+            {
+                Debug.LogWarning("PlayerArmorEquipment is missing on the player.");
+            }
+
+            targetArmorPickup = null;
+            HidePickupUI();
+            return;
+        }
+
         if (targetChest != null)
         {
             targetChest.Interact();
@@ -145,7 +190,8 @@ public class PlayerWeaponPickup : MonoBehaviour
             DropWeapon();
 
         currentWeapon = targetWeapon;
-        currentItemData = null; // this old system pickup has no ItemDropData linked
+        currentItemData = null;
+        currentWeaponDamageBonus = currentWeapon.GetWeaponDamage();
 
         Transform holderToUse = GetHolderForWeapon(currentWeapon);
         if (holderToUse == null)
@@ -156,13 +202,16 @@ public class PlayerWeaponPickup : MonoBehaviour
 
         currentWeapon.Pickup(holderToUse);
 
+        ApplyEquippedWeaponStats();
+
         targetWeapon = null;
 
         HidePickupUI();
         RefreshEquippedUI();
+        RefreshStatsUI();
     }
 
-    public void EquipFromLoot(ItemDropData itemData)
+    public void EquipFromLoot(ItemDropData itemData, int rolledWeaponDamage)
     {
         if (itemData == null)
         {
@@ -196,8 +245,6 @@ public class PlayerWeaponPickup : MonoBehaviour
         GameObject spawnedWeaponObject = Instantiate(itemData.equippedWeaponPrefab, holderToUse);
         spawnedWeaponObject.transform.localPosition = Vector3.zero;
         spawnedWeaponObject.transform.localRotation = Quaternion.identity;
-        // DO NOT force localScale = Vector3.one
-        // Keep prefab's original scale
 
         currentWeapon = spawnedWeaponObject.GetComponent<Weapon>();
 
@@ -208,14 +255,26 @@ public class PlayerWeaponPickup : MonoBehaviour
             return;
         }
 
+        currentWeapon.SetWeaponDamage(rolledWeaponDamage);
+
         currentItemData = itemData;
+        currentWeaponDamageBonus = rolledWeaponDamage;
 
         currentWeapon.Pickup(holderToUse);
 
+        ApplyEquippedWeaponStats();
+
         HidePickupUI();
         RefreshEquippedUI();
+        RefreshStatsUI();
 
-        Debug.Log("Equipped from loot: " + itemData.itemName);
+        Debug.Log("Equipped from loot: " + itemData.itemName + " | Damage: " + rolledWeaponDamage);
+    }
+
+    private void ApplyEquippedWeaponStats()
+    {
+        if (playerStats != null)
+            playerStats.SetEquippedWeaponDamage(currentWeaponDamageBonus);
     }
 
     private Transform GetHolderForWeapon(Weapon weapon)
@@ -250,49 +309,36 @@ public class PlayerWeaponPickup : MonoBehaviour
         if (dropPoint != null)
             finalDropPosition = dropPoint.position;
         else
-            finalDropPosition = transform.position + transform.forward * 1.5f + Vector3.up * 0.5f;
+            finalDropPosition = transform.position + transform.forward * 2.5f + transform.right * 1f + Vector3.up * 0.5f;
 
-        // If this weapon came from loot data, drop the 2D loot version
         if (currentItemData != null && lootDropPrefab != null)
         {
             GameObject dropObject = Instantiate(lootDropPrefab, finalDropPosition, Quaternion.identity);
 
             WorldLootDrop lootDrop = dropObject.GetComponent<WorldLootDrop>();
             if (lootDrop != null)
-            {
-                lootDrop.Setup(currentItemData);
-            }
+                lootDrop.Setup(currentItemData, currentWeaponDamageBonus);
 
             Destroy(currentWeapon.gameObject);
         }
         else
         {
-            // Fallback for old 3D weapon pickup system
             currentWeapon.Drop(finalDropPosition);
         }
 
         currentWeapon = null;
         currentItemData = null;
+        currentWeaponDamageBonus = 0;
+
+        if (playerStats != null)
+            playerStats.ClearEquippedWeaponDamage();
 
         RefreshEquippedUI();
+        RefreshStatsUI();
     }
 
     private void RefreshEquippedUI()
     {
-        if (equippedWeaponNameText != null)
-        {
-            if (currentWeapon != null)
-            {
-                equippedWeaponNameText.text = currentWeapon.weaponName;
-                equippedWeaponNameText.gameObject.SetActive(true);
-            }
-            else
-            {
-                equippedWeaponNameText.text = "";
-                equippedWeaponNameText.gameObject.SetActive(false);
-            }
-        }
-
         if (equippedWeaponSlotImage != null)
         {
             equippedWeaponSlotImage.preserveAspect = true;
@@ -317,6 +363,17 @@ public class PlayerWeaponPickup : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void RefreshStatsUI()
+    {
+        SkillTreeManager skillTreeManager = FindObjectOfType<SkillTreeManager>();
+        if (skillTreeManager != null)
+            skillTreeManager.RefreshStatsUI();
+
+        PauseMenu pauseMenu = FindObjectOfType<PauseMenu>();
+        if (pauseMenu != null)
+            pauseMenu.RefreshPauseStats();
     }
 
     private void ShowPickupUI()
@@ -346,6 +403,11 @@ public class PlayerWeaponPickup : MonoBehaviour
     public Weapon GetCurrentWeapon()
     {
         return currentWeapon;
+    }
+
+    public int GetCurrentWeaponDamageBonus()
+    {
+        return currentWeaponDamageBonus;
     }
 
     public bool HasBowEquipped()

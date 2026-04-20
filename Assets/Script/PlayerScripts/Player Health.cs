@@ -16,6 +16,9 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float magicAttackDamage = 10f;
     [SerializeField] private float attackSpeed = 1f;
 
+    [Header("Equipped Weapon")]
+    [SerializeField] private int equippedWeaponDamage = 0;
+
     [Header("Defense")]
     [SerializeField] private float armor = 5f;
     [SerializeField] private float physicalDefense = 10f;
@@ -42,6 +45,7 @@ public class PlayerHealth : MonoBehaviour
         }
 
         ApplyMovementSpeed();
+        ClampStats();
     }
 
     void Update()
@@ -64,46 +68,40 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
-        float finalDamage = amount * (100f / (100f + armor));
+        float totalDefense = Mathf.Max(0f, armor);
+        float finalDamage = CalculateReducedDamage(amount, totalDefense);
 
-        currentHP -= finalDamage;
-        currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
-
-        if (healthBar != null)
-            healthBar.SetSlider(currentHP);
-
-        Debug.Log("Player HP: " + currentHP);
-
-        if (currentHP <= 0f)
-        {
-            currentHP = 0f;
-            Die();
-        }
+        ApplyFinalDamage(finalDamage);
     }
 
     public void TakePhysicalDamage(float amount)
     {
-        float finalDamage = amount * (100f / (100f + physicalDefense + armor));
+        float totalDefense = Mathf.Max(0f, armor + physicalDefense);
+        float finalDamage = CalculateReducedDamage(amount, totalDefense);
 
-        currentHP -= finalDamage;
-        currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
-
-        if (healthBar != null)
-            healthBar.SetSlider(currentHP);
-
-        Debug.Log("Player HP: " + currentHP);
-
-        if (currentHP <= 0f)
-        {
-            currentHP = 0f;
-            Die();
-        }
+        ApplyFinalDamage(finalDamage);
     }
 
     public void TakeMagicDamage(float amount)
     {
-        float finalDamage = amount * (100f / (100f + magicDefense + armor));
+        float totalDefense = Mathf.Max(0f, armor + magicDefense);
+        float finalDamage = CalculateReducedDamage(amount, totalDefense);
 
+        ApplyFinalDamage(finalDamage);
+    }
+
+    private float CalculateReducedDamage(float incomingDamage, float totalDefense)
+    {
+        float finalDamage = incomingDamage * (100f / (100f + totalDefense));
+
+        // Prevent 0 or negative damage
+        finalDamage = Mathf.Max(1f, finalDamage);
+
+        return finalDamage;
+    }
+
+    private void ApplyFinalDamage(float finalDamage)
+    {
         currentHP -= finalDamage;
         currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
 
@@ -133,6 +131,8 @@ public class PlayerHealth : MonoBehaviour
     public void IncreaseMaxHP(float amount)
     {
         maxHP += amount;
+        maxHP = Mathf.Max(1f, maxHP);
+
         currentHP += amount;
         currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
 
@@ -146,42 +146,70 @@ public class PlayerHealth : MonoBehaviour
     public void IncreaseHPRegen(float amount)
     {
         hpRegen += amount;
+        hpRegen = Mathf.Max(0f, hpRegen);
     }
 
     public void IncreaseArmor(float amount)
     {
         armor += amount;
+        armor = Mathf.Max(0f, armor);
     }
 
     public void IncreasePhysicalAttack(float amount)
     {
         physicalAttackDamage += amount;
+        physicalAttackDamage = Mathf.Max(0f, physicalAttackDamage);
     }
 
     public void IncreaseMagicAttack(float amount)
     {
         magicAttackDamage += amount;
+        magicAttackDamage = Mathf.Max(0f, magicAttackDamage);
     }
 
     public void IncreaseAttackSpeed(float amount)
     {
         attackSpeed += amount;
+        attackSpeed = Mathf.Max(0.05f, attackSpeed);
     }
 
     public void IncreaseMovementSpeed(float amount)
     {
         movementSpeed += amount;
+        movementSpeed = Mathf.Max(0.5f, movementSpeed);
         ApplyMovementSpeed();
     }
 
     public void IncreasePhysicalDefense(float amount)
     {
         physicalDefense += amount;
+        physicalDefense = Mathf.Max(0f, physicalDefense);
     }
 
     public void IncreaseMagicDefense(float amount)
     {
         magicDefense += amount;
+        magicDefense = Mathf.Max(0f, magicDefense);
+    }
+
+    public void SetEquippedWeaponDamage(int amount)
+    {
+        equippedWeaponDamage = Mathf.Max(0, amount);
+    }
+
+    public void ClearEquippedWeaponDamage()
+    {
+        equippedWeaponDamage = 0;
+    }
+
+    public int GetEquippedWeaponDamage()
+    {
+        return equippedWeaponDamage;
+    }
+
+    public float GetTotalPhysicalAttack()
+    {
+        return physicalAttackDamage + equippedWeaponDamage;
     }
 
     public float GetCurrentHP() => currentHP;
@@ -215,8 +243,20 @@ public class PlayerHealth : MonoBehaviour
     void ApplyMovementSpeed()
     {
         if (movement != null)
-        {
             movement.moveSpeed = movementSpeed;
-        }
+    }
+
+    void ClampStats()
+    {
+        maxHP = Mathf.Max(1f, maxHP);
+        currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
+        hpRegen = Mathf.Max(0f, hpRegen);
+        armor = Mathf.Max(0f, armor);
+        physicalAttackDamage = Mathf.Max(0f, physicalAttackDamage);
+        magicAttackDamage = Mathf.Max(0f, magicAttackDamage);
+        attackSpeed = Mathf.Max(0.05f, attackSpeed);
+        physicalDefense = Mathf.Max(0f, physicalDefense);
+        magicDefense = Mathf.Max(0f, magicDefense);
+        movementSpeed = Mathf.Max(0.5f, movementSpeed);
     }
 }

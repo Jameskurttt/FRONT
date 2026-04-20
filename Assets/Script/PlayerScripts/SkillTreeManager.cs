@@ -134,11 +134,16 @@ public class SkillTreeManager : MonoBehaviour
         if (playerStats == null || statsText == null)
             return;
 
+        float basePhysicalAttack = playerStats.GetPhysicalAttack();
+        int weaponDamage = playerStats.GetEquippedWeaponDamage();
+        float totalPhysicalAttack = playerStats.GetTotalPhysicalAttack();
+
         statsText.text =
             "HP: " + Mathf.RoundToInt(playerStats.GetCurrentHP()) + " / " + Mathf.RoundToInt(playerStats.GetMaxHP()) + "\n" +
             "HP Regen: " + playerStats.GetHPRegen().ToString("F1") + "\n" +
             "Armor: " + playerStats.GetArmor().ToString("F1") + "\n" +
-            "Physical Attack: " + playerStats.GetPhysicalAttack().ToString("F1") + "\n" +
+            "Physical Attack: " + totalPhysicalAttack.ToString("F1") + " (" + weaponDamage + ")\n" +
+            "Base Physical Attack: " + basePhysicalAttack.ToString("F1") + "\n" +
             "Magic Attack: " + playerStats.GetMagicAttack().ToString("F1") + "\n" +
             "Attack Speed: " + playerStats.GetAttackSpeed().ToString("F2") + "\n" +
             "Movement Speed: " + playerStats.GetMovementSpeed().ToString("F1") + "\n" +

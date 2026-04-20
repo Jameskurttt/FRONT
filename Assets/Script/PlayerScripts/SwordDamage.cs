@@ -4,13 +4,21 @@ public class SwordDamage : MonoBehaviour
 {
     [Header("Attack Settings")]
     public float attackRadius = 2f;
-    public int damage = 25;
     public LayerMask enemyLayer;
 
     [Header("Attack Timing")]
     public float attackCooldown = 0.5f;
 
+    [Header("Player Reference")]
+    public PlayerHealth playerStats;
+
     private float cooldownTimer;
+
+    void Start()
+    {
+        if (playerStats == null)
+            playerStats = GetComponentInParent<PlayerHealth>();
+    }
 
     void Update()
     {
@@ -25,7 +33,10 @@ public class SwordDamage : MonoBehaviour
 
     void Attack()
     {
-       
+        int finalDamage = 0;
+
+        if (playerStats != null)
+            finalDamage = Mathf.RoundToInt(playerStats.GetTotalPhysicalAttack());
 
         Collider[] hits = Physics.OverlapSphere(transform.position, attackRadius, enemyLayer);
 
@@ -35,13 +46,12 @@ public class SwordDamage : MonoBehaviour
 
             if (enemy != null)
             {
-                Debug.Log("Hit: " + hit.name);
-                enemy.TakeDamage(damage);
+                Debug.Log("Hit: " + hit.name + " | Damage: " + finalDamage);
+                enemy.TakeDamage(finalDamage);
             }
         }
     }
 
-    // Visualize attack range
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;

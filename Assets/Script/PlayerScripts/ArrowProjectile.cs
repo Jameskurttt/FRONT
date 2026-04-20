@@ -33,11 +33,20 @@ public class ArrowProjectile : MonoBehaviour
         Invoke(nameof(DisableArrow), lifeTime);
     }
 
+    public void SetDamage(int newDamage)
+    {
+        damage = Mathf.Max(0, newDamage);
+    }
+
     public void Launch(Vector3 direction, float speed)
     {
         if (rb == null)
+        {
+            Debug.LogWarning("ArrowProjectile: Rigidbody is missing.");
             return;
+        }
 
+        direction = direction.normalized;
         rb.linearVelocity = direction * speed;
         transform.forward = direction;
     }
@@ -47,18 +56,20 @@ public class ArrowProjectile : MonoBehaviour
         if (other.isTrigger)
             return;
 
-        
         EnemyHealth enemy = other.GetComponent<EnemyHealth>();
         if (enemy != null)
         {
             enemy.TakeDamage(damage);
+            DisableArrow();
+            return;
         }
 
-       
         BossHealth boss = other.GetComponentInParent<BossHealth>();
         if (boss != null)
         {
             boss.TakeDamage(damage);
+            DisableArrow();
+            return;
         }
 
         DisableArrow();

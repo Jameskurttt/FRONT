@@ -14,6 +14,10 @@ public class ItemDropData : ScriptableObject
     [Header("3D Weapon Prefab")]
     public GameObject equippedWeaponPrefab;
 
+    [Header("Base Weapon Damage Range")]
+    public int minWeaponDamage = 2;
+    public int maxWeaponDamage = 5;
+
     [Header("Rarity")]
     public LootRarity rarity = LootRarity.Common;
 

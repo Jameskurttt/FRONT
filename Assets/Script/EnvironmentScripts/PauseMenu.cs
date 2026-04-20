@@ -39,14 +39,12 @@ public class PauseMenu : MonoBehaviour
             return;
         }
 
-        // If quit confirmation is open, ESC closes it first
         if (quitConfirmPanel != null && quitConfirmPanel.activeSelf)
         {
             CloseQuitConfirmation();
             return;
         }
 
-        // If settings is open, ESC goes back to pause menu
         if (settingsPanel != null && settingsPanel.activeSelf)
         {
             CloseSettings();
@@ -132,17 +130,22 @@ public class PauseMenu : MonoBehaviour
             pauseMenuPanel.SetActive(true);
     }
 
-    void RefreshPauseStats()
+    public void RefreshPauseStats()
     {
         if (playerStats == null || pauseStatsText == null)
             return;
+
+        float basePhysicalAttack = playerStats.GetPhysicalAttack();
+        int weaponDamage = playerStats.GetEquippedWeaponDamage();
+        float totalPhysicalAttack = playerStats.GetTotalPhysicalAttack();
 
         pauseStatsText.text =
             "<size=150%><b>Player Stats</b></size>\n\n" +
             $"HP: {Mathf.RoundToInt(playerStats.GetCurrentHP())} / {Mathf.RoundToInt(playerStats.GetMaxHP())}\n\n" +
             $"HP Regen: {playerStats.GetHPRegen():F1}\n\n" +
             $"Armor: {playerStats.GetArmor():F1}\n\n" +
-            $"Physical Attack: {playerStats.GetPhysicalAttack():F1}\n\n" +
+            $"Physical Attack: {totalPhysicalAttack:F1} ({weaponDamage})\n\n" +
+            $"Base Physical Attack: {basePhysicalAttack:F1}\n\n" +
             $"Magic Attack: {playerStats.GetMagicAttack():F1}\n\n" +
             $"Attack Speed: {playerStats.GetAttackSpeed():F2}\n\n" +
             $"Movement Speed: {playerStats.GetMovementSpeed():F1}\n\n" +

@@ -130,7 +130,7 @@ MonoBehaviour:
   chestDescription: Open chest to drop reward.
   hasOpened: 0
   destroyChestAfterOpen: 1
-  lootDropPrefab: {fileID: 7120797176688035933, guid: 0bff3e2a253a2cd4d94a4ddd5d22dd5b, type: 3}
+  lootDropPrefab: {fileID: 8825227439975776828, guid: 68b3d9d6fc7672e4bab9f720293d7e83, type: 3}
   rewardSpawnPoint: {fileID: 0}
   rewardHeightOffset: 0.5
   horizontalSpread: 1.2

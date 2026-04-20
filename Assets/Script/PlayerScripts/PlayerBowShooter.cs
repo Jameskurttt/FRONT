@@ -4,8 +4,12 @@ public class PlayerBowShooter : MonoBehaviour
 {
     [Header("References")]
     public PlayerWeaponPickup weaponPickup;
+    public PlayerHealth playerStats;
     public Camera playerCamera;
-    public Transform arrowSpawnPoint;
+
+    [Header("Arrow Setup")]
+    public GameObject arrowPrefab;
+    public string bowFirePointName = "FirePoint";
 
     [Header("Shoot Settings")]
     public float shootCooldown = 0.25f;
@@ -23,6 +27,9 @@ public class PlayerBowShooter : MonoBehaviour
     {
         if (weaponPickup == null)
             weaponPickup = GetComponent<PlayerWeaponPickup>();
+
+        if (playerStats == null)
+            playerStats = GetComponent<PlayerHealth>();
 
         if (playerCamera == null)
             playerCamera = Camera.main;
@@ -48,32 +55,43 @@ public class PlayerBowShooter : MonoBehaviour
         if (!weaponPickup.HasBowEquipped())
             return;
 
+        if (playerStats == null)
+        {
+            Debug.LogWarning("PlayerBowShooter: playerStats is missing.");
+            return;
+        }
+
         if (playerCamera == null)
         {
             Debug.LogWarning("PlayerBowShooter: playerCamera is missing.");
             return;
         }
 
-        if (arrowSpawnPoint == null)
+        if (arrowPrefab == null)
         {
-            Debug.LogWarning("PlayerBowShooter: arrowSpawnPoint is missing.");
+            Debug.LogWarning("PlayerBowShooter: arrowPrefab is missing.");
             return;
         }
 
-        if (ArrowPool.Instance == null)
+        Weapon currentWeapon = weaponPickup.GetCurrentWeapon();
+        if (currentWeapon == null)
         {
-            Debug.LogWarning("PlayerBowShooter: No ArrowPool found in scene.");
+            Debug.LogWarning("PlayerBowShooter: No current weapon found.");
+            return;
+        }
+
+        Transform arrowSpawnPoint = currentWeapon.transform.Find(bowFirePointName);
+        if (arrowSpawnPoint == null)
+        {
+            Debug.LogWarning("PlayerBowShooter: FirePoint was not found on the equipped bow. Make sure the bow prefab has a child named FirePoint.");
             return;
         }
 
         nextShootTime = Time.time + shootCooldown;
 
-        Vector3 shootDirection = GetSafeShootDirection();
+        Vector3 shootDirection = GetSafeShootDirection(arrowSpawnPoint);
 
-        GameObject arrowObject = ArrowPool.Instance.GetArrow();
-        arrowObject.transform.position = arrowSpawnPoint.position;
-        arrowObject.transform.rotation = Quaternion.LookRotation(shootDirection);
-        arrowObject.SetActive(true);
+        GameObject arrowObject = Instantiate(arrowPrefab, arrowSpawnPoint.position, Quaternion.LookRotation(shootDirection));
 
         Collider arrowCollider = arrowObject.GetComponent<Collider>();
         Collider[] playerColliders = GetComponentsInChildren<Collider>();
@@ -89,10 +107,20 @@ public class PlayerBowShooter : MonoBehaviour
 
         ArrowProjectile arrow = arrowObject.GetComponent<ArrowProjectile>();
         if (arrow != null)
+        {
+            int finalDamage = Mathf.RoundToInt(playerStats.GetTotalPhysicalAttack());
+            arrow.SetDamage(finalDamage);
             arrow.Launch(shootDirection, arrowSpeed);
+
+            Debug.Log("Bow shot damage: " + finalDamage);
+        }
+        else
+        {
+            Debug.LogWarning("PlayerBowShooter: Arrow prefab does not have an ArrowProjectile component.");
+        }
     }
 
-    private Vector3 GetSafeShootDirection()
+    private Vector3 GetSafeShootDirection(Transform arrowSpawnPoint)
     {
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         Vector3 fallbackDirection = playerCamera.transform.forward;

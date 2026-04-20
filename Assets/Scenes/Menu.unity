@@ -658,7 +658,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 4.043, y: 0.6669}
+  m_AnchoredPosition: {x: 23, y: 0.6669}
   m_SizeDelta: {x: 945.615, y: 507.0372}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &648237442
@@ -685,37 +685,37 @@ MonoBehaviour:
 
     Lead Designer: Viana
 
-    
+
 
     Sound Designer:
     Saja
 
     Composer: Saja
 
-    
+
 
     Level Designer: Aquino
 
-    
 
-    Art
-    Director: Viana
 
-    3D/2D Artist: Viana & Moncada
+    Art Director: Viana
 
-    Concept Artist: Viana
+    3D/2D
+    Artist: Viana & Moncada
+
+    Concept Artist: Viana & Moncada
+
+    Animator: Viana
     & Moncada
-
-    Animator: Viana & Moncada
 
     UI/UX: Viana & Aquino
 
-    
 
-    Technical
-    Director: Felicidario
 
-    Gameplay Programmer: Felicidario & Pido'
+    Technical Director: Felicidario
+
+    Gameplay
+    Programmer: Felicidario & Pido'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fce72f6bc8c9c2843bc7ac4c705e7d36, type: 2}
   m_sharedMaterial: {fileID: 3331767691872361413, guid: fce72f6bc8c9c2843bc7ac4c705e7d36, type: 2}
@@ -742,8 +742,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23.2
-  m_fontSizeBase: 23.2
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

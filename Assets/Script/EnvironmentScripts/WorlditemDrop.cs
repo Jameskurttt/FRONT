@@ -6,6 +6,9 @@ public class WorldLootDrop : MonoBehaviour
     [Header("Item Data")]
     public ItemDropData itemData;
 
+    [Header("Rolled Stats")]
+    [SerializeField] private int rolledWeaponDamage;
+
     [Header("Visuals")]
     public Transform visualRoot;
     public Transform iconPivot;
@@ -86,7 +89,20 @@ public class WorldLootDrop : MonoBehaviour
     public void Setup(ItemDropData newItemData)
     {
         itemData = newItemData;
+        rolledWeaponDamage = RollWeaponDamage();
         ApplyItemLook();
+    }
+
+    public void Setup(ItemDropData newItemData, int forcedWeaponDamage)
+    {
+        itemData = newItemData;
+        rolledWeaponDamage = Mathf.Max(0, forcedWeaponDamage);
+        ApplyItemLook();
+    }
+
+    public int GetRolledWeaponDamage()
+    {
+        return rolledWeaponDamage;
     }
 
     public void TryPickupFromPlayer()
@@ -105,16 +121,54 @@ public class WorldLootDrop : MonoBehaviour
         Color rarityColor = GetRarityColor(itemData.rarity);
 
         if (iconRenderer != null)
-        {
             iconRenderer.sprite = itemData.itemIcon;
-        }
 
         if (glowRenderer != null)
-        {
             glowRenderer.color = rarityColor;
-        }
 
         visualsReady = true;
+    }
+
+    private int RollWeaponDamage()
+    {
+        if (itemData == null)
+            return 0;
+
+        int minDamage = itemData.minWeaponDamage;
+        int maxDamage = itemData.maxWeaponDamage;
+
+        switch (itemData.rarity)
+        {
+            case LootRarity.Common:
+                minDamage += 0;
+                maxDamage += 0;
+                break;
+
+            case LootRarity.Uncommon:
+                minDamage += 2;
+                maxDamage += 3;
+                break;
+
+            case LootRarity.Rare:
+                minDamage += 4;
+                maxDamage += 6;
+                break;
+
+            case LootRarity.Epic:
+                minDamage += 7;
+                maxDamage += 10;
+                break;
+
+            case LootRarity.Legendary:
+                minDamage += 11;
+                maxDamage += 15;
+                break;
+        }
+
+        if (maxDamage < minDamage)
+            maxDamage = minDamage;
+
+        return Random.Range(minDamage, maxDamage + 1);
     }
 
     private IEnumerator PlaySpawnAnimation()
@@ -158,9 +212,7 @@ public class WorldLootDrop : MonoBehaviour
         direction.y = 0f;
 
         if (direction.sqrMagnitude > 0.001f)
-        {
             visualRoot.rotation = Quaternion.LookRotation(direction);
-        }
     }
 
     private void PlayIdleAnimation()
@@ -172,9 +224,7 @@ public class WorldLootDrop : MonoBehaviour
         }
 
         if (iconPivot != null)
-        {
             iconPivot.Rotate(Vector3.up * rotationSpeed * Time.deltaTime, Space.Self);
-        }
 
         if (glowRenderer != null)
         {
@@ -202,9 +252,7 @@ public class WorldLootDrop : MonoBehaviour
         if (distance <= pickupRange)
         {
             if (itemData.autoPickup)
-            {
                 StartCoroutine(PickupRoutine());
-            }
         }
     }
 
@@ -216,13 +264,9 @@ public class WorldLootDrop : MonoBehaviour
         isPickingUp = true;
 
         if (playerWeaponPickup != null)
-        {
-            playerWeaponPickup.EquipFromLoot(itemData);
-        }
+            playerWeaponPickup.EquipFromLoot(itemData, rolledWeaponDamage);
         else
-        {
             Debug.LogWarning("PlayerWeaponPickup was not found on the player.");
-        }
 
         if (visualRoot != null)
         {
@@ -234,7 +278,6 @@ public class WorldLootDrop : MonoBehaviour
             {
                 timer += Time.deltaTime;
                 float t = timer / pickupAnimDuration;
-
                 visualRoot.localScale = Vector3.Lerp(startScale, endScale, t);
                 yield return null;
             }
@@ -249,19 +292,14 @@ public class WorldLootDrop : MonoBehaviour
         {
             case LootRarity.Common:
                 return new Color(1f, 1f, 1f);
-
             case LootRarity.Uncommon:
                 return new Color(0.35f, 1f, 0.35f);
-
             case LootRarity.Rare:
                 return new Color(0.35f, 0.65f, 1f);
-
             case LootRarity.Epic:
                 return new Color(0.75f, 0.4f, 1f);
-
             case LootRarity.Legendary:
                 return new Color(1f, 0.7f, 0.2f);
-
             default:
                 return Color.white;
         }

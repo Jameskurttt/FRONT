@@ -14,6 +14,9 @@ public class Weapon : MonoBehaviour
     public Sprite weaponIcon;
     public WeaponType weaponType = WeaponType.Sword;
 
+    [Header("Weapon Stats")]
+    public int baseWeaponDamage = 5;
+
     [Header("Equip Offset")]
     public Vector3 equipLocalPosition;
     public Vector3 equipLocalRotation;
@@ -26,11 +29,13 @@ public class Weapon : MonoBehaviour
     private float destroyTimer;
     private bool isDropped;
     private bool isEquipped;
+    private int currentWeaponDamage;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
+        currentWeaponDamage = baseWeaponDamage;
     }
 
     private void Update()
@@ -78,6 +83,16 @@ public class Weapon : MonoBehaviour
         isDropped = true;
         isEquipped = false;
         destroyTimer = destroyAfterDrop;
+    }
+
+    public void SetWeaponDamage(int newDamage)
+    {
+        currentWeaponDamage = Mathf.Max(0, newDamage);
+    }
+
+    public int GetWeaponDamage()
+    {
+        return currentWeaponDamage;
     }
 
     public bool IsEquipped()
