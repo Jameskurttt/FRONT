@@ -6,9 +6,6 @@ public class SkillTreeManager : MonoBehaviour
     [Header("Player Reference")]
     public PlayerHealth playerStats;
 
-    [Header("EXP Reference")]
-    public ExpManager expManager;
-
     [Header("UI")]
     public TMP_Text statsText;
 
@@ -28,104 +25,62 @@ public class SkillTreeManager : MonoBehaviour
         RefreshStatsUI();
     }
 
-    public void UpgradeMaxHP()
-    {
-        if (!CanUpgrade()) return;
-
-        playerStats.IncreaseMaxHP(maxHPIncrease);
-        AfterUpgrade("Max HP upgraded!");
-    }
-
-    public void UpgradeHPRegen()
-    {
-        if (!CanUpgrade()) return;
-
-        playerStats.IncreaseHPRegen(hpRegenIncrease);
-        AfterUpgrade("HP Regen upgraded!");
-    }
-
-    public void UpgradeArmor()
-    {
-        if (!CanUpgrade()) return;
-
-        playerStats.IncreaseArmor(armorIncrease);
-        AfterUpgrade("Armor upgraded!");
-    }
-
-    public void UpgradePhysicalAttack()
-    {
-        if (!CanUpgrade()) return;
-
-        playerStats.IncreasePhysicalAttack(physicalAttackIncrease);
-        AfterUpgrade("Physical Attack upgraded!");
-    }
-
-    public void UpgradeMagicAttack()
-    {
-        if (!CanUpgrade()) return;
-
-        playerStats.IncreaseMagicAttack(magicAttackIncrease);
-        AfterUpgrade("Magic Attack upgraded!");
-    }
-
-    public void UpgradeAttackSpeed()
-    {
-        if (!CanUpgrade()) return;
-
-        playerStats.IncreaseAttackSpeed(attackSpeedIncrease);
-        AfterUpgrade("Attack Speed upgraded!");
-    }
-
-    public void UpgradeMovementSpeed()
-    {
-        if (!CanUpgrade()) return;
-
-        playerStats.IncreaseMovementSpeed(movementSpeedIncrease);
-        AfterUpgrade("Movement Speed upgraded!");
-    }
-
-    public void UpgradePhysicalDefense()
-    {
-        if (!CanUpgrade()) return;
-
-        playerStats.IncreasePhysicalDefense(physicalDefenseIncrease);
-        AfterUpgrade("Physical Defense upgraded!");
-    }
-
-    public void UpgradeMagicDefense()
-    {
-        if (!CanUpgrade()) return;
-
-        playerStats.IncreaseMagicDefense(magicDefenseIncrease);
-        AfterUpgrade("Magic Defense upgraded!");
-    }
-
-    bool CanUpgrade()
+    public void ApplyUpgrade(LevelUpgradeType upgradeType)
     {
         if (playerStats == null)
         {
             Debug.LogWarning("PlayerHealth is not assigned in SkillTreeManager.");
-            return false;
+            return;
         }
 
-        if (expManager == null)
+        switch (upgradeType)
         {
-            Debug.LogWarning("ExpManager is not assigned in SkillTreeManager.");
-            return false;
+            case LevelUpgradeType.MaxHP:
+                playerStats.IncreaseMaxHP(maxHPIncrease);
+                Debug.Log("Max HP upgraded!");
+                break;
+
+            case LevelUpgradeType.HPRegen:
+                playerStats.IncreaseHPRegen(hpRegenIncrease);
+                Debug.Log("HP Regen upgraded!");
+                break;
+
+            case LevelUpgradeType.Armor:
+                playerStats.IncreaseArmor(armorIncrease);
+                Debug.Log("Armor upgraded!");
+                break;
+
+            case LevelUpgradeType.PhysicalAttack:
+                playerStats.IncreasePhysicalAttack(physicalAttackIncrease);
+                Debug.Log("Physical Attack upgraded!");
+                break;
+
+            case LevelUpgradeType.MagicAttack:
+                playerStats.IncreaseMagicAttack(magicAttackIncrease);
+                Debug.Log("Magic Attack upgraded!");
+                break;
+
+            case LevelUpgradeType.AttackSpeed:
+                playerStats.IncreaseAttackSpeed(attackSpeedIncrease);
+                Debug.Log("Attack Speed upgraded!");
+                break;
+
+            case LevelUpgradeType.MovementSpeed:
+                playerStats.IncreaseMovementSpeed(movementSpeedIncrease);
+                Debug.Log("Movement Speed upgraded!");
+                break;
+
+            case LevelUpgradeType.PhysicalDefense:
+                playerStats.IncreasePhysicalDefense(physicalDefenseIncrease);
+                Debug.Log("Physical Defense upgraded!");
+                break;
+
+            case LevelUpgradeType.MagicDefense:
+                playerStats.IncreaseMagicDefense(magicDefenseIncrease);
+                Debug.Log("Magic Defense upgraded!");
+                break;
         }
 
-        if (!expManager.UseSkillPoint())
-        {
-            Debug.Log("Not enough skill points.");
-            return false;
-        }
-
-        return true;
-    }
-
-    void AfterUpgrade(string message)
-    {
-        Debug.Log(message);
         RefreshStatsUI();
     }
 
@@ -150,4 +105,17 @@ public class SkillTreeManager : MonoBehaviour
             "Physical Defense: " + playerStats.GetPhysicalDefense().ToString("F1") + "\n" +
             "Magic Defense: " + playerStats.GetMagicDefense().ToString("F1");
     }
+}
+
+public enum LevelUpgradeType
+{
+    MaxHP,
+    HPRegen,
+    Armor,
+    PhysicalAttack,
+    MagicAttack,
+    AttackSpeed,
+    MovementSpeed,
+    PhysicalDefense,
+    MagicDefense
 }

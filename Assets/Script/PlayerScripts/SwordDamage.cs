@@ -6,8 +6,9 @@ public class SwordDamage : MonoBehaviour
     public float attackRadius = 2f;
     public LayerMask enemyLayer;
 
-    [Header("Attack Timing")]
-    public float attackCooldown = 0.5f;
+    [Header("Base Timing")]
+    public float baseAttackCooldown = 0.5f;
+    public float minimumCooldown = 0.08f;
 
     [Header("Player Reference")]
     public PlayerHealth playerStats;
@@ -27,7 +28,7 @@ public class SwordDamage : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && cooldownTimer <= 0f)
         {
             Attack();
-            cooldownTimer = attackCooldown;
+            cooldownTimer = GetCurrentCooldown();
         }
     }
 
@@ -50,6 +51,20 @@ public class SwordDamage : MonoBehaviour
                 enemy.TakeDamage(finalDamage);
             }
         }
+    }
+
+    float GetCurrentCooldown()
+    {
+        if (playerStats == null)
+            return baseAttackCooldown;
+
+        float attackSpeed = playerStats.GetAttackSpeed();
+
+        if (attackSpeed <= 0f)
+            attackSpeed = 1f;
+
+        float calculatedCooldown = baseAttackCooldown / attackSpeed;
+        return Mathf.Max(minimumCooldown, calculatedCooldown);
     }
 
     private void OnDrawGizmosSelected()

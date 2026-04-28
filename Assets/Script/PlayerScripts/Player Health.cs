@@ -31,12 +31,10 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private HealthBar healthBar;
 
     private bool isDead = false;
-    private PlayerMovement movement;
 
     void Start()
     {
         currentHP = maxHP;
-        movement = GetComponent<PlayerMovement>();
 
         if (healthBar != null)
         {
@@ -44,7 +42,6 @@ public class PlayerHealth : MonoBehaviour
             healthBar.SetSlider(currentHP);
         }
 
-        ApplyMovementSpeed();
         ClampStats();
     }
 
@@ -93,10 +90,7 @@ public class PlayerHealth : MonoBehaviour
     private float CalculateReducedDamage(float incomingDamage, float totalDefense)
     {
         float finalDamage = incomingDamage * (100f / (100f + totalDefense));
-
-        // Prevent 0 or negative damage
         finalDamage = Mathf.Max(1f, finalDamage);
-
         return finalDamage;
     }
 
@@ -127,6 +121,8 @@ public class PlayerHealth : MonoBehaviour
         if (healthBar != null)
             healthBar.SetSlider(currentHP);
     }
+
+   
 
     public void IncreaseMaxHP(float amount)
     {
@@ -177,7 +173,7 @@ public class PlayerHealth : MonoBehaviour
     {
         movementSpeed += amount;
         movementSpeed = Mathf.Max(0.5f, movementSpeed);
-        ApplyMovementSpeed();
+        Debug.Log("New Movement Speed: " + movementSpeed);
     }
 
     public void IncreasePhysicalDefense(float amount)
@@ -235,15 +231,11 @@ public class PlayerHealth : MonoBehaviour
             deathCamera.enabled = true;
 
         if (GameManager.instance != null)
+
+        if (GameManager.instance != null)
             GameManager.instance.GameOver();
 
         gameObject.SetActive(false);
-    }
-
-    void ApplyMovementSpeed()
-    {
-        if (movement != null)
-            movement.moveSpeed = movementSpeed;
     }
 
     void ClampStats()

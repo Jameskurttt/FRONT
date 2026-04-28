@@ -85,7 +85,7 @@ public class PlayerWeaponPickup : MonoBehaviour
                     interactUIText.text = "Press E to <color=#FFD700>Pick Up</color>";
 
                 if (pickupDescriptionText != null)
-                    pickupDescriptionText.text = lootDrop.itemData.description + "\nDamage: " + lootDrop.GetRolledWeaponDamage();
+                    pickupDescriptionText.text = GetLootDropDescription(lootDrop);
 
                 ShowPickupUI();
                 return;
@@ -138,6 +138,60 @@ public class PlayerWeaponPickup : MonoBehaviour
         }
 
         HidePickupUI();
+    }
+
+    private string GetLootDropDescription(WorldLootDrop lootDrop)
+    {
+        if (lootDrop == null || lootDrop.itemData == null)
+            return "";
+
+        ItemDropData item = lootDrop.itemData;
+
+        string text = "";
+
+        text += item.itemName + "\n";
+        text += "Rarity: " + item.rarity + "\n";
+
+        if (!string.IsNullOrEmpty(item.description))
+            text += item.description + "\n";
+
+        if (item.itemType == DropItemType.Weapon)
+        {
+            text += "\nDamage: " + lootDrop.GetRolledWeaponDamage();
+        }
+        else if (item.itemType == DropItemType.Totem)
+        {
+            text += "\nTotem Stats:\n";
+
+            if (item.bonusMaxHP != 0)
+                text += "+" + item.bonusMaxHP + " Max HP\n";
+
+            if (item.bonusHPRegen != 0)
+                text += "+" + item.bonusHPRegen + " HP Regen\n";
+
+            if (item.bonusArmor != 0)
+                text += "+" + item.bonusArmor + " Armor\n";
+
+            if (item.bonusPhysicalAttack != 0)
+                text += "+" + item.bonusPhysicalAttack + " Physical Attack\n";
+
+            if (item.bonusMagicAttack != 0)
+                text += "+" + item.bonusMagicAttack + " Magic Attack\n";
+
+            if (item.bonusAttackSpeed != 0)
+                text += "+" + item.bonusAttackSpeed + " Attack Speed\n";
+
+            if (item.bonusMovementSpeed != 0)
+                text += "+" + item.bonusMovementSpeed + " Movement Speed\n";
+
+            if (item.bonusPhysicalDefense != 0)
+                text += "+" + item.bonusPhysicalDefense + " Physical Defense\n";
+
+            if (item.bonusMagicDefense != 0)
+                text += "+" + item.bonusMagicDefense + " Magic Defense\n";
+        }
+
+        return text;
     }
 
     private void TryInteract()

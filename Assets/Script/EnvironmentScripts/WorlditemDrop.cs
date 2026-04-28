@@ -31,7 +31,6 @@ public class WorldLootDrop : MonoBehaviour
     public float pickupRange = 1.8f;
     public float magnetRange = 3f;
     public float magnetSpeed = 6f;
-    public KeyCode pickupKey = KeyCode.E;
 
     [Header("Pickup Animation")]
     public float pickupAnimDuration = 0.15f;
@@ -66,6 +65,7 @@ public class WorldLootDrop : MonoBehaviour
         mainCamera = Camera.main;
 
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+
         if (playerObj != null)
         {
             player = playerObj.transform;
@@ -89,7 +89,12 @@ public class WorldLootDrop : MonoBehaviour
     public void Setup(ItemDropData newItemData)
     {
         itemData = newItemData;
-        rolledWeaponDamage = RollWeaponDamage();
+
+        if (itemData != null && itemData.itemType == DropItemType.Weapon)
+            rolledWeaponDamage = RollWeaponDamage();
+        else
+            rolledWeaponDamage = 0;
+
         ApplyItemLook();
     }
 
@@ -140,8 +145,6 @@ public class WorldLootDrop : MonoBehaviour
         switch (itemData.rarity)
         {
             case LootRarity.Common:
-                minDamage += 0;
-                maxDamage += 0;
                 break;
 
             case LootRarity.Uncommon:
@@ -263,10 +266,17 @@ public class WorldLootDrop : MonoBehaviour
 
         isPickingUp = true;
 
-        if (playerWeaponPickup != null)
-            playerWeaponPickup.EquipFromLoot(itemData, rolledWeaponDamage);
+        if (itemData.itemType == DropItemType.Totem)
+        {
+            ApplyTotemStats();
+        }
         else
-            Debug.LogWarning("PlayerWeaponPickup was not found on the player.");
+        {
+            if (playerWeaponPickup != null)
+                playerWeaponPickup.EquipFromLoot(itemData, rolledWeaponDamage);
+            else
+                Debug.LogWarning("PlayerWeaponPickup was not found on the player.");
+        }
 
         if (visualRoot != null)
         {
@@ -278,7 +288,9 @@ public class WorldLootDrop : MonoBehaviour
             {
                 timer += Time.deltaTime;
                 float t = timer / pickupAnimDuration;
+
                 visualRoot.localScale = Vector3.Lerp(startScale, endScale, t);
+
                 yield return null;
             }
         }
@@ -286,20 +298,62 @@ public class WorldLootDrop : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void ApplyTotemStats()
+    {
+        if (player == null)
+        {
+            Debug.LogWarning("Player was not found.");
+            return;
+        }
+
+        PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+
+        if (playerHealth == null)
+        {
+            Debug.LogWarning("PlayerHealth was not found on the player.");
+            return;
+        }
+
+        playerHealth.IncreaseMaxHP(itemData.bonusMaxHP);
+        playerHealth.IncreaseHPRegen(itemData.bonusHPRegen);
+        playerHealth.IncreaseArmor(itemData.bonusArmor);
+        playerHealth.IncreasePhysicalAttack(itemData.bonusPhysicalAttack);
+        playerHealth.IncreaseMagicAttack(itemData.bonusMagicAttack);
+        playerHealth.IncreaseAttackSpeed(itemData.bonusAttackSpeed);
+        playerHealth.IncreaseMovementSpeed(itemData.bonusMovementSpeed);
+        playerHealth.IncreasePhysicalDefense(itemData.bonusPhysicalDefense);
+        playerHealth.IncreaseMagicDefense(itemData.bonusMagicDefense);
+
+        SkillTreeManager skillTreeManager = FindObjectOfType<SkillTreeManager>();
+        if (skillTreeManager != null)
+            skillTreeManager.RefreshStatsUI();
+
+        PauseMenu pauseMenu = FindObjectOfType<PauseMenu>();
+        if (pauseMenu != null)
+            pauseMenu.RefreshPauseStats();
+
+        Debug.Log("Totem picked up: " + itemData.itemName + " | Stats added.");
+    }
+
     private Color GetRarityColor(LootRarity rarity)
     {
         switch (rarity)
         {
             case LootRarity.Common:
-                return new Color(1f, 1f, 1f);
+                return Color.white;
+
             case LootRarity.Uncommon:
                 return new Color(0.35f, 1f, 0.35f);
+
             case LootRarity.Rare:
                 return new Color(0.35f, 0.65f, 1f);
+
             case LootRarity.Epic:
                 return new Color(0.75f, 0.4f, 1f);
+
             case LootRarity.Legendary:
                 return new Color(1f, 0.7f, 0.2f);
+
             default:
                 return Color.white;
         }

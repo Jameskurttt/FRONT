@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 770129302304571475}
   - component: {fileID: 1033712178172281442}
   - component: {fileID: 4731783189858288259}
-  - component: {fileID: 8386568417170012214}
   - component: {fileID: 652493585137052621}
   - component: {fileID: 307117848979779256}
   - component: {fileID: 978234298554433109}
@@ -121,33 +120,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &8386568417170012214
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3164870620311124522}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 80
-  m_CollisionDetection: 1
 --- !u!114 &652493585137052621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,12 +132,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45cd50b8af690b94980cdd70e447f13d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  moveSpeed: 20
+  defaultMoveSpeed: 7
   rotationSpeed: 15
+  jumpForce: 7
+  gravity: -20
   mainCamera: {fileID: 3722739265124413874}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
+  playerStats: {fileID: 0}
 --- !u!114 &307117848979779256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,7 +152,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
   playerCamera: {fileID: 3722739265124413874}
   deathCamera: {fileID: 0}
-  maxHealth: 100
+  maxHP: 100
+  currentHP: 0
+  hpRegen: 1
+  physicalAttackDamage: 20
+  magicAttackDamage: 10
+  attackSpeed: 1
+  equippedWeaponDamage: 0
+  armor: 5
+  physicalDefense: 10
+  magicDefense: 8
+  movementSpeed: 7
   healthBar: {fileID: 0}
 --- !u!114 &978234298554433109
 MonoBehaviour:
@@ -194,12 +176,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8663b5448d9ab9d43a836bdd372e5d02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponPickup
-  weaponHolder: {fileID: 3677494825295486146}
+  swordHolder: {fileID: 0}
+  bowHolder: {fileID: 0}
   pickupRange: 2
-  weaponLayer:
+  interactLayer:
     serializedVersion: 2
-    m_Bits: 128
-  weaponUIText: {fileID: 0}
+    m_Bits: 0
+  playerCamera: {fileID: 0}
+  dropPoint: {fileID: 0}
+  lootDropPrefab: {fileID: 0}
+  interactUIText: {fileID: 0}
+  pickupDescriptionText: {fileID: 0}
+  pickupDescriptionPanel: {fileID: 0}
+  equippedWeaponSlotImage: {fileID: 0}
+  emptySlotSprite: {fileID: 0}
+  playerStats: {fileID: 0}
 --- !u!1 &6887557747833583752
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,9 +373,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ThirdPersonCamera
   player: {fileID: 6084236135165819351}
-  mouseSensitivity: 300
   distance: 4
+  sideOffset: 1
   height: 3
+  mouseSensitivity: 300
+  minPitch: -15
+  maxPitch: 45
 --- !u!1001 &5070798757399306401
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -12,35 +10,17 @@ public class ExpManager : MonoBehaviour
     public int expToLevel = 10;
     public float expGrowthMultiplier = 1.2f;
 
-    [Header("Skill Points")]
-    public int skillPoints = 0;
+    [Header("Level Up Cards")]
+    public LevelUpManager levelUpManager;
 
     [Header("UI")]
     public Slider expSlider;
     public TMP_Text currentLevelText;
-    public TMP_Text skillPointsText;
-
-    [Header("Skill Tree")]
-    public GameObject skillTreePanel;
 
     private void Start()
     {
         UpdateUI();
-
-        if (skillTreePanel != null)
-        {
-            skillTreePanel.SetActive(false);
-        }
-
         SetCursorState(false);
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            ToggleSkillTree();
-        }
     }
 
     private void OnEnable()
@@ -71,42 +51,19 @@ public class ExpManager : MonoBehaviour
         level++;
         currentExp -= expToLevel;
         expToLevel = Mathf.RoundToInt(expToLevel * expGrowthMultiplier);
-        skillPoints++;
 
         Debug.Log("LEVEL UP!");
         Debug.Log("Current Level: " + level);
-        Debug.Log("Skill Points: " + skillPoints);
 
         UpdateUI();
-    }
 
-    public bool UseSkillPoint()
-    {
-        if (skillPoints <= 0)
+        if (levelUpManager != null)
         {
-            Debug.Log("No skill points!");
-            return false;
+            levelUpManager.QueueLevelUpChoice();
         }
-
-        skillPoints--;
-        UpdateUI();
-        return true;
     }
 
-    public void ToggleSkillTree()
-    {
-        if (skillTreePanel == null)
-        {
-            Debug.LogWarning("Skill Tree Panel is not assigned.");
-            return;
-        }
-
-        bool isOpen = !skillTreePanel.activeSelf;
-        skillTreePanel.SetActive(isOpen);
-        SetCursorState(isOpen);
-    }
-
-    private void SetCursorState(bool isUIOpen)
+    public void SetCursorState(bool isUIOpen)
     {
         if (isUIOpen)
         {
@@ -131,11 +88,6 @@ public class ExpManager : MonoBehaviour
         if (currentLevelText != null)
         {
             currentLevelText.text = "Level: " + level;
-        }
-
-        if (skillPointsText != null)
-        {
-            skillPointsText.text = "Skill Points: " + skillPoints;
         }
     }
 }
