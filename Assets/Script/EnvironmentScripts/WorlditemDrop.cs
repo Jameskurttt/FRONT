@@ -38,6 +38,7 @@ public class WorldLootDrop : MonoBehaviour
     private Transform player;
     private Camera mainCamera;
     private PlayerWeaponPickup playerWeaponPickup;
+    private PlayerArmorEquipment playerArmorEquipment;
 
     private Vector3 visualStartLocalPos;
     private Vector3 baseScale;
@@ -70,6 +71,7 @@ public class WorldLootDrop : MonoBehaviour
         {
             player = playerObj.transform;
             playerWeaponPickup = playerObj.GetComponent<PlayerWeaponPickup>();
+            playerArmorEquipment = playerObj.GetComponent<PlayerArmorEquipment>();
         }
 
         ApplyItemLook();
@@ -270,7 +272,11 @@ public class WorldLootDrop : MonoBehaviour
         {
             ApplyTotemStats();
         }
-        else
+        else if (itemData.itemType == DropItemType.Armor)
+        {
+            ApplyArmorPickup();
+        }
+        else if (itemData.itemType == DropItemType.Weapon)
         {
             if (playerWeaponPickup != null)
                 playerWeaponPickup.EquipFromLoot(itemData, rolledWeaponDamage);
@@ -296,6 +302,19 @@ public class WorldLootDrop : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    private void ApplyArmorPickup()
+    {
+        if (playerArmorEquipment == null)
+        {
+            Debug.LogWarning("PlayerArmorEquipment was not found on the player.");
+            return;
+        }
+
+        playerArmorEquipment.EquipArmorFromLoot(itemData);
+
+        Debug.Log("Armor picked up: " + itemData.itemName);
     }
 
     private void ApplyTotemStats()

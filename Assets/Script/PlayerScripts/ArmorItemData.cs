@@ -12,6 +12,9 @@ public class ArmorItemData : ScriptableObject
     public Sprite armorIcon;
     public ArmorSlot armorSlot;
 
+    [Header("Rarity")]
+    public LootRarity rarity = LootRarity.Common;
+
     [Header("Stats")]
     public float hpBonus;
     public float armorBonus;

@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ArmorItemData
   armorName: 
   description: 
-  armorIcon: {fileID: 21300000, guid: 6cdc2ba0fce86bb409660495a8a2052c, type: 3}
+  armorIcon: {fileID: 21300000, guid: 3e1050766cbfeeb49aaab533fe53708a, type: 3}
   armorSlot: 0
+  rarity: 0
   hpBonus: 10
   armorBonus: 1
   movementSpeedBonus: 0

@@ -1,18 +1,11 @@
 using UnityEngine;
 
-public enum Lootrarity
-{
-    Common,
-    Uncommon,
-    Rare,
-    Epic,
-    Legendary
-}
 
 public enum DropItemType
 {
     Weapon,
-    Totem
+    Totem,
+    Armor
 }
 
 [CreateAssetMenu(fileName = "New Item Drop", menuName = "Loot/Item Drop Data")]
@@ -38,6 +31,9 @@ public class ItemDropData : ScriptableObject
     public GameObject equippedWeaponPrefab;
     public int minWeaponDamage = 5;
     public int maxWeaponDamage = 10;
+
+    [Header("Armor Settings")]
+    public ArmorItemData armorData;
 
     [Header("Totem Bonus Stats")]
     public float bonusMaxHP;

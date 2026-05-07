@@ -64,6 +64,23 @@ public class PlayerArmorEquipment : MonoBehaviour
         Debug.Log("Equipped armor: " + newArmor.armorName);
     }
 
+    public void EquipArmorFromLoot(ItemDropData itemData)
+    {
+        if (itemData == null)
+        {
+            Debug.LogWarning("EquipArmorFromLoot failed. ItemDropData is missing.");
+            return;
+        }
+
+        if (itemData.armorData == null)
+        {
+            Debug.LogWarning("EquipArmorFromLoot failed. ArmorData is missing inside ItemDropData.");
+            return;
+        }
+
+        EquipArmor(itemData.armorData);
+    }
+
     private void ReplaceArmor(ref ArmorItemData currentArmor, ArmorItemData newArmor)
     {
         if (currentArmor != null)

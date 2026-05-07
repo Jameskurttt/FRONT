@@ -35,6 +35,8 @@ public class PlayerWeaponPickup : MonoBehaviour
     private ChestInteractable targetChest;
     private WorldLootDrop targetLootDrop;
     private ArmorPickup targetArmorPickup;
+    private TutorialInteractable targetTutorial;
+
     private PlayerArmorEquipment armorEquipment;
 
     private void Start()
@@ -70,6 +72,7 @@ public class PlayerWeaponPickup : MonoBehaviour
         targetChest = null;
         targetLootDrop = null;
         targetArmorPickup = null;
+        targetTutorial = null;
 
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         RaycastHit hit;
@@ -131,6 +134,21 @@ public class PlayerWeaponPickup : MonoBehaviour
 
                 if (pickupDescriptionText != null)
                     pickupDescriptionText.text = chest.chestDescription;
+
+                ShowPickupUI();
+                return;
+            }
+
+            TutorialInteractable tutorial = hit.collider.GetComponent<TutorialInteractable>();
+            if (tutorial != null)
+            {
+                targetTutorial = tutorial;
+
+                if (interactUIText != null)
+                    interactUIText.text = "Press E to <color=#FFD700>Interact</color>";
+
+                if (pickupDescriptionText != null)
+                    pickupDescriptionText.text = "Open Tutorial";
 
                 ShowPickupUI();
                 return;
@@ -232,6 +250,15 @@ public class PlayerWeaponPickup : MonoBehaviour
             targetChest.Interact();
             targetChest = null;
             HidePickupUI();
+            return;
+        }
+
+        if (targetTutorial != null)
+        {
+            targetTutorial.Interact();
+            targetTutorial = null;
+            HidePickupUI();
+            return;
         }
     }
 

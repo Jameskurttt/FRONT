@@ -13,7 +13,13 @@ public class ArmorPickup : MonoBehaviour
         if (armorData == null)
             return "No armor data assigned.";
 
-        string text = armorData.description;
+        string text = "";
+
+        text += armorData.armorName + "\n";
+        text += "Rarity: " + armorData.rarity + "\n";
+
+        if (!string.IsNullOrEmpty(armorData.description))
+            text += armorData.description + "\n";
 
         if (armorData.hpBonus != 0)
             text += "\nHP: " + FormatStat(armorData.hpBonus);
@@ -22,7 +28,7 @@ public class ArmorPickup : MonoBehaviour
             text += "\nArmor: " + FormatStat(armorData.armorBonus);
 
         if (armorData.physicalDefenseBonus != 0)
-            text += "\nPhysical Resistance: " + FormatStat(armorData.physicalDefenseBonus);
+            text += "\nPhysical Defense: " + FormatStat(armorData.physicalDefenseBonus);
 
         if (armorData.attackSpeedBonus != 0)
             text += "\nAttack Speed: " + FormatStat(armorData.attackSpeedBonus);
