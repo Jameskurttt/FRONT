@@ -17,7 +17,7 @@ MonoBehaviour:
   description: matigas
   itemType: 2
   rarity: 1
-  autoPickup: 1
+  autoPickup: 0
   equippedWeaponPrefab: {fileID: 0}
   minWeaponDamage: 5
   maxWeaponDamage: 10

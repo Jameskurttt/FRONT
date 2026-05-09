@@ -243,6 +243,14 @@ public class WorldLootDrop : MonoBehaviour
         if (player == null || itemData == null)
             return;
 
+        // Armor should NEVER be picked up by walking into it.
+        if (itemData.itemType == DropItemType.Armor)
+            return;
+
+        // If auto pickup is off, do nothing until player presses E.
+        if (!itemData.autoPickup)
+            return;
+
         float distance = Vector3.Distance(transform.position, player.position);
 
         if (distance <= magnetRange && distance > pickupRange)
@@ -256,8 +264,7 @@ public class WorldLootDrop : MonoBehaviour
 
         if (distance <= pickupRange)
         {
-            if (itemData.autoPickup)
-                StartCoroutine(PickupRoutine());
+            StartCoroutine(PickupRoutine());
         }
     }
 

@@ -27,6 +27,9 @@ public class PlayerWeaponPickup : MonoBehaviour
     [Header("Player Stats")]
     public PlayerHealth playerStats;
 
+    [Header("Animation")]
+    public Animator animator;
+
     private Weapon currentWeapon;
     private ItemDropData currentItemData;
     private int currentWeaponDamageBonus;
@@ -49,6 +52,11 @@ public class PlayerWeaponPickup : MonoBehaviour
 
         if (armorEquipment == null)
             armorEquipment = GetComponent<PlayerArmorEquipment>();
+
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
+
+        SetWeaponAnimation(false);
 
         HidePickupUI();
         RefreshEquippedUI();
@@ -283,6 +291,8 @@ public class PlayerWeaponPickup : MonoBehaviour
 
         currentWeapon.Pickup(holderToUse);
 
+        SetWeaponAnimation(true);
+
         ApplyEquippedWeaponStats();
 
         targetWeapon = null;
@@ -343,6 +353,8 @@ public class PlayerWeaponPickup : MonoBehaviour
 
         currentWeapon.Pickup(holderToUse);
 
+        SetWeaponAnimation(true);
+
         ApplyEquippedWeaponStats();
 
         HidePickupUI();
@@ -350,34 +362,6 @@ public class PlayerWeaponPickup : MonoBehaviour
         RefreshStatsUI();
 
         Debug.Log("Equipped from loot: " + itemData.itemName + " | Damage: " + rolledWeaponDamage);
-    }
-
-    private void ApplyEquippedWeaponStats()
-    {
-        if (playerStats != null)
-            playerStats.SetEquippedWeaponDamage(currentWeaponDamageBonus);
-    }
-
-    private Transform GetHolderForWeapon(Weapon weapon)
-    {
-        if (weapon == null)
-            return null;
-
-        return GetHolderForWeaponType(weapon.weaponType);
-    }
-
-    private Transform GetHolderForWeaponType(WeaponType weaponType)
-    {
-        switch (weaponType)
-        {
-            case WeaponType.Bow:
-                return bowHolder;
-
-            case WeaponType.Sword:
-                return swordHolder;
-        }
-
-        return swordHolder;
     }
 
     private void DropWeapon()
@@ -411,11 +395,47 @@ public class PlayerWeaponPickup : MonoBehaviour
         currentItemData = null;
         currentWeaponDamageBonus = 0;
 
+        SetWeaponAnimation(false);
+
         if (playerStats != null)
             playerStats.ClearEquippedWeaponDamage();
 
         RefreshEquippedUI();
         RefreshStatsUI();
+    }
+
+    private void SetWeaponAnimation(bool hasWeapon)
+    {
+        if (animator != null)
+            animator.SetBool("HasWeapon", hasWeapon);
+    }
+
+    private void ApplyEquippedWeaponStats()
+    {
+        if (playerStats != null)
+            playerStats.SetEquippedWeaponDamage(currentWeaponDamageBonus);
+    }
+
+    private Transform GetHolderForWeapon(Weapon weapon)
+    {
+        if (weapon == null)
+            return null;
+
+        return GetHolderForWeaponType(weapon.weaponType);
+    }
+
+    private Transform GetHolderForWeaponType(WeaponType weaponType)
+    {
+        switch (weaponType)
+        {
+            case WeaponType.Bow:
+                return bowHolder;
+
+            case WeaponType.Sword:
+                return swordHolder;
+        }
+
+        return swordHolder;
     }
 
     private void RefreshEquippedUI()

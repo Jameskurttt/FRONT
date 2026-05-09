@@ -8,13 +8,14 @@ public class PlayerMovement : MonoBehaviour
     public float rotationSpeed = 15f;
 
     [Header("Jump Physics")]
-    public float jumpHeight = 2.5f;    
-    public float gravity = -30f;        
-    public float fallMultiplier = 2.5f; 
+    public float jumpHeight = 2.5f;
+    public float gravity = -30f;
+    public float fallMultiplier = 2.5f;
 
     [Header("References")]
     public Camera mainCamera;
     public PlayerHealth playerStats;
+    public Animator animator;
 
     private CharacterController controller;
 
@@ -32,6 +33,9 @@ public class PlayerMovement : MonoBehaviour
         if (playerStats == null)
             playerStats = GetComponent<PlayerHealth>();
 
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -44,10 +48,10 @@ public class PlayerMovement : MonoBehaviour
 
         HandleMovement(forwardDir);
         HandleRotation(forwardDir);
-        HandleJump();     
-        HandleGravity();  
+        HandleJump();
+        HandleGravity();
+        HandleAnimations();
 
-       
         Vector3 finalMove = currentMove + velocity;
         controller.Move(finalMove * Time.deltaTime);
     }
@@ -81,6 +85,7 @@ public class PlayerMovement : MonoBehaviour
         if (forwardDir.sqrMagnitude < 0.001f) return;
 
         Quaternion targetRot = Quaternion.LookRotation(forwardDir);
+
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
             targetRot,
@@ -92,13 +97,17 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isGrounded && velocity.y < 0)
         {
-            velocity.y = -2f; 
+            velocity.y = -2f;
         }
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
-           
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+
+            if (animator != null)
+            {
+                animator.SetTrigger("Jump");
+            }
         }
     }
 
@@ -106,13 +115,26 @@ public class PlayerMovement : MonoBehaviour
     {
         if (velocity.y < 0)
         {
-          
             velocity.y += gravity * fallMultiplier * Time.deltaTime;
         }
         else
         {
             velocity.y += gravity * Time.deltaTime;
         }
+    }
+
+    void HandleAnimations()
+    {
+        if (animator == null) return;
+
+        float speed = currentMove.magnitude;
+
+        if (speed < 0.2f)
+            speed = 0f;
+
+        animator.SetFloat("Speed", speed);
+        animator.SetBool("IsGrounded", controller.isGrounded);
+        animator.SetFloat("Velocity", velocity.y);
     }
 
     float GetMoveSpeed()
