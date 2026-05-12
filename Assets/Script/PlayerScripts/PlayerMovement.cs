@@ -17,11 +17,19 @@ public class PlayerMovement : MonoBehaviour
     public PlayerHealth playerStats;
     public Animator animator;
 
+    [Header("Attack Combo")]
+    public string combo1StateName = "Armature|ATTACK_MELEE_COMBO1_ANIMATION";
+    public string combo2StateName = "Armature|ATTACK_MELEE_COMBO2_ANIMATION";
+
     private CharacterController controller;
 
     private Vector3 velocity;
     private Vector3 currentMove;
     private bool isGrounded;
+
+    private int comboStep = 0;
+    private bool isAttacking = false;
+    private bool queuedCombo2 = false;
 
     void Start()
     {
@@ -35,6 +43,9 @@ public class PlayerMovement : MonoBehaviour
 
         if (animator == null)
             animator = GetComponentInChildren<Animator>();
+
+        animator.ResetTrigger("Attack1");
+        animator.ResetTrigger("Attack2");
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -51,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
         HandleJump();
         HandleGravity();
         HandleAnimations();
+        HandleAttackCombo();
 
         Vector3 finalMove = currentMove + velocity;
         controller.Move(finalMove * Time.deltaTime);
@@ -135,6 +147,69 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("Speed", speed);
         animator.SetBool("IsGrounded", controller.isGrounded);
         animator.SetFloat("Velocity", velocity.y);
+    }
+
+    void HandleAttackCombo()
+    {
+        if (animator == null) return;
+
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        bool inCombo1 = stateInfo.IsName(combo1StateName);
+        bool inCombo2 = stateInfo.IsName(combo2StateName);
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (!isAttacking)
+            {
+                isAttacking = true;
+                comboStep = 1;
+                queuedCombo2 = false;
+
+                animator.ResetTrigger("Attack2");
+                animator.SetTrigger("Attack1");
+            }
+            else if (inCombo1 && comboStep == 1)
+            {
+                queuedCombo2 = true;
+            }
+        }
+
+        if (inCombo1)
+        {
+            comboStep = 1;
+
+            if (queuedCombo2 && stateInfo.normalizedTime >= 0.45f)
+            {
+                queuedCombo2 = false;
+                comboStep = 2;
+
+                animator.ResetTrigger("Attack1");
+                animator.SetTrigger("Attack2");
+            }
+
+            if (stateInfo.normalizedTime >= 0.95f && !queuedCombo2)
+            {
+                ResetCombo();
+            }
+        }
+
+        if (inCombo2)
+        {
+            comboStep = 2;
+
+            if (stateInfo.normalizedTime >= 0.95f)
+            {
+                ResetCombo();
+            }
+        }
+    }
+
+    void ResetCombo()
+    {
+        isAttacking = false;
+        comboStep = 0;
+        queuedCombo2 = false;
     }
 
     float GetMoveSpeed()

@@ -8,81 +8,92 @@ public enum WeaponType
 
 public class Weapon : MonoBehaviour
 {
-    [Header("Weapon Info")]
+    [Header("Info")]
     public string weaponName = "Sword";
-    [TextArea] public string description = "Weapon description here";
+    [TextArea] public string description;
     public Sprite weaponIcon;
     public WeaponType weaponType = WeaponType.Sword;
 
-    [Header("Weapon Stats")]
+    [Header("Stats")]
     public int baseWeaponDamage = 5;
 
-    [Header("Equip Offset")]
-    public Vector3 equipLocalPosition;
-    public Vector3 equipLocalRotation;
+    [Header("References")]
+    public Collider pickupCollider;
+    public Collider damageHitbox;
+    public Rigidbody rb;
 
-    [Header("Drop Settings")]
-    public float destroyAfterDrop = 60f;
-
-    private Rigidbody rb;
-    private Collider col;
-    private float destroyTimer;
-    private bool isDropped;
-    private bool isEquipped;
     private int currentWeaponDamage;
+    private bool isEquipped;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-        col = GetComponent<Collider>();
         currentWeaponDamage = baseWeaponDamage;
-    }
 
-    private void Update()
-    {
-        if (isDropped)
-        {
-            destroyTimer -= Time.deltaTime;
+        if (rb == null)
+            rb = GetComponent<Rigidbody>();
 
-            if (destroyTimer <= 0f)
-                Destroy(gameObject);
-        }
+        if (pickupCollider == null)
+            pickupCollider = GetComponent<Collider>();
+
+        if (damageHitbox != null)
+            damageHitbox.enabled = false;
     }
 
     public void Pickup(Transform holder)
     {
-        isDropped = false;
+        transform.SetParent(holder, false);
+
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+        transform.localScale = Vector3.one;
+
         isEquipped = true;
 
         if (rb != null)
         {
             rb.isKinematic = true;
+            rb.useGravity = false;
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
         }
 
-        if (col != null)
-            col.enabled = false;
+        if (pickupCollider != null)
+            pickupCollider.enabled = false;
 
-        transform.SetParent(holder);
-        transform.localPosition = equipLocalPosition;
-        transform.localRotation = Quaternion.Euler(equipLocalRotation);
+        if (damageHitbox != null)
+            damageHitbox.enabled = false;
     }
 
     public void Drop(Vector3 dropPosition)
     {
-        transform.SetParent(null);
+        transform.SetParent(null, true);
         transform.position = dropPosition;
 
-        if (rb != null)
-            rb.isKinematic = false;
-
-        if (col != null)
-            col.enabled = true;
-
-        isDropped = true;
         isEquipped = false;
-        destroyTimer = destroyAfterDrop;
+
+        if (rb != null)
+        {
+            rb.isKinematic = false;
+            rb.useGravity = true;
+        }
+
+        if (pickupCollider != null)
+            pickupCollider.enabled = true;
+
+        if (damageHitbox != null)
+            damageHitbox.enabled = false;
+    }
+
+    public void EnableDamageHitbox()
+    {
+        if (damageHitbox != null)
+            damageHitbox.enabled = true;
+    }
+
+    public void DisableDamageHitbox()
+    {
+        if (damageHitbox != null)
+            damageHitbox.enabled = false;
     }
 
     public void SetWeaponDamage(int newDamage)

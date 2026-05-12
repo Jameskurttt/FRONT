@@ -27,6 +27,8 @@ public class EnemyHealth : MonoBehaviour
     public GameObject lootDropPrefab;
     public EnemyLootItem[] possibleDrops;
 
+    private EnemyHitFlash hitFlash;
+
     public delegate void MonsterDefeated(int exp);
     public static event MonsterDefeated OnMonsterDefeated;
 
@@ -36,6 +38,7 @@ public class EnemyHealth : MonoBehaviour
     private void Start()
     {
         currentHealth = maxHealth;
+        hitFlash = GetComponent<EnemyHitFlash>();
     }
 
     public void TakeDamage(int damage)
@@ -43,6 +46,12 @@ public class EnemyHealth : MonoBehaviour
         if (isDead) return;
 
         currentHealth -= damage;
+
+        if (hitFlash != null)
+        {
+            hitFlash.FlashRed();
+        }
+
         Debug.Log($"{gameObject.name} took {damage} damage. Health left: {currentHealth}");
 
         if (currentHealth <= 0)

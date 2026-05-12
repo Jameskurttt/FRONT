@@ -1,75 +1,71 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class SwordDamage : MonoBehaviour
 {
-    [Header("Attack Settings")]
-    public float attackRadius = 2f;
-    public LayerMask enemyLayer;
-
-    [Header("Base Timing")]
-    public float baseAttackCooldown = 0.5f;
-    public float minimumCooldown = 0.08f;
-
-    [Header("Player Reference")]
+    [Header("References")]
     public PlayerHealth playerStats;
 
-    private float cooldownTimer;
+    [Header("Sword Hitbox")]
+    public Collider swordCollider;
+
+    private bool canDealDamage = false;
+
+    private List<EnemyHealth> hitEnemies = new List<EnemyHealth>();
 
     void Start()
     {
         if (playerStats == null)
             playerStats = GetComponentInParent<PlayerHealth>();
-    }
 
-    void Update()
-    {
-        cooldownTimer -= Time.deltaTime;
-
-        if (Input.GetMouseButtonDown(0) && cooldownTimer <= 0f)
+        if (swordCollider != null)
         {
-            Attack();
-            cooldownTimer = GetCurrentCooldown();
+            swordCollider.isTrigger = true;
+            swordCollider.enabled = false;
         }
     }
 
-    void Attack()
+    public void EnableSwordHitbox()
     {
-        int finalDamage = 0;
+        Debug.Log("HITBOX ON");
 
-        if (playerStats != null)
-            finalDamage = Mathf.RoundToInt(playerStats.GetTotalPhysicalAttack());
+        canDealDamage = true;
 
-        Collider[] hits = Physics.OverlapSphere(transform.position, attackRadius, enemyLayer);
+        hitEnemies.Clear();
 
-        foreach (Collider hit in hits)
+        if (swordCollider != null)
+            swordCollider.enabled = true;
+    }
+
+    public void DisableSwordHitbox()
+    {
+        Debug.Log("HITBOX OFF");
+
+        canDealDamage = false;
+
+        if (swordCollider != null)
+            swordCollider.enabled = false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!canDealDamage)
+            return;
+
+        EnemyHealth enemy = other.GetComponentInParent<EnemyHealth>();
+
+        if (enemy != null && !hitEnemies.Contains(enemy))
         {
-            EnemyHealth enemy = hit.GetComponentInParent<EnemyHealth>();
+            hitEnemies.Add(enemy);
 
-            if (enemy != null)
-            {
-                Debug.Log("Hit: " + hit.name + " | Damage: " + finalDamage);
-                enemy.TakeDamage(finalDamage);
-            }
+            int finalDamage = 10;
+
+            if (playerStats != null)
+                finalDamage = Mathf.RoundToInt(playerStats.GetTotalPhysicalAttack());
+
+            Debug.Log("Hit Enemy: " + enemy.name);
+
+            enemy.TakeDamage(finalDamage);
         }
-    }
-
-    float GetCurrentCooldown()
-    {
-        if (playerStats == null)
-            return baseAttackCooldown;
-
-        float attackSpeed = playerStats.GetAttackSpeed();
-
-        if (attackSpeed <= 0f)
-            attackSpeed = 1f;
-
-        float calculatedCooldown = baseAttackCooldown / attackSpeed;
-        return Mathf.Max(minimumCooldown, calculatedCooldown);
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRadius);
     }
 }
