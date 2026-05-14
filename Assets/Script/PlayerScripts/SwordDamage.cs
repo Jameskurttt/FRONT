@@ -1,71 +1,62 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class SwordDamage : MonoBehaviour
 {
-    [Header("References")]
-    public PlayerHealth playerStats;
-
-    [Header("Sword Hitbox")]
-    public Collider swordCollider;
-
-    private bool canDealDamage = false;
+    private Weapon weapon;
+    private PlayerHealth playerStats;
 
     private List<EnemyHealth> hitEnemies = new List<EnemyHealth>();
 
-    void Start()
+    private void Awake()
     {
+        weapon = GetComponentInParent<Weapon>();
+
+        if (weapon != null)
+            playerStats = weapon.GetComponentInParent<PlayerHealth>();
+
         if (playerStats == null)
-            playerStats = GetComponentInParent<PlayerHealth>();
-
-        if (swordCollider != null)
-        {
-            swordCollider.isTrigger = true;
-            swordCollider.enabled = false;
-        }
+            playerStats = FindObjectOfType<PlayerHealth>();
     }
 
-    public void EnableSwordHitbox()
+    public void StartDamage()
     {
-        Debug.Log("HITBOX ON");
-
-        canDealDamage = true;
-
         hitEnemies.Clear();
-
-        if (swordCollider != null)
-            swordCollider.enabled = true;
-    }
-
-    public void DisableSwordHitbox()
-    {
-        Debug.Log("HITBOX OFF");
-
-        canDealDamage = false;
-
-        if (swordCollider != null)
-            swordCollider.enabled = false;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!canDealDamage)
+        if (weapon == null)
+            return;
+
+        if (!weapon.IsEquipped())
             return;
 
         EnemyHealth enemy = other.GetComponentInParent<EnemyHealth>();
 
-        if (enemy != null && !hitEnemies.Contains(enemy))
-        {
-            hitEnemies.Add(enemy);
+        if (enemy == null)
+            return;
 
-            int finalDamage = 10;
+        if (hitEnemies.Contains(enemy))
+            return;
 
-            if (playerStats != null)
-                finalDamage = Mathf.RoundToInt(playerStats.GetTotalPhysicalAttack());
+        hitEnemies.Add(enemy);
 
-            Debug.Log("Hit Enemy: " + enemy.name);
+        int finalDamage = GetFinalDamage();
 
-            enemy.TakeDamage(finalDamage);
-        }
+        enemy.TakeDamage(finalDamage);
+
+        Debug.Log("Sword hit: " + enemy.name + " | Final Damage: " + finalDamage);
+    }
+
+    private int GetFinalDamage()
+    {
+        if (playerStats != null)
+            return Mathf.RoundToInt(playerStats.GetTotalPhysicalAttack());
+
+        if (weapon != null)
+            return weapon.GetWeaponDamage();
+
+        return 0;
     }
 }

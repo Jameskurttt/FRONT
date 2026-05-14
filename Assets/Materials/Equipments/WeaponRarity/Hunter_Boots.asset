@@ -15,9 +15,10 @@ MonoBehaviour:
   armorName: 
   description: 
   armorIcon: {fileID: 21300000, guid: 83f768ef1ae124b439617fb77a0acc4d, type: 3}
-  armorSlot: 1
-  hpBonus: 12
-  armorBonus: 2
+  armorSlot: 2
+  rarity: 0
+  hpBonus: 32
+  armorBonus: 10
   movementSpeedBonus: 0.5
   attackSpeedBonus: 0
-  physicalDefenseBonus: 0
+  physicalDefenseBonus: 8

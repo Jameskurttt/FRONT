@@ -60,8 +60,7 @@ public class Weapon : MonoBehaviour
         if (pickupCollider != null)
             pickupCollider.enabled = false;
 
-        if (damageHitbox != null)
-            damageHitbox.enabled = false;
+        DisableDamageHitbox();
     }
 
     public void Drop(Vector3 dropPosition)
@@ -80,14 +79,23 @@ public class Weapon : MonoBehaviour
         if (pickupCollider != null)
             pickupCollider.enabled = true;
 
-        if (damageHitbox != null)
-            damageHitbox.enabled = false;
+        DisableDamageHitbox();
     }
 
     public void EnableDamageHitbox()
     {
+        if (!isEquipped)
+            return;
+
         if (damageHitbox != null)
+        {
+            SwordDamage swordDamage = damageHitbox.GetComponent<SwordDamage>();
+
+            if (swordDamage != null)
+                swordDamage.StartDamage();
+
             damageHitbox.enabled = true;
+        }
     }
 
     public void DisableDamageHitbox()

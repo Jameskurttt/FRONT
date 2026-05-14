@@ -40,18 +40,23 @@ public class PlayerArmorEquipment : MonoBehaviour
         if (newArmor == null)
             return;
 
-        switch (newArmor.armorSlot)
+        // IMPORTANT FIX:
+        // Make a runtime copy so upgrading this armor will NOT change the original ScriptableObject.
+        ArmorItemData armorCopy = Instantiate(newArmor);
+        armorCopy.name = newArmor.name + "_RuntimeCopy";
+
+        switch (armorCopy.armorSlot)
         {
             case ArmorSlot.Head:
-                ReplaceArmor(ref equippedHead, newArmor);
+                ReplaceArmor(ref equippedHead, armorCopy);
                 break;
 
             case ArmorSlot.Body:
-                ReplaceArmor(ref equippedBody, newArmor);
+                ReplaceArmor(ref equippedBody, armorCopy);
                 break;
 
             case ArmorSlot.Boots:
-                ReplaceArmor(ref equippedBoots, newArmor);
+                ReplaceArmor(ref equippedBoots, armorCopy);
                 break;
         }
 
@@ -161,16 +166,12 @@ public class PlayerArmorEquipment : MonoBehaviour
         {
             case LootRarity.Common:
                 return LootRarity.Uncommon;
-
             case LootRarity.Uncommon:
                 return LootRarity.Rare;
-
             case LootRarity.Rare:
                 return LootRarity.Epic;
-
             case LootRarity.Epic:
                 return LootRarity.Legendary;
-
             default:
                 return LootRarity.Legendary;
         }

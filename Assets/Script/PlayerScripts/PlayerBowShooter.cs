@@ -9,7 +9,7 @@ public class PlayerBowShooter : MonoBehaviour
 
     [Header("Arrow Setup")]
     public GameObject arrowPrefab;
-    public string bowFirePointName = "FirePoint";
+    public string bowFirePointName = "Bow Shoot Point";
 
     [Header("Shoot Settings")]
     public float shootCooldown = 0.25f;
@@ -19,7 +19,6 @@ public class PlayerBowShooter : MonoBehaviour
 
     [Header("Aim Safety")]
     public float minDistanceFromSpawn = 1.25f;
-    public float backwardAimDotLimit = 0.25f;
 
     private float nextShootTime;
 
@@ -35,55 +34,38 @@ public class PlayerBowShooter : MonoBehaviour
             playerCamera = Camera.main;
     }
 
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-            TryShoot();
-    }
-
-    private void TryShoot()
+    // CALLED BY ANIMATION EVENT
+    public void ShootArrow()
     {
         if (Time.time < nextShootTime)
             return;
 
         if (weaponPickup == null)
-        {
-            Debug.LogWarning("PlayerBowShooter: weaponPickup is missing.");
             return;
-        }
 
         if (!weaponPickup.HasBowEquipped())
             return;
 
         if (playerStats == null)
-        {
-            Debug.LogWarning("PlayerBowShooter: playerStats is missing.");
             return;
-        }
 
         if (playerCamera == null)
-        {
-            Debug.LogWarning("PlayerBowShooter: playerCamera is missing.");
             return;
-        }
-
-        if (arrowPrefab == null)
-        {
-            Debug.LogWarning("PlayerBowShooter: arrowPrefab is missing.");
-            return;
-        }
 
         Weapon currentWeapon = weaponPickup.GetCurrentWeapon();
-        if (currentWeapon == null)
-        {
-            Debug.LogWarning("PlayerBowShooter: No current weapon found.");
-            return;
-        }
 
-        Transform arrowSpawnPoint = currentWeapon.transform.Find(bowFirePointName);
+        if (currentWeapon == null)
+            return;
+
+        Transform arrowSpawnPoint = FindSpawnPoint(currentWeapon);
+
         if (arrowSpawnPoint == null)
         {
-            Debug.LogWarning("PlayerBowShooter: FirePoint was not found on the equipped bow. Make sure the bow prefab has a child named FirePoint.");
+            Debug.LogWarning(
+                "Bow Shoot Point not found. Make sure your bow has a child named: "
+                + bowFirePointName
+            );
+
             return;
         }
 
@@ -91,57 +73,118 @@ public class PlayerBowShooter : MonoBehaviour
 
         Vector3 shootDirection = GetSafeShootDirection(arrowSpawnPoint);
 
-        GameObject arrowObject = Instantiate(arrowPrefab, arrowSpawnPoint.position, Quaternion.LookRotation(shootDirection));
+        GameObject arrowObject = GetArrowObject();
 
-        Collider arrowCollider = arrowObject.GetComponent<Collider>();
-        Collider[] playerColliders = GetComponentsInChildren<Collider>();
+        if (arrowObject == null)
+            return;
 
-        if (arrowCollider != null)
-        {
-            for (int i = 0; i < playerColliders.Length; i++)
-            {
-                if (playerColliders[i] != null)
-                    Physics.IgnoreCollision(arrowCollider, playerColliders[i], true);
-            }
-        }
+        arrowObject.transform.position = arrowSpawnPoint.position;
+        arrowObject.transform.rotation = Quaternion.LookRotation(shootDirection);
+
+        arrowObject.SetActive(true);
+
+        IgnorePlayerCollision(arrowObject);
 
         ArrowProjectile arrow = arrowObject.GetComponent<ArrowProjectile>();
+
         if (arrow != null)
         {
-            int finalDamage = Mathf.RoundToInt(playerStats.GetTotalPhysicalAttack());
+            int finalDamage =
+                Mathf.RoundToInt(playerStats.GetTotalPhysicalAttack());
+
             arrow.SetDamage(finalDamage);
             arrow.Launch(shootDirection, arrowSpeed);
 
-            Debug.Log("Bow shot damage: " + finalDamage);
+            Debug.Log(
+                "Bow animation shot damage: " + finalDamage
+            );
         }
-        else
+    }
+
+    private Transform FindSpawnPoint(Weapon currentWeapon)
+    {
+        if (currentWeapon == null)
+            return null;
+
+        Transform[] children =
+            currentWeapon.GetComponentsInChildren<Transform>(true);
+
+        for (int i = 0; i < children.Length; i++)
         {
-            Debug.LogWarning("PlayerBowShooter: Arrow prefab does not have an ArrowProjectile component.");
+            if (children[i].name == bowFirePointName)
+                return children[i];
+        }
+
+        return null;
+    }
+
+    private GameObject GetArrowObject()
+    {
+        if (ArrowPool.Instance != null)
+            return ArrowPool.Instance.GetArrow();
+
+        if (arrowPrefab != null)
+            return Instantiate(arrowPrefab);
+
+        Debug.LogWarning("No ArrowPool found and arrowPrefab is missing.");
+
+        return null;
+    }
+
+    private void IgnorePlayerCollision(GameObject arrowObject)
+    {
+        Collider arrowCollider = arrowObject.GetComponent<Collider>();
+
+        if (arrowCollider == null)
+            return;
+
+        Collider[] playerColliders =
+            GetComponentsInChildren<Collider>();
+
+        for (int i = 0; i < playerColliders.Length; i++)
+        {
+            if (playerColliders[i] != null)
+            {
+                Physics.IgnoreCollision(
+                    arrowCollider,
+                    playerColliders[i],
+                    true
+                );
+            }
         }
     }
 
     private Vector3 GetSafeShootDirection(Transform arrowSpawnPoint)
     {
-        Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-        Vector3 fallbackDirection = playerCamera.transform.forward;
+        Ray ray =
+            playerCamera.ViewportPointToRay(
+                new Vector3(0.5f, 0.5f, 0f)
+            );
 
-        if (Physics.Raycast(ray, out RaycastHit hit, maxAimDistance, aimLayers))
+        Vector3 targetPoint;
+
+        if (Physics.Raycast(
+            ray,
+            out RaycastHit hit,
+            maxAimDistance,
+            aimLayers
+        ))
         {
-            Vector3 toHit = hit.point - arrowSpawnPoint.position;
-            float distanceFromSpawn = toHit.magnitude;
-
-            if (distanceFromSpawn < minDistanceFromSpawn)
-                return fallbackDirection;
-
-            Vector3 directionToHit = toHit.normalized;
-            float dot = Vector3.Dot(arrowSpawnPoint.forward, directionToHit);
-
-            if (dot < backwardAimDotLimit)
-                return fallbackDirection;
-
-            return directionToHit;
+            targetPoint = hit.point;
+        }
+        else
+        {
+            targetPoint =
+                ray.origin +
+                ray.direction * maxAimDistance;
         }
 
-        return fallbackDirection;
+        Vector3 shootDirection =
+            targetPoint - arrowSpawnPoint.position;
+
+        if (shootDirection.magnitude < minDistanceFromSpawn)
+            shootDirection = playerCamera.transform.forward;
+
+        return shootDirection.normalized;
     }
 }

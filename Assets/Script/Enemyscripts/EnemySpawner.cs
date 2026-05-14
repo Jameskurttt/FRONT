@@ -10,6 +10,7 @@ public class EnemySpawner : MonoBehaviour
     public class EnemySpawnData
     {
         public GameObject enemyPrefab;
+
         [Range(1, 100)]
         public int spawnWeight = 10;
     }
@@ -38,6 +39,12 @@ public class EnemySpawner : MonoBehaviour
     [Header("Arena")]
     public GameObject arenaWall;
 
+    [Header("Arena Sounds")]
+    public AudioSource audioSource;
+    public AudioClip arenaEnterSound;
+    public AudioClip waveStartSound;
+    public AudioClip bossWaveSound;
+
     [Header("Chest Reward")]
     public GameObject chestPrefab;
     public Transform chestSpawnPoint;
@@ -62,6 +69,11 @@ public class EnemySpawner : MonoBehaviour
             waveText.gameObject.SetActive(false);
             waveText.transform.localScale = smallWaveScale;
         }
+
+        if (audioSource != null)
+        {
+            audioSource.playOnAwake = false;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -73,6 +85,12 @@ public class EnemySpawner : MonoBehaviour
             hasStarted = true;
 
             Debug.Log("Arena started.");
+
+            // Arena Enter Sound
+            if (audioSource != null && arenaEnterSound != null)
+            {
+                audioSource.PlayOneShot(arenaEnterSound);
+            }
 
             if (arenaWall != null)
                 arenaWall.SetActive(true);
@@ -97,6 +115,12 @@ public class EnemySpawner : MonoBehaviour
             {
                 Debug.Log("Boss wave started.");
 
+                // Boss Sound
+                if (audioSource != null && bossWaveSound != null)
+                {
+                    audioSource.PlayOneShot(bossWaveSound);
+                }
+
                 yield return StartCoroutine(ShowWaveText("BOSS!"));
 
                 SpawnBoss();
@@ -108,9 +132,17 @@ public class EnemySpawner : MonoBehaviour
             }
             else
             {
-                int enemiesThisWave = startingEnemiesPerWave + ((currentWave - 1) * enemyIncreasePerWave);
+                int enemiesThisWave =
+                    startingEnemiesPerWave +
+                    ((currentWave - 1) * enemyIncreasePerWave);
 
                 Debug.Log($"Wave {currentWave} starting. Enemies: {enemiesThisWave}");
+
+                // Normal Wave Sound
+                if (audioSource != null && waveStartSound != null)
+                {
+                    audioSource.PlayOneShot(waveStartSound);
+                }
 
                 yield return StartCoroutine(ShowWaveText($"WAVE {currentWave}"));
 
@@ -157,8 +189,12 @@ public class EnemySpawner : MonoBehaviour
         while (timer < shrinkDuration)
         {
             timer += Time.deltaTime;
+
             float t = timer / shrinkDuration;
-            waveText.transform.localScale = Vector3.Lerp(bigWaveScale, smallWaveScale, t);
+
+            waveText.transform.localScale =
+                Vector3.Lerp(bigWaveScale, smallWaveScale, t);
+
             yield return null;
         }
 
@@ -179,7 +215,9 @@ public class EnemySpawner : MonoBehaviour
             return;
         }
 
-        Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+        Transform spawnPoint =
+            spawnPoints[Random.Range(0, spawnPoints.Length)];
+
         GameObject selectedEnemyPrefab = GetWeightedRandomEnemy();
 
         if (selectedEnemyPrefab == null)
@@ -191,31 +229,53 @@ public class EnemySpawner : MonoBehaviour
         // Try random positions around the spawn point
         for (int i = 0; i < maxSpawnAttempts; i++)
         {
-            Vector2 randomCircle = Random.insideUnitCircle * spawnRadius;
-            Vector3 randomPosition = spawnPoint.position + new Vector3(randomCircle.x, 0f, randomCircle.y);
+            Vector2 randomCircle =
+                Random.insideUnitCircle * spawnRadius;
+
+            Vector3 randomPosition =
+                spawnPoint.position +
+                new Vector3(randomCircle.x, 0f, randomCircle.y);
 
             NavMeshHit hit;
-            if (NavMesh.SamplePosition(randomPosition, out hit, 3f, NavMesh.AllAreas))
+
+            if (NavMesh.SamplePosition(randomPosition,
+                out hit,
+                3f,
+                NavMesh.AllAreas))
             {
                 if (IsTooCloseToOtherEnemies(hit.position))
                     continue;
 
-                GameObject spawnedEnemy = Instantiate(selectedEnemyPrefab, hit.position, spawnPoint.rotation);
+                GameObject spawnedEnemy =
+                    Instantiate(selectedEnemyPrefab,
+                    hit.position,
+                    spawnPoint.rotation);
+
                 aliveEnemies.Add(spawnedEnemy);
 
                 Debug.Log($"Spawned enemy: {selectedEnemyPrefab.name} at {hit.position}");
+
                 return;
             }
         }
 
-        // Fallback: try exact spawn point
+        // Fallback Spawn
         NavMeshHit fallbackHit;
-        if (NavMesh.SamplePosition(spawnPoint.position, out fallbackHit, 5f, NavMesh.AllAreas))
+
+        if (NavMesh.SamplePosition(spawnPoint.position,
+            out fallbackHit,
+            5f,
+            NavMesh.AllAreas))
         {
-            GameObject fallbackEnemy = Instantiate(selectedEnemyPrefab, fallbackHit.position, spawnPoint.rotation);
+            GameObject fallbackEnemy =
+                Instantiate(selectedEnemyPrefab,
+                fallbackHit.position,
+                spawnPoint.rotation);
+
             aliveEnemies.Add(fallbackEnemy);
 
-            Debug.LogWarning($"Used fallback spawn for {selectedEnemyPrefab.name} at {fallbackHit.position}");
+            Debug.LogWarning($"Used fallback spawn for {selectedEnemyPrefab.name}");
+
             return;
         }
 
@@ -238,7 +298,8 @@ public class EnemySpawner : MonoBehaviour
         }
         else if (spawnPoints != null && spawnPoints.Length > 0)
         {
-            spawnPosition = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
+            spawnPosition =
+                spawnPoints[Random.Range(0, spawnPoints.Length)].position;
         }
         else
         {
@@ -246,31 +307,42 @@ public class EnemySpawner : MonoBehaviour
         }
 
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(spawnPosition, out hit, 3f, NavMesh.AllAreas))
+
+        if (NavMesh.SamplePosition(spawnPosition,
+            out hit,
+            3f,
+            NavMesh.AllAreas))
         {
             spawnPosition = hit.position;
         }
 
-        GameObject spawnedBoss = Instantiate(bossPrefab, spawnPosition, Quaternion.identity);
+        GameObject spawnedBoss =
+            Instantiate(bossPrefab,
+            spawnPosition,
+            Quaternion.identity);
+
         aliveEnemies.Add(spawnedBoss);
 
-        BossHealth bossHealth = spawnedBoss.GetComponent<BossHealth>();
+        BossHealth bossHealth =
+            spawnedBoss.GetComponent<BossHealth>();
+
         if (bossHealth != null)
         {
-            BossHealthUI bossUI = FindFirstObjectByType<BossHealthUI>();
+            BossHealthUI bossUI =
+                FindFirstObjectByType<BossHealthUI>();
+
             if (bossUI != null)
             {
                 bossHealth.bossUI = bossUI;
-                bossUI.Setup(bossHealth.maxHealth, bossHealth.bossName);
+
+                bossUI.Setup(
+                    bossHealth.maxHealth,
+                    bossHealth.bossName);
             }
             else
             {
-                Debug.LogWarning("No BossHealthUI found in the scene.");
+                Debug.LogWarning("No BossHealthUI found.");
             }
-        }
-        else
-        {
-            Debug.LogWarning("Spawned boss has no BossHealth script.");
         }
 
         Debug.Log("Boss spawned at: " + spawnPosition);
@@ -282,7 +354,9 @@ public class EnemySpawner : MonoBehaviour
 
         foreach (EnemySpawnData enemyData in enemyVariants)
         {
-            if (enemyData != null && enemyData.enemyPrefab != null && enemyData.spawnWeight > 0)
+            if (enemyData != null &&
+                enemyData.enemyPrefab != null &&
+                enemyData.spawnWeight > 0)
             {
                 totalWeight += enemyData.spawnWeight;
             }
@@ -295,7 +369,9 @@ public class EnemySpawner : MonoBehaviour
 
         foreach (EnemySpawnData enemyData in enemyVariants)
         {
-            if (enemyData == null || enemyData.enemyPrefab == null || enemyData.spawnWeight <= 0)
+            if (enemyData == null ||
+                enemyData.enemyPrefab == null ||
+                enemyData.spawnWeight <= 0)
                 continue;
 
             if (randomValue < enemyData.spawnWeight)
@@ -313,9 +389,13 @@ public class EnemySpawner : MonoBehaviour
 
         foreach (GameObject enemy in aliveEnemies)
         {
-            if (enemy == null) continue;
+            if (enemy == null)
+                continue;
 
-            float distance = Vector3.Distance(spawnPosition, enemy.transform.position);
+            float distance =
+                Vector3.Distance(spawnPosition,
+                enemy.transform.position);
+
             if (distance < minDistanceBetweenEnemies)
                 return true;
         }
@@ -328,7 +408,11 @@ public class EnemySpawner : MonoBehaviour
         if (chestPrefab == null)
             return;
 
-        Vector3 spawnPos = chestSpawnPoint != null ? chestSpawnPoint.position : transform.position;
+        Vector3 spawnPos =
+            chestSpawnPoint != null
+            ? chestSpawnPoint.position
+            : transform.position;
+
         Instantiate(chestPrefab, spawnPos, Quaternion.identity);
 
         Debug.Log("Chest spawned.");
@@ -347,6 +431,7 @@ public class EnemySpawner : MonoBehaviour
     private bool AreAllEnemiesDead()
     {
         aliveEnemies.RemoveAll(enemy => enemy == null);
+
         return aliveEnemies.Count == 0;
     }
 }

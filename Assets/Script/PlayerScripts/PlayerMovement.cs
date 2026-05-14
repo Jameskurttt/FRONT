@@ -17,19 +17,18 @@ public class PlayerMovement : MonoBehaviour
     public PlayerHealth playerStats;
     public Animator animator;
 
-    [Header("Attack Combo")]
-    public string combo1StateName = "Armature|ATTACK_MELEE_COMBO1_ANIMATION";
-    public string combo2StateName = "Armature|ATTACK_MELEE_COMBO2_ANIMATION";
+    [Header("Combat")]
+    public PlayerWeaponPickup weaponPickup;
 
     private CharacterController controller;
-
     private Vector3 velocity;
     private Vector3 currentMove;
     private bool isGrounded;
 
-    private int comboStep = 0;
-    private bool isAttacking = false;
-    private bool queuedCombo2 = false;
+    private bool isAttacking;
+    private bool queuedCombo2;
+    private bool queuedCombo3;
+    private int comboStep;
 
     void Start()
     {
@@ -44,8 +43,15 @@ public class PlayerMovement : MonoBehaviour
         if (animator == null)
             animator = GetComponentInChildren<Animator>();
 
-        animator.ResetTrigger("Attack1");
-        animator.ResetTrigger("Attack2");
+        if (weaponPickup == null)
+            weaponPickup = GetComponent<PlayerWeaponPickup>();
+
+        if (animator != null)
+        {
+            animator.ResetTrigger("Attack1");
+            animator.ResetTrigger("Attack2");
+            animator.ResetTrigger("Attack3");
+        }
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -62,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
         HandleJump();
         HandleGravity();
         HandleAnimations();
-        HandleAttackCombo();
+        HandleCombat();
 
         Vector3 finalMove = currentMove + velocity;
         controller.Move(finalMove * Time.deltaTime);
@@ -76,7 +82,9 @@ public class PlayerMovement : MonoBehaviour
         Vector3 dir = mainCamera.transform.forward;
         dir.y = 0f;
 
-        return dir.sqrMagnitude > 0.001f ? dir.normalized : transform.forward;
+        return dir.sqrMagnitude > 0.001f
+            ? dir.normalized
+            : transform.forward;
     }
 
     void HandleMovement(Vector3 forwardDir)
@@ -87,14 +95,21 @@ public class PlayerMovement : MonoBehaviour
         Vector3 input = new Vector3(h, 0f, v).normalized;
 
         Vector3 rightDir = Vector3.Cross(Vector3.up, forwardDir);
-        Vector3 targetMove = (forwardDir * input.z + rightDir * input.x) * GetMoveSpeed();
 
-        currentMove = Vector3.Lerp(currentMove, targetMove, acceleration * Time.deltaTime);
+        Vector3 targetMove =
+            (forwardDir * input.z + rightDir * input.x) * GetMoveSpeed();
+
+        currentMove = Vector3.Lerp(
+            currentMove,
+            targetMove,
+            acceleration * Time.deltaTime
+        );
     }
 
     void HandleRotation(Vector3 forwardDir)
     {
-        if (forwardDir.sqrMagnitude < 0.001f) return;
+        if (forwardDir.sqrMagnitude < 0.001f)
+            return;
 
         Quaternion targetRot = Quaternion.LookRotation(forwardDir);
 
@@ -107,37 +122,30 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleJump()
     {
-        if (isGrounded && velocity.y < 0)
-        {
+        if (isGrounded && velocity.y < 0f)
             velocity.y = -2f;
-        }
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
             if (animator != null)
-            {
                 animator.SetTrigger("Jump");
-            }
         }
     }
 
     void HandleGravity()
     {
-        if (velocity.y < 0)
-        {
+        if (velocity.y < 0f)
             velocity.y += gravity * fallMultiplier * Time.deltaTime;
-        }
         else
-        {
             velocity.y += gravity * Time.deltaTime;
-        }
     }
 
     void HandleAnimations()
     {
-        if (animator == null) return;
+        if (animator == null)
+            return;
 
         float speed = currentMove.magnitude;
 
@@ -147,16 +155,65 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("Speed", speed);
         animator.SetBool("IsGrounded", controller.isGrounded);
         animator.SetFloat("Velocity", velocity.y);
+
+        UpdateWeaponAnimationState();
     }
 
-    void HandleAttackCombo()
+    void UpdateWeaponAnimationState()
     {
-        if (animator == null) return;
+        if (weaponPickup == null)
+        {
+            animator.SetInteger("WeaponType", 0);
+            return;
+        }
 
+        Weapon currentWeapon = weaponPickup.GetCurrentWeapon();
+
+        if (currentWeapon == null)
+        {
+            animator.SetInteger("WeaponType", 0);
+            return;
+        }
+
+        switch (currentWeapon.weaponType)
+        {
+            case WeaponType.Sword:
+                animator.SetInteger("WeaponType", 1);
+                break;
+
+            case WeaponType.Bow:
+                animator.SetInteger("WeaponType", 2);
+                break;
+
+            default:
+                animator.SetInteger("WeaponType", 0);
+                break;
+        }
+    }
+
+    void HandleCombat()
+    {
+        if (weaponPickup == null)
+            return;
+
+        Weapon currentWeapon = weaponPickup.GetCurrentWeapon();
+
+        if (currentWeapon == null)
+            return;
+
+        if (currentWeapon.weaponType == WeaponType.Sword)
+            HandleSwordCombat();
+        else if (currentWeapon.weaponType == WeaponType.Bow)
+            HandleBowCombat();
+    }
+
+    void HandleSwordCombat()
+    {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        bool inCombo1 = stateInfo.IsName(combo1StateName);
-        bool inCombo2 = stateInfo.IsName(combo2StateName);
+        bool inCombo1 = stateInfo.IsName("SWORD_ATTACK1");
+        bool inCombo2 = stateInfo.IsName("SWORD_ATTACK2");
+        bool inCombo3 = stateInfo.IsName("SWORD_ATTACK3");
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -164,14 +221,21 @@ public class PlayerMovement : MonoBehaviour
             {
                 isAttacking = true;
                 comboStep = 1;
+
                 queuedCombo2 = false;
+                queuedCombo3 = false;
 
                 animator.ResetTrigger("Attack2");
+                animator.ResetTrigger("Attack3");
                 animator.SetTrigger("Attack1");
             }
             else if (inCombo1 && comboStep == 1)
             {
                 queuedCombo2 = true;
+            }
+            else if (inCombo2 && comboStep == 2)
+            {
+                queuedCombo3 = true;
             }
         }
 
@@ -189,27 +253,49 @@ public class PlayerMovement : MonoBehaviour
             }
 
             if (stateInfo.normalizedTime >= 0.95f && !queuedCombo2)
-            {
                 ResetCombo();
-            }
         }
 
         if (inCombo2)
         {
             comboStep = 2;
 
-            if (stateInfo.normalizedTime >= 0.95f)
+            if (queuedCombo3 && stateInfo.normalizedTime >= 0.45f)
             {
-                ResetCombo();
+                queuedCombo3 = false;
+                comboStep = 3;
+
+                animator.ResetTrigger("Attack2");
+                animator.SetTrigger("Attack3");
             }
+
+            if (stateInfo.normalizedTime >= 0.95f && !queuedCombo3)
+                ResetCombo();
+        }
+
+        if (inCombo3)
+        {
+            comboStep = 3;
+
+            if (stateInfo.normalizedTime >= 0.95f)
+                ResetCombo();
+        }
+    }
+
+    void HandleBowCombat()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            animator.SetTrigger("Shoot");
         }
     }
 
     void ResetCombo()
     {
         isAttacking = false;
-        comboStep = 0;
         queuedCombo2 = false;
+        queuedCombo3 = false;
+        comboStep = 0;
     }
 
     float GetMoveSpeed()
