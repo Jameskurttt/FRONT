@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 [CreateAssetMenu(fileName = "New Armor", menuName = "Armor/Armor Item Data")]
 public class ArmorItemData : ScriptableObject
 {

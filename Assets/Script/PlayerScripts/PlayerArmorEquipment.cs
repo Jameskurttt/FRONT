@@ -38,10 +38,7 @@ public class PlayerArmorEquipment : MonoBehaviour
     public void EquipArmor(ArmorItemData newArmor)
     {
         if (newArmor == null)
-        {
-            Debug.LogWarning("EquipArmor failed. Armor data is missing.");
             return;
-        }
 
         switch (newArmor.armorSlot)
         {
@@ -60,23 +57,12 @@ public class PlayerArmorEquipment : MonoBehaviour
 
         RefreshArmorUI();
         RefreshAllStatsUI();
-
-        Debug.Log("Equipped armor: " + newArmor.armorName);
     }
 
     public void EquipArmorFromLoot(ItemDropData itemData)
     {
-        if (itemData == null)
-        {
-            Debug.LogWarning("EquipArmorFromLoot failed. ItemDropData is missing.");
+        if (itemData == null || itemData.armorData == null)
             return;
-        }
-
-        if (itemData.armorData == null)
-        {
-            Debug.LogWarning("EquipArmorFromLoot failed. ArmorData is missing inside ItemDropData.");
-            return;
-        }
 
         EquipArmor(itemData.armorData);
     }
@@ -130,6 +116,64 @@ public class PlayerArmorEquipment : MonoBehaviour
 
         if (armor.physicalDefenseBonus != 0)
             playerStats.IncreasePhysicalDefense(-armor.physicalDefenseBonus);
+    }
+
+    public ArmorItemData GetHeadArmor()
+    {
+        return equippedHead;
+    }
+
+    public ArmorItemData GetBodyArmor()
+    {
+        return equippedBody;
+    }
+
+    public ArmorItemData GetBootsArmor()
+    {
+        return equippedBoots;
+    }
+
+    public void UpgradeArmor(ArmorItemData armor)
+    {
+        if (armor == null)
+            return;
+
+        if (armor.rarity == LootRarity.Legendary)
+            return;
+
+        RemoveArmorStats(armor);
+
+        armor.rarity = GetNextRarity(armor.rarity);
+
+        armor.hpBonus += 5;
+        armor.armorBonus += 2;
+        armor.physicalDefenseBonus += 2;
+
+        ApplyArmorStats(armor);
+
+        RefreshArmorUI();
+        RefreshAllStatsUI();
+    }
+
+    private LootRarity GetNextRarity(LootRarity rarity)
+    {
+        switch (rarity)
+        {
+            case LootRarity.Common:
+                return LootRarity.Uncommon;
+
+            case LootRarity.Uncommon:
+                return LootRarity.Rare;
+
+            case LootRarity.Rare:
+                return LootRarity.Epic;
+
+            case LootRarity.Epic:
+                return LootRarity.Legendary;
+
+            default:
+                return LootRarity.Legendary;
+        }
     }
 
     private void RefreshArmorUI()

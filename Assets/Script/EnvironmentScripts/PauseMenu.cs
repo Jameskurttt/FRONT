@@ -5,7 +5,6 @@ public class PauseMenu : MonoBehaviour
 {
     [Header("Main Panels")]
     public GameObject pauseMenuCanvas;
-    public GameObject pauseMenuPanel;
     public GameObject settingsPanel;
     public GameObject quitConfirmPanel;
 
@@ -16,11 +15,22 @@ public class PauseMenu : MonoBehaviour
     [Header("Cursor")]
     public bool showCursorWhenPaused = true;
 
+    [Header("Pause Sounds")]
+    public AudioSource uiAudioSource;
+    public AudioClip openSound;
+    public AudioClip closeSound;
+
     private bool isPaused = false;
 
     void Start()
     {
-        ResumeGame();
+        if (uiAudioSource != null)
+        {
+            uiAudioSource.playOnAwake = false;
+            uiAudioSource.ignoreListenerPause = true;
+        }
+
+        ResumeGame(false);
     }
 
     void Update()
@@ -59,11 +69,12 @@ public class PauseMenu : MonoBehaviour
         isPaused = true;
         Time.timeScale = 0f;
 
+        PlaySound(openSound);
+
         if (pauseMenuCanvas != null)
             pauseMenuCanvas.SetActive(true);
 
-        if (pauseMenuPanel != null)
-            pauseMenuPanel.SetActive(true);
+      
 
         if (settingsPanel != null)
             settingsPanel.SetActive(false);
@@ -77,8 +88,16 @@ public class PauseMenu : MonoBehaviour
 
     public void ResumeGame()
     {
+        ResumeGame(true);
+    }
+
+    void ResumeGame(bool playCloseSound)
+    {
         isPaused = false;
         Time.timeScale = 1f;
+
+        if (playCloseSound)
+            PlaySound(closeSound);
 
         if (pauseMenuCanvas != null)
             pauseMenuCanvas.SetActive(false);
@@ -86,11 +105,17 @@ public class PauseMenu : MonoBehaviour
         SetCursorState(false);
     }
 
+    void PlaySound(AudioClip clip)
+    {
+        if (uiAudioSource != null && clip != null)
+        {
+            uiAudioSource.PlayOneShot(clip);
+        }
+    }
+
     public void OpenSettings()
     {
-        if (pauseMenuPanel != null)
-            pauseMenuPanel.SetActive(false);
-
+        
         if (settingsPanel != null)
             settingsPanel.SetActive(true);
 
@@ -105,14 +130,12 @@ public class PauseMenu : MonoBehaviour
         if (settingsPanel != null)
             settingsPanel.SetActive(false);
 
-        if (pauseMenuPanel != null)
-            pauseMenuPanel.SetActive(true);
+       
     }
 
     public void OpenQuitConfirmation()
     {
-        if (pauseMenuPanel != null)
-            pauseMenuPanel.SetActive(false);
+        
 
         if (settingsPanel != null)
             settingsPanel.SetActive(false);
@@ -126,8 +149,7 @@ public class PauseMenu : MonoBehaviour
         if (quitConfirmPanel != null)
             quitConfirmPanel.SetActive(false);
 
-        if (pauseMenuPanel != null)
-            pauseMenuPanel.SetActive(true);
+        
     }
 
     public void RefreshPauseStats()

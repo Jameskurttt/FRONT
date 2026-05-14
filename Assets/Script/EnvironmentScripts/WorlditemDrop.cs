@@ -9,6 +9,9 @@ public class WorldLootDrop : MonoBehaviour
     [Header("Rolled Stats")]
     [SerializeField] private int rolledWeaponDamage;
 
+    [Header("Runtime Rarity")]
+    [SerializeField] private LootRarity runtimeRarity = LootRarity.Common;
+
     [Header("Visuals")]
     public Transform visualRoot;
     public Transform iconPivot;
@@ -92,6 +95,9 @@ public class WorldLootDrop : MonoBehaviour
     {
         itemData = newItemData;
 
+        if (itemData != null)
+            runtimeRarity = itemData.rarity;
+
         if (itemData != null && itemData.itemType == DropItemType.Weapon)
             rolledWeaponDamage = RollWeaponDamage();
         else
@@ -103,13 +109,32 @@ public class WorldLootDrop : MonoBehaviour
     public void Setup(ItemDropData newItemData, int forcedWeaponDamage)
     {
         itemData = newItemData;
+
+        if (itemData != null)
+            runtimeRarity = itemData.rarity;
+
         rolledWeaponDamage = Mathf.Max(0, forcedWeaponDamage);
+
+        ApplyItemLook();
+    }
+
+    public void Setup(ItemDropData newItemData, int forcedWeaponDamage, LootRarity forcedRarity)
+    {
+        itemData = newItemData;
+        rolledWeaponDamage = Mathf.Max(0, forcedWeaponDamage);
+        runtimeRarity = forcedRarity;
+
         ApplyItemLook();
     }
 
     public int GetRolledWeaponDamage()
     {
         return rolledWeaponDamage;
+    }
+
+    public LootRarity GetRuntimeRarity()
+    {
+        return runtimeRarity;
     }
 
     public void TryPickupFromPlayer()
@@ -125,7 +150,7 @@ public class WorldLootDrop : MonoBehaviour
         if (itemData == null)
             return;
 
-        Color rarityColor = GetRarityColor(itemData.rarity);
+        Color rarityColor = GetRarityColor(runtimeRarity);
 
         if (iconRenderer != null)
             iconRenderer.sprite = itemData.itemIcon;
@@ -144,7 +169,7 @@ public class WorldLootDrop : MonoBehaviour
         int minDamage = itemData.minWeaponDamage;
         int maxDamage = itemData.maxWeaponDamage;
 
-        switch (itemData.rarity)
+        switch (runtimeRarity)
         {
             case LootRarity.Common:
                 break;
@@ -195,6 +220,7 @@ public class WorldLootDrop : MonoBehaviour
         while (timer < spawnDuration)
         {
             timer += Time.deltaTime;
+
             float t = timer / spawnDuration;
             t = 1f - Mathf.Pow(1f - t, 3f);
 
@@ -243,11 +269,9 @@ public class WorldLootDrop : MonoBehaviour
         if (player == null || itemData == null)
             return;
 
-        // Armor should NEVER be picked up by walking into it.
         if (itemData.itemType == DropItemType.Armor)
             return;
 
-        // If auto pickup is off, do nothing until player presses E.
         if (!itemData.autoPickup)
             return;
 
@@ -286,20 +310,22 @@ public class WorldLootDrop : MonoBehaviour
         else if (itemData.itemType == DropItemType.Weapon)
         {
             if (playerWeaponPickup != null)
-                playerWeaponPickup.EquipFromLoot(itemData, rolledWeaponDamage);
-            else
-                Debug.LogWarning("PlayerWeaponPickup was not found on the player.");
+            {
+                playerWeaponPickup.EquipFromLoot(itemData, rolledWeaponDamage, runtimeRarity);
+            }
         }
 
         if (visualRoot != null)
         {
             float timer = 0f;
+
             Vector3 startScale = visualRoot.localScale;
             Vector3 endScale = Vector3.zero;
 
             while (timer < pickupAnimDuration)
             {
                 timer += Time.deltaTime;
+
                 float t = timer / pickupAnimDuration;
 
                 visualRoot.localScale = Vector3.Lerp(startScale, endScale, t);
@@ -314,31 +340,20 @@ public class WorldLootDrop : MonoBehaviour
     private void ApplyArmorPickup()
     {
         if (playerArmorEquipment == null)
-        {
-            Debug.LogWarning("PlayerArmorEquipment was not found on the player.");
             return;
-        }
 
         playerArmorEquipment.EquipArmorFromLoot(itemData);
-
-        Debug.Log("Armor picked up: " + itemData.itemName);
     }
 
     private void ApplyTotemStats()
     {
         if (player == null)
-        {
-            Debug.LogWarning("Player was not found.");
             return;
-        }
 
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
 
         if (playerHealth == null)
-        {
-            Debug.LogWarning("PlayerHealth was not found on the player.");
             return;
-        }
 
         playerHealth.IncreaseMaxHP(itemData.bonusMaxHP);
         playerHealth.IncreaseHPRegen(itemData.bonusHPRegen);
@@ -349,16 +364,6 @@ public class WorldLootDrop : MonoBehaviour
         playerHealth.IncreaseMovementSpeed(itemData.bonusMovementSpeed);
         playerHealth.IncreasePhysicalDefense(itemData.bonusPhysicalDefense);
         playerHealth.IncreaseMagicDefense(itemData.bonusMagicDefense);
-
-        SkillTreeManager skillTreeManager = FindObjectOfType<SkillTreeManager>();
-        if (skillTreeManager != null)
-            skillTreeManager.RefreshStatsUI();
-
-        PauseMenu pauseMenu = FindObjectOfType<PauseMenu>();
-        if (pauseMenu != null)
-            pauseMenu.RefreshPauseStats();
-
-        Debug.Log("Totem picked up: " + itemData.itemName + " | Stats added.");
     }
 
     private Color GetRarityColor(LootRarity rarity)
