@@ -20,6 +20,32 @@ public class PlayerMovement : MonoBehaviour
     [Header("Combat")]
     public PlayerWeaponPickup weaponPickup;
 
+    [Header("Audio Sources")]
+    public AudioSource footstepSource;
+    public AudioSource sfxSource;
+
+    [Header("Movement Sounds")]
+    public AudioClip runSound;
+    public AudioClip jumpSound;
+
+    [Header("Attack Swing Sounds")]
+    public AudioClip swordCombo1Sound;
+    public AudioClip swordCombo2Sound;
+    public AudioClip swordCombo3Sound;
+    public AudioClip bowShootSound;
+
+    [Header("Enemy Hit Sounds")]
+    public AudioClip swordCombo1HitSound;
+    public AudioClip swordCombo2HitSound;
+    public AudioClip swordCombo3HitSound;
+    public AudioClip bowHitEnemySound;
+
+    [Header("Volumes")]
+    [Range(0f, 1f)] public float runVolume = 0.5f;
+    [Range(0f, 1f)] public float jumpVolume = 1f;
+    [Range(0f, 1f)] public float attackVolume = 1f;
+    [Range(0f, 1f)] public float hitVolume = 1f;
+
     private CharacterController controller;
     private Vector3 velocity;
     private Vector3 currentMove;
@@ -51,6 +77,7 @@ public class PlayerMovement : MonoBehaviour
             animator.ResetTrigger("Attack1");
             animator.ResetTrigger("Attack2");
             animator.ResetTrigger("Attack3");
+            animator.ResetTrigger("Shoot");
         }
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -82,9 +109,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 dir = mainCamera.transform.forward;
         dir.y = 0f;
 
-        return dir.sqrMagnitude > 0.001f
-            ? dir.normalized
-            : transform.forward;
+        return dir.sqrMagnitude > 0.001f ? dir.normalized : transform.forward;
     }
 
     void HandleMovement(Vector3 forwardDir)
@@ -93,7 +118,6 @@ public class PlayerMovement : MonoBehaviour
         float v = Input.GetAxisRaw("Vertical");
 
         Vector3 input = new Vector3(h, 0f, v).normalized;
-
         Vector3 rightDir = Vector3.Cross(Vector3.up, forwardDir);
 
         Vector3 targetMove =
@@ -104,6 +128,32 @@ public class PlayerMovement : MonoBehaviour
             targetMove,
             acceleration * Time.deltaTime
         );
+
+        HandleRunningSound(input);
+    }
+
+    void HandleRunningSound(Vector3 input)
+    {
+        bool isMoving = input.magnitude > 0.1f;
+
+        if (footstepSource == null || runSound == null)
+            return;
+
+        if (isMoving && isGrounded)
+        {
+            if (!footstepSource.isPlaying)
+            {
+                footstepSource.clip = runSound;
+                footstepSource.volume = runVolume;
+                footstepSource.loop = true;
+                footstepSource.Play();
+            }
+        }
+        else
+        {
+            if (footstepSource.isPlaying)
+                footstepSource.Stop();
+        }
     }
 
     void HandleRotation(Vector3 forwardDir)
@@ -125,12 +175,14 @@ public class PlayerMovement : MonoBehaviour
         if (isGrounded && velocity.y < 0f)
             velocity.y = -2f;
 
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && isGrounded && !Input.GetMouseButton(0) && !isAttacking)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
             if (animator != null)
                 animator.SetTrigger("Jump");
+
+            PlayJumpSound();
         }
     }
 
@@ -193,7 +245,7 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleCombat()
     {
-        if (weaponPickup == null)
+        if (weaponPickup == null || animator == null)
             return;
 
         Weapon currentWeapon = weaponPickup.GetCurrentWeapon();
@@ -221,10 +273,10 @@ public class PlayerMovement : MonoBehaviour
             {
                 isAttacking = true;
                 comboStep = 1;
-
                 queuedCombo2 = false;
                 queuedCombo3 = false;
 
+                animator.ResetTrigger("Jump");
                 animator.ResetTrigger("Attack2");
                 animator.ResetTrigger("Attack3");
                 animator.SetTrigger("Attack1");
@@ -247,7 +299,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 queuedCombo2 = false;
                 comboStep = 2;
-
                 animator.ResetTrigger("Attack1");
                 animator.SetTrigger("Attack2");
             }
@@ -264,7 +315,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 queuedCombo3 = false;
                 comboStep = 3;
-
                 animator.ResetTrigger("Attack2");
                 animator.SetTrigger("Attack3");
             }
@@ -285,9 +335,7 @@ public class PlayerMovement : MonoBehaviour
     void HandleBowCombat()
     {
         if (Input.GetMouseButtonDown(0))
-        {
             animator.SetTrigger("Shoot");
-        }
     }
 
     void ResetCombo()
@@ -304,5 +352,59 @@ public class PlayerMovement : MonoBehaviour
             return playerStats.GetMovementSpeed();
 
         return defaultMoveSpeed;
+    }
+
+    public void PlayJumpSound()
+    {
+        if (sfxSource != null && jumpSound != null)
+            sfxSource.PlayOneShot(jumpSound, jumpVolume);
+    }
+
+    public void PlaySwordCombo1Sound()
+    {
+        if (sfxSource != null && swordCombo1Sound != null)
+            sfxSource.PlayOneShot(swordCombo1Sound, attackVolume);
+    }
+
+    public void PlaySwordCombo2Sound()
+    {
+        if (sfxSource != null && swordCombo2Sound != null)
+            sfxSource.PlayOneShot(swordCombo2Sound, attackVolume);
+    }
+
+    public void PlaySwordCombo3Sound()
+    {
+        if (sfxSource != null && swordCombo3Sound != null)
+            sfxSource.PlayOneShot(swordCombo3Sound, attackVolume);
+    }
+
+    public void PlayBowShootSound()
+    {
+        if (sfxSource != null && bowShootSound != null)
+            sfxSource.PlayOneShot(bowShootSound, attackVolume);
+    }
+
+    public void PlaySwordCombo1HitSound()
+    {
+        if (sfxSource != null && swordCombo1HitSound != null)
+            sfxSource.PlayOneShot(swordCombo1HitSound, hitVolume);
+    }
+
+    public void PlaySwordCombo2HitSound()
+    {
+        if (sfxSource != null && swordCombo2HitSound != null)
+            sfxSource.PlayOneShot(swordCombo2HitSound, hitVolume);
+    }
+
+    public void PlaySwordCombo3HitSound()
+    {
+        if (sfxSource != null && swordCombo3HitSound != null)
+            sfxSource.PlayOneShot(swordCombo3HitSound, hitVolume);
+    }
+
+    public void PlayBowHitEnemySound()
+    {
+        if (sfxSource != null && bowHitEnemySound != null)
+            sfxSource.PlayOneShot(bowHitEnemySound, hitVolume);
     }
 }

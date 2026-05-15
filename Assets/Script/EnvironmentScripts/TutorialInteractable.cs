@@ -15,12 +15,33 @@ public class TutorialInteractable : MonoBehaviour
     [Header("Tutorial Images")]
     public Sprite[] tutorialSprites;
 
+    [Header("Start Settings")]
+    public bool showOnStart = true;
+
     private int currentIndex = 0;
+    private bool tutorialOpen = false;
 
     void Start()
     {
-        if (tutorialPanel != null)
-            tutorialPanel.SetActive(false);
+        if (showOnStart)
+        {
+            OpenTutorial();
+        }
+        else
+        {
+            if (tutorialPanel != null)
+                tutorialPanel.SetActive(false);
+        }
+    }
+
+    void Update()
+    {
+        if (tutorialOpen)
+        {
+            Time.timeScale = 0f;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
     }
 
     public void Interact()
@@ -28,8 +49,10 @@ public class TutorialInteractable : MonoBehaviour
         OpenTutorial();
     }
 
-    void OpenTutorial()
+    public void OpenTutorial()
     {
+        tutorialOpen = true;
+
         if (tutorialPanel != null)
             tutorialPanel.SetActive(true);
 
@@ -61,6 +84,8 @@ public class TutorialInteractable : MonoBehaviour
 
     public void CloseTutorial()
     {
+        tutorialOpen = false;
+
         if (tutorialPanel != null)
             tutorialPanel.SetActive(false);
 
@@ -70,7 +95,6 @@ public class TutorialInteractable : MonoBehaviour
     void FreezeGame()
     {
         Time.timeScale = 0f;
-
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
@@ -78,26 +102,27 @@ public class TutorialInteractable : MonoBehaviour
     void UnfreezeGame()
     {
         Time.timeScale = 1f;
-
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
     void ShowImage()
     {
-        if (tutorialImage != null && tutorialSprites.Length > 0)
+        if (tutorialImage != null && tutorialSprites != null && tutorialSprites.Length > 0)
             tutorialImage.sprite = tutorialSprites[currentIndex];
     }
 
     void UpdateButtons()
     {
-        if (backButton != null)
-            backButton.gameObject.SetActive(currentIndex > 0);
+        bool hasImages = tutorialSprites != null && tutorialSprites.Length > 0;
+        bool isFirstImage = currentIndex == 0;
+        bool isLastImage = !hasImages || currentIndex == tutorialSprites.Length - 1;
 
-        bool isLastImage = currentIndex == tutorialSprites.Length - 1;
+        if (backButton != null)
+            backButton.gameObject.SetActive(!isFirstImage && hasImages);
 
         if (nextButton != null)
-            nextButton.gameObject.SetActive(!isLastImage);
+            nextButton.gameObject.SetActive(!isLastImage && hasImages);
 
         if (okayButton != null)
             okayButton.gameObject.SetActive(isLastImage);

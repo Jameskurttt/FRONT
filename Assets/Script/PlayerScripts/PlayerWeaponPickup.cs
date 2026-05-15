@@ -86,10 +86,7 @@ public class PlayerWeaponPickup : MonoBehaviour
                     interactUIText.text = "Press E to <color=#FFD700>Pick Up</color>";
 
                 if (pickupDescriptionText != null)
-                    pickupDescriptionText.text =
-                        lootDrop.itemData.description +
-                        "\nRarity: " + lootDrop.itemData.rarity +
-                        "\nDamage: " + lootDrop.GetRolledWeaponDamage();
+                    pickupDescriptionText.text = GetItemDescription(lootDrop.itemData, lootDrop.GetRolledWeaponDamage());
 
                 ShowPickupUI();
                 return;
@@ -147,6 +144,65 @@ public class PlayerWeaponPickup : MonoBehaviour
         }
 
         HidePickupUI();
+    }
+
+    private string GetItemDescription(ItemDropData itemData, int rolledWeaponDamage)
+    {
+        if (itemData == null)
+            return "";
+
+        string text = "";
+
+        if (!string.IsNullOrEmpty(itemData.itemName))
+            text += itemData.itemName + "\n";
+
+        if (!string.IsNullOrEmpty(itemData.description))
+            text += itemData.description + "\n";
+
+        text += "Type: " + itemData.itemType + "\n";
+        text += "Rarity: " + itemData.rarity;
+
+        if (itemData.itemType == DropItemType.Weapon)
+        {
+            text += "\nDamage: " + rolledWeaponDamage;
+        }
+
+        if (itemData.itemType == DropItemType.Totem)
+        {
+            AddStatLine(ref text, "Max HP", itemData.bonusMaxHP);
+            AddStatLine(ref text, "HP Regen", itemData.bonusHPRegen);
+            AddStatLine(ref text, "Armor", itemData.bonusArmor);
+            AddStatLine(ref text, "Physical Attack", itemData.bonusPhysicalAttack);
+            AddStatLine(ref text, "Magic Attack", itemData.bonusMagicAttack);
+            AddStatLine(ref text, "Attack Speed", itemData.bonusAttackSpeed);
+            AddStatLine(ref text, "Movement Speed", itemData.bonusMovementSpeed);
+            AddStatLine(ref text, "Physical Defense", itemData.bonusPhysicalDefense);
+            AddStatLine(ref text, "Magic Defense", itemData.bonusMagicDefense);
+        }
+
+        if (itemData.itemType == DropItemType.Armor && itemData.armorData != null)
+        {
+            ArmorItemData armor = itemData.armorData;
+
+            text += "\nArmor Slot: " + armor.armorSlot;
+
+            AddStatLine(ref text, "HP", armor.hpBonus);
+            AddStatLine(ref text, "Armor", armor.armorBonus);
+            AddStatLine(ref text, "Movement Speed", armor.movementSpeedBonus);
+            AddStatLine(ref text, "Attack Speed", armor.attackSpeedBonus);
+            AddStatLine(ref text, "Physical Defense", armor.physicalDefenseBonus);
+        }
+
+        return text;
+    }
+
+    private void AddStatLine(ref string text, string statName, float value)
+    {
+        if (value == 0)
+            return;
+
+        string sign = value > 0 ? "+" : "";
+        text += "\n" + statName + ": " + sign + value.ToString("F1");
     }
 
     private void TryInteract()
@@ -216,34 +272,52 @@ public class PlayerWeaponPickup : MonoBehaviour
 
     public void EquipFromLoot(ItemDropData itemData, int rolledWeaponDamage, LootRarity rarity)
     {
+        Debug.Log("EquipFromLoot called.");
+
         if (itemData == null)
+        {
+            Debug.LogError("FAILED: itemData is null.");
             return;
+        }
 
         if (itemData.equippedWeaponPrefab == null)
+        {
+            Debug.LogError("FAILED: Equipped Weapon Prefab is empty on " + itemData.itemName);
             return;
+        }
 
         Weapon weaponPrefab = itemData.equippedWeaponPrefab.GetComponent<Weapon>();
 
         if (weaponPrefab == null)
+        {
+            Debug.LogError("FAILED: Equipped Weapon Prefab has NO Weapon script.");
             return;
-
-        if (currentWeapon != null)
-            DropWeapon();
+        }
 
         Transform holderToUse = GetHolderForWeaponType(weaponPrefab.weaponType);
 
         if (holderToUse == null)
+        {
+            Debug.LogError("FAILED: Holder is missing for weapon type: " + weaponPrefab.weaponType);
             return;
+        }
+
+        Debug.Log("Spawning weapon: " + itemData.equippedWeaponPrefab.name + " into holder: " + holderToUse.name);
+
+        if (currentWeapon != null)
+            DropWeapon();
 
         GameObject spawnedWeaponObject = Instantiate(itemData.equippedWeaponPrefab, holderToUse);
 
         spawnedWeaponObject.transform.localPosition = Vector3.zero;
         spawnedWeaponObject.transform.localRotation = Quaternion.identity;
+        spawnedWeaponObject.transform.localScale = Vector3.one;
 
         currentWeapon = spawnedWeaponObject.GetComponent<Weapon>();
 
         if (currentWeapon == null)
         {
+            Debug.LogError("FAILED: Spawned weapon has no Weapon script.");
             Destroy(spawnedWeaponObject);
             return;
         }
@@ -261,6 +335,8 @@ public class PlayerWeaponPickup : MonoBehaviour
         HidePickupUI();
         RefreshEquippedUI();
         RefreshStatsUI();
+
+        Debug.Log("SUCCESS: Weapon equipped: " + currentWeapon.name);
     }
 
     private void ApplyEquippedWeaponStats()

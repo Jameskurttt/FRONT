@@ -57,6 +57,7 @@ public class ArrowProjectile : MonoBehaviour
             return;
 
         EnemyHealth enemy = other.GetComponent<EnemyHealth>();
+
         if (enemy != null)
         {
             enemy.TakeDamage(damage);
@@ -65,6 +66,7 @@ public class ArrowProjectile : MonoBehaviour
         }
 
         BossHealth boss = other.GetComponentInParent<BossHealth>();
+
         if (boss != null)
         {
             boss.TakeDamage(damage);

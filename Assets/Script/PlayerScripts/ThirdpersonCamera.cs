@@ -44,7 +44,7 @@ public class ThirdPersonCamera : MonoBehaviour
             - rotation * Vector3.forward * distance
             + rotation * Vector3.right * sideOffset;
 
-        //  NO SMOOTH = NO SHAKE
+        
         transform.position = wantedPosition;
 
         transform.rotation = rotation;

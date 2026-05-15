@@ -68,17 +68,27 @@ public class WorldLootDrop : MonoBehaviour
     {
         mainCamera = Camera.main;
 
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-
-        if (playerObj != null)
-        {
-            player = playerObj.transform;
-            playerWeaponPickup = playerObj.GetComponent<PlayerWeaponPickup>();
-            playerArmorEquipment = playerObj.GetComponent<PlayerArmorEquipment>();
-        }
+        FindPlayerReferences();
 
         ApplyItemLook();
         StartCoroutine(PlaySpawnAnimation());
+    }
+
+    private void FindPlayerReferences()
+    {
+        playerWeaponPickup = FindObjectOfType<PlayerWeaponPickup>();
+
+        if (playerWeaponPickup != null)
+        {
+            player = playerWeaponPickup.transform;
+            playerArmorEquipment = playerWeaponPickup.GetComponent<PlayerArmorEquipment>();
+
+            Debug.Log("WorldLootDrop found PlayerWeaponPickup directly on: " + player.name);
+        }
+        else
+        {
+            Debug.LogError("WorldLootDrop could not find PlayerWeaponPickup in scene.");
+        }
     }
 
     private void Update()
@@ -148,7 +158,10 @@ public class WorldLootDrop : MonoBehaviour
     private void ApplyItemLook()
     {
         if (itemData == null)
+        {
+            visualsReady = false;
             return;
+        }
 
         Color rarityColor = GetRarityColor(runtimeRarity);
 
@@ -299,6 +312,9 @@ public class WorldLootDrop : MonoBehaviour
 
         isPickingUp = true;
 
+        if (itemData == null)
+            yield break;
+
         if (itemData.itemType == DropItemType.Totem)
         {
             ApplyTotemStats();
@@ -309,10 +325,13 @@ public class WorldLootDrop : MonoBehaviour
         }
         else if (itemData.itemType == DropItemType.Weapon)
         {
+            if (playerWeaponPickup == null)
+                FindPlayerReferences();
+
             if (playerWeaponPickup != null)
-            {
                 playerWeaponPickup.EquipFromLoot(itemData, rolledWeaponDamage, runtimeRarity);
-            }
+            else
+                Debug.LogError("Cannot equip weapon because PlayerWeaponPickup is still null.");
         }
 
         if (visualRoot != null)

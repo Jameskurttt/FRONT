@@ -131,7 +131,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossHealth
   bossName: NiggaKIng
-  maxHealth: 500
+  maxHealth: 1000
+  expReward: 50
+  goldReward: 100
+  killCountValue: 1
   bossUI: {fileID: 0}
 --- !u!195 &7292216196581678212
 NavMeshAgent:
