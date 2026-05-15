@@ -19,8 +19,8 @@ MonoBehaviour:
   rarity: 0
   autoPickup: 0
   equippedWeaponPrefab: {fileID: 7189602136332512218, guid: c6038f012adcb784fa10b6dfccf08085, type: 3}
-  minWeaponDamage: 100
-  maxWeaponDamage: 100
+  minWeaponDamage: 5
+  maxWeaponDamage: 5
   armorData: {fileID: 0}
   bonusMaxHP: 0
   bonusHPRegen: 0

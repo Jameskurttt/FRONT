@@ -46,6 +46,32 @@ public class SwordDamage : MonoBehaviour
 
         enemy.TakeDamage(finalDamage);
 
+        // HIT SOUND
+        PlayerMovement playerMovement = weapon.GetComponentInParent<PlayerMovement>();
+
+        if (playerMovement != null)
+        {
+            Animator animator = playerMovement.animator;
+
+            if (animator != null)
+            {
+                AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+                if (stateInfo.IsName("SWORD_ATTACK1"))
+                {
+                    playerMovement.PlaySwordCombo1HitSound();
+                }
+                else if (stateInfo.IsName("SWORD_ATTACK2"))
+                {
+                    playerMovement.PlaySwordCombo2HitSound();
+                }
+                else if (stateInfo.IsName("SWORD_ATTACK3"))
+                {
+                    playerMovement.PlaySwordCombo3HitSound();
+                }
+            }
+        }
+
         Debug.Log("Sword hit: " + enemy.name + " | Final Damage: " + finalDamage);
     }
 

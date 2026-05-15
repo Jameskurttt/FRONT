@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,10 +10,6 @@ public class ArrowPool : MonoBehaviour
     public int poolSize = 20;
     public Transform poolParent;
 
-    [Header("Bow Shoot Delay")]
-    [Tooltip("Delay before the arrow is released")]
-    public float shootDelay = 0.3f;
-
     private List<GameObject> pool = new List<GameObject>();
 
     private void Awake()
@@ -26,6 +21,9 @@ public class ArrowPool : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
+        if (poolParent == null)
+            poolParent = transform;
 
         CreatePool();
     }
@@ -53,31 +51,5 @@ public class ArrowPool : MonoBehaviour
         pool.Add(newArrow);
 
         return newArrow;
-    }
-
- 
-    public IEnumerator SpawnArrowWithDelay(
-        Transform shootPoint,
-        Quaternion rotation,
-        float arrowSpeed)
-    {
-        yield return new WaitForSeconds(shootDelay);
-
-        GameObject arrow = GetArrow();
-
-        arrow.transform.position = shootPoint.position;
-        arrow.transform.rotation = rotation;
-
-        arrow.SetActive(true);
-
-        Rigidbody rb = arrow.GetComponent<Rigidbody>();
-
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-
-            rb.linearVelocity = shootPoint.forward * arrowSpeed;
-        }
     }
 }

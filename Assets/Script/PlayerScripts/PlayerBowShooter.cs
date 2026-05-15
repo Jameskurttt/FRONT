@@ -9,16 +9,11 @@ public class PlayerBowShooter : MonoBehaviour
 
     [Header("Arrow Setup")]
     public GameObject arrowPrefab;
-    public string bowFirePointName = "Bow Shoot Point";
+    public string bowFirePointName = "BowShootPoint";
 
     [Header("Shoot Settings")]
     public float shootCooldown = 0.25f;
     public float arrowSpeed = 35f;
-    public float maxAimDistance = 100f;
-    public LayerMask aimLayers = ~0;
-
-    [Header("Aim Safety")]
-    public float minDistanceFromSpawn = 1.25f;
 
     private float nextShootTime;
 
@@ -57,57 +52,45 @@ public class PlayerBowShooter : MonoBehaviour
         if (currentWeapon == null)
             return;
 
-        Transform arrowSpawnPoint = FindSpawnPoint(currentWeapon);
+        Transform shootPoint = FindSpawnPoint(currentWeapon);
 
-        if (arrowSpawnPoint == null)
+        if (shootPoint == null)
         {
-            Debug.LogWarning(
-                "Bow Shoot Point not found. Make sure your bow has a child named: "
-                + bowFirePointName
-            );
-
+            Debug.LogWarning("BowShootPoint not found.");
             return;
         }
 
         nextShootTime = Time.time + shootCooldown;
 
-        Vector3 shootDirection = GetSafeShootDirection(arrowSpawnPoint);
+        Vector3 shootDirection = GetCameraShootDirection();
 
         GameObject arrowObject = GetArrowObject();
 
         if (arrowObject == null)
             return;
 
-        arrowObject.transform.position = arrowSpawnPoint.position;
+        // IMPORTANT: detach from pool/player/bow so it will not jitter
+        arrowObject.transform.SetParent(null);
+
+        arrowObject.transform.position = shootPoint.position;
         arrowObject.transform.rotation = Quaternion.LookRotation(shootDirection);
 
         arrowObject.SetActive(true);
-
-        IgnorePlayerCollision(arrowObject);
 
         ArrowProjectile arrow = arrowObject.GetComponent<ArrowProjectile>();
 
         if (arrow != null)
         {
-            int finalDamage =
-                Mathf.RoundToInt(playerStats.GetTotalPhysicalAttack());
+            int finalDamage = Mathf.RoundToInt(playerStats.GetTotalPhysicalAttack());
 
             arrow.SetDamage(finalDamage);
             arrow.Launch(shootDirection, arrowSpeed);
-
-            Debug.Log(
-                "Bow animation shot damage: " + finalDamage
-            );
         }
     }
 
     private Transform FindSpawnPoint(Weapon currentWeapon)
     {
-        if (currentWeapon == null)
-            return null;
-
-        Transform[] children =
-            currentWeapon.GetComponentsInChildren<Transform>(true);
+        Transform[] children = currentWeapon.GetComponentsInChildren<Transform>(true);
 
         for (int i = 0; i < children.Length; i++)
         {
@@ -116,6 +99,12 @@ public class PlayerBowShooter : MonoBehaviour
         }
 
         return null;
+    }
+
+    private Vector3 GetCameraShootDirection()
+    {
+        Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        return ray.direction.normalized;
     }
 
     private GameObject GetArrowObject()
@@ -127,64 +116,6 @@ public class PlayerBowShooter : MonoBehaviour
             return Instantiate(arrowPrefab);
 
         Debug.LogWarning("No ArrowPool found and arrowPrefab is missing.");
-
         return null;
-    }
-
-    private void IgnorePlayerCollision(GameObject arrowObject)
-    {
-        Collider arrowCollider = arrowObject.GetComponent<Collider>();
-
-        if (arrowCollider == null)
-            return;
-
-        Collider[] playerColliders =
-            GetComponentsInChildren<Collider>();
-
-        for (int i = 0; i < playerColliders.Length; i++)
-        {
-            if (playerColliders[i] != null)
-            {
-                Physics.IgnoreCollision(
-                    arrowCollider,
-                    playerColliders[i],
-                    true
-                );
-            }
-        }
-    }
-
-    private Vector3 GetSafeShootDirection(Transform arrowSpawnPoint)
-    {
-        Ray ray =
-            playerCamera.ViewportPointToRay(
-                new Vector3(0.5f, 0.5f, 0f)
-            );
-
-        Vector3 targetPoint;
-
-        if (Physics.Raycast(
-            ray,
-            out RaycastHit hit,
-            maxAimDistance,
-            aimLayers
-        ))
-        {
-            targetPoint = hit.point;
-        }
-        else
-        {
-            targetPoint =
-                ray.origin +
-                ray.direction * maxAimDistance;
-        }
-
-        Vector3 shootDirection =
-            targetPoint - arrowSpawnPoint.position;
-
-        if (shootDirection.magnitude < minDistanceFromSpawn)
-            shootDirection = playerCamera.transform.forward;
-
-        return shootDirection.normalized;
     }
 }

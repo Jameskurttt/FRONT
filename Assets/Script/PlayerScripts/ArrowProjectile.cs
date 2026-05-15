@@ -4,8 +4,11 @@ public class ArrowProjectile : MonoBehaviour
 {
     [Header("Arrow Settings")]
     public int damage = 25;
+    public float speed = 35f;
     public float lifeTime = 3f;
 
+    private Vector3 moveDirection;
+    private float timer;
     private Rigidbody rb;
     private Collider col;
 
@@ -17,20 +20,18 @@ public class ArrowProjectile : MonoBehaviour
 
     private void OnEnable()
     {
-        CancelInvoke();
+        timer = lifeTime;
 
         if (rb != null)
         {
-            rb.isKinematic = false;
+            rb.isKinematic = true;
             rb.useGravity = false;
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
         }
 
         if (col != null)
-            col.enabled = true;
-
-        Invoke(nameof(DisableArrow), lifeTime);
+            col.isTrigger = true;
     }
 
     public void SetDamage(int newDamage)
@@ -38,17 +39,22 @@ public class ArrowProjectile : MonoBehaviour
         damage = Mathf.Max(0, newDamage);
     }
 
-    public void Launch(Vector3 direction, float speed)
+    public void Launch(Vector3 direction, float arrowSpeed)
     {
-        if (rb == null)
-        {
-            Debug.LogWarning("ArrowProjectile: Rigidbody is missing.");
-            return;
-        }
+        moveDirection = direction.normalized;
+        speed = arrowSpeed;
 
-        direction = direction.normalized;
-        rb.linearVelocity = direction * speed;
-        transform.forward = direction;
+        transform.forward = moveDirection;
+    }
+
+    private void LateUpdate()
+    {
+        transform.position += moveDirection * speed * Time.deltaTime;
+
+        timer -= Time.deltaTime;
+
+        if (timer <= 0f)
+            DisableArrow();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -56,11 +62,26 @@ public class ArrowProjectile : MonoBehaviour
         if (other.isTrigger)
             return;
 
-        EnemyHealth enemy = other.GetComponent<EnemyHealth>();
+        if (other.GetComponentInParent<PlayerMovement>() != null)
+            return;
+
+        if (other.GetComponentInParent<Weapon>() != null)
+            return;
+
+        if (other.GetComponentInParent<ArrowProjectile>() != null)
+            return;
+
+        EnemyHealth enemy = other.GetComponentInParent<EnemyHealth>();
 
         if (enemy != null)
         {
             enemy.TakeDamage(damage);
+
+            PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
+
+            if (playerMovement != null)
+                playerMovement.PlayBowHitEnemySound();
+
             DisableArrow();
             return;
         }
@@ -70,6 +91,12 @@ public class ArrowProjectile : MonoBehaviour
         if (boss != null)
         {
             boss.TakeDamage(damage);
+
+            PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
+
+            if (playerMovement != null)
+                playerMovement.PlayBowHitEnemySound();
+
             DisableArrow();
             return;
         }
@@ -79,7 +106,6 @@ public class ArrowProjectile : MonoBehaviour
 
     private void DisableArrow()
     {
-        CancelInvoke();
         gameObject.SetActive(false);
     }
 }

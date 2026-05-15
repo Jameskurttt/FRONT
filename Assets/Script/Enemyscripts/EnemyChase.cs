@@ -96,7 +96,20 @@ public class EnemyChase : MonoBehaviour
         if (playerObject != null)
         {
             player = playerObject.transform;
+            Debug.Log(gameObject.name + " found player by tag: " + player.name);
+            return;
         }
+
+        PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
+
+        if (playerMovement != null)
+        {
+            player = playerMovement.transform;
+            Debug.Log(gameObject.name + " found player by PlayerMovement: " + player.name);
+            return;
+        }
+
+        Debug.LogError(gameObject.name + " could not find player.");
     }
 
     public Transform GetTarget()

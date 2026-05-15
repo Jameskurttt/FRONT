@@ -16,20 +16,15 @@ public class PauseMenu : MonoBehaviour
     public bool showCursorWhenPaused = true;
 
     [Header("Pause Sounds")]
-    public AudioSource uiAudioSource;
     public AudioClip openSound;
     public AudioClip closeSound;
+    public AudioClip clickSound;
+    public AudioClip hoverSound;
 
     private bool isPaused = false;
 
     void Start()
     {
-        if (uiAudioSource != null)
-        {
-            uiAudioSource.playOnAwake = false;
-            uiAudioSource.ignoreListenerPause = true;
-        }
-
         ResumeGame(false);
     }
 
@@ -69,12 +64,10 @@ public class PauseMenu : MonoBehaviour
         isPaused = true;
         Time.timeScale = 0f;
 
-        PlaySound(openSound);
+        PlayUI(openSound);
 
         if (pauseMenuCanvas != null)
             pauseMenuCanvas.SetActive(true);
-
-      
 
         if (settingsPanel != null)
             settingsPanel.SetActive(false);
@@ -97,7 +90,7 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
 
         if (playCloseSound)
-            PlaySound(closeSound);
+            PlayUI(closeSound);
 
         if (pauseMenuCanvas != null)
             pauseMenuCanvas.SetActive(false);
@@ -105,17 +98,10 @@ public class PauseMenu : MonoBehaviour
         SetCursorState(false);
     }
 
-    void PlaySound(AudioClip clip)
-    {
-        if (uiAudioSource != null && clip != null)
-        {
-            uiAudioSource.PlayOneShot(clip);
-        }
-    }
-
     public void OpenSettings()
     {
-        
+        PlayClick();
+
         if (settingsPanel != null)
             settingsPanel.SetActive(true);
 
@@ -127,15 +113,15 @@ public class PauseMenu : MonoBehaviour
 
     public void CloseSettings()
     {
+        PlayClick();
+
         if (settingsPanel != null)
             settingsPanel.SetActive(false);
-
-       
     }
 
     public void OpenQuitConfirmation()
     {
-        
+        PlayClick();
 
         if (settingsPanel != null)
             settingsPanel.SetActive(false);
@@ -146,10 +132,26 @@ public class PauseMenu : MonoBehaviour
 
     public void CloseQuitConfirmation()
     {
+        PlayClick();
+
         if (quitConfirmPanel != null)
             quitConfirmPanel.SetActive(false);
+    }
 
-        
+    public void PlayClick()
+    {
+        PlayUI(clickSound);
+    }
+
+    public void PlayHover()
+    {
+        PlayUI(hoverSound);
+    }
+
+    void PlayUI(AudioClip clip)
+    {
+        if (GameAudioManager.Instance != null)
+            GameAudioManager.Instance.PlayUI(clip);
     }
 
     public void RefreshPauseStats()
@@ -191,6 +193,7 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitGame()
     {
+        PlayClick();
         Time.timeScale = 1f;
 
 #if UNITY_EDITOR
