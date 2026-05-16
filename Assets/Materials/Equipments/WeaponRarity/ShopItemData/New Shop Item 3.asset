@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopItemData
   itemName: 
   description: 
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300000, guid: 8b80c224aa3486349952fa40997d1f8d, type: 3}
   price: 50
-  itemType: 0
+  itemType: 1
   potionEffect: 0
   potionValue: 10
-  armorData: {fileID: 0}
+  armorData: {fileID: 11400000, guid: f1029dc478bd7d1459ac295d14e6a347, type: 2}

@@ -24,8 +24,8 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float physicalDefense = 10f;
     [SerializeField] private float magicDefense = 8f;
 
-    [Header("Mobility")]
-    [SerializeField] private float movementSpeed = 7f;
+    [Header("Mobility Bonus")]
+    [SerializeField] private float bonusMovementSpeed = 0f;
 
     [Header("UI")]
     [SerializeField] private HealthBar healthBar;
@@ -48,6 +48,7 @@ public class PlayerHealth : MonoBehaviour
     void Update()
     {
         if (isDead) return;
+
         RegenerateHP();
     }
 
@@ -122,8 +123,6 @@ public class PlayerHealth : MonoBehaviour
             healthBar.SetSlider(currentHP);
     }
 
-   
-
     public void IncreaseMaxHP(float amount)
     {
         maxHP += amount;
@@ -171,9 +170,10 @@ public class PlayerHealth : MonoBehaviour
 
     public void IncreaseMovementSpeed(float amount)
     {
-        movementSpeed += amount;
-        movementSpeed = Mathf.Max(0.5f, movementSpeed);
-        Debug.Log("New Movement Speed: " + movementSpeed);
+        bonusMovementSpeed += amount;
+        bonusMovementSpeed = Mathf.Max(0f, bonusMovementSpeed);
+
+        Debug.Log("Bonus Movement Speed: " + bonusMovementSpeed);
     }
 
     public void IncreasePhysicalDefense(float amount)
@@ -215,13 +215,19 @@ public class PlayerHealth : MonoBehaviour
     public float GetPhysicalAttack() => physicalAttackDamage;
     public float GetMagicAttack() => magicAttackDamage;
     public float GetAttackSpeed() => attackSpeed;
-    public float GetMovementSpeed() => movementSpeed;
+
+    public float GetMovementSpeed()
+    {
+        return bonusMovementSpeed;
+    }
+
     public float GetPhysicalDefense() => physicalDefense;
     public float GetMagicDefense() => magicDefense;
 
     void Die()
     {
         if (isDead) return;
+
         isDead = true;
 
         if (playerCamera != null)
@@ -229,8 +235,6 @@ public class PlayerHealth : MonoBehaviour
 
         if (deathCamera != null)
             deathCamera.enabled = true;
-
-        if (GameManager.instance != null)
 
         if (GameManager.instance != null)
             GameManager.instance.GameOver();
@@ -247,8 +251,8 @@ public class PlayerHealth : MonoBehaviour
         physicalAttackDamage = Mathf.Max(0f, physicalAttackDamage);
         magicAttackDamage = Mathf.Max(0f, magicAttackDamage);
         attackSpeed = Mathf.Max(0.05f, attackSpeed);
+        bonusMovementSpeed = Mathf.Max(0f, bonusMovementSpeed);
         physicalDefense = Mathf.Max(0f, physicalDefense);
         magicDefense = Mathf.Max(0f, magicDefense);
-        movementSpeed = Mathf.Max(0.5f, movementSpeed);
     }
 }

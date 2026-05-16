@@ -170,10 +170,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WorldItemDrop
   itemData: {fileID: 0}
+  rolledWeaponDamage: 0
+  runtimeRarity: 0
   visualRoot: {fileID: 2000874737274195927}
   iconPivot: {fileID: 7238551607275477388}
   iconRenderer: {fileID: 5558782454632950226}
   glowRenderer: {fileID: 7336103178230474297}
+  useDropSplash: 1
+  splashMinDistance: 0.8
+  splashMaxDistance: 2.7
+  splashJumpHeight: 1.2
+  splashDuration: 0.35
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  groundRayHeight: 5
   spawnRiseHeight: 1
   spawnDuration: 0.25
   spawnScaleMultiplier: 1.25
@@ -185,7 +196,6 @@ MonoBehaviour:
   pickupRange: 2
   magnetRange: 0
   magnetSpeed: 0
-  pickupKey: 101
   pickupAnimDuration: 0.15
 --- !u!135 &6063023186002401463
 SphereCollider:

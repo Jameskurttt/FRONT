@@ -348,10 +348,12 @@ public class PlayerMovement : MonoBehaviour
 
     float GetMoveSpeed()
     {
-        if (playerStats != null)
-            return playerStats.GetMovementSpeed();
+        float bonusSpeed = 0f;
 
-        return defaultMoveSpeed;
+        if (playerStats != null)
+            bonusSpeed = playerStats.GetMovementSpeed();
+
+        return defaultMoveSpeed + bonusSpeed;
     }
 
     public void PlayJumpSound()

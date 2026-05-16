@@ -5,30 +5,37 @@ public class EnemyChase : MonoBehaviour
 {
     [Header("References")]
     public NavMeshAgent agent;
+    public Animator animator;
 
     [Header("Player")]
     public string playerTag = "Player";
     public Transform player;
 
     [Header("Chase Settings")]
-    public float detectionRange = 20f;
-    public float stoppingDistance = 2f;
+    public float detectionRange = 999f;
+    public float stoppingDistance = 1.5f;
     public float rotationSpeed = 8f;
+
+    [Header("Animation")]
+    public string runBoolName = "IsRunning";
 
     private void Awake()
     {
         if (agent == null)
             agent = GetComponent<NavMeshAgent>();
 
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
+
         if (agent != null)
         {
-            agent.stoppingDistance = stoppingDistance;
             agent.updateRotation = false;
+            agent.stoppingDistance = stoppingDistance;
+            agent.isStopped = false;
         }
-        else
-        {
-            Debug.LogError($"{gameObject.name} has no NavMeshAgent.");
-        }
+
+        if (animator != null)
+            animator.applyRootMotion = false;
     }
 
     private void Start()
@@ -41,51 +48,74 @@ public class EnemyChase : MonoBehaviour
         if (agent == null)
             return;
 
+        if (!agent.enabled || !agent.isOnNavMesh)
+            return;
+
         if (player == null)
         {
             FindPlayer();
             return;
         }
 
-        // Make sure stopping distance always matches inspector value
-        agent.stoppingDistance = stoppingDistance;
+        float distance = Vector3.Distance(transform.position, player.position);
 
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-
-        // Only chase when player is close enough
-        if (distanceToPlayer > detectionRange)
+        if (distance > detectionRange)
         {
-            if (!agent.isStopped)
-            {
-                agent.isStopped = true;
-                agent.ResetPath();
-            }
+            StopEnemy();
             return;
         }
 
-        // Chase player
-        if (distanceToPlayer > stoppingDistance)
+        if (distance <= stoppingDistance)
         {
-            agent.isStopped = false;
-            agent.SetDestination(player.position);
-
-            Vector3 moveDirection = agent.desiredVelocity;
-            moveDirection.y = 0f;
-
-            if (moveDirection.sqrMagnitude > 0.01f)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-                transform.rotation = Quaternion.Slerp(
-                    transform.rotation,
-                    targetRotation,
-                    rotationSpeed * Time.deltaTime
-                );
-            }
-        }
-        else
-        {
-            agent.isStopped = true;
+            StopEnemy();
             FaceTarget(player.position);
+            return;
+        }
+
+        ChasePlayer();
+    }
+
+    private void ChasePlayer()
+    {
+        agent.isStopped = false;
+        agent.stoppingDistance = stoppingDistance;
+        agent.SetDestination(player.position);
+
+        SetRunning(true);
+
+        Vector3 direction = agent.desiredVelocity;
+        direction.y = 0f;
+
+        if (direction.sqrMagnitude > 0.01f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                rotationSpeed * Time.deltaTime
+            );
+        }
+    }
+
+    private void StopEnemy()
+    {
+        agent.isStopped = true;
+        SetRunning(false);
+    }
+
+    private void SetRunning(bool value)
+    {
+        if (animator == null)
+            return;
+
+        foreach (AnimatorControllerParameter parameter in animator.parameters)
+        {
+            if (parameter.name == runBoolName)
+            {
+                animator.SetBool(runBoolName, value);
+                return;
+            }
         }
     }
 
@@ -96,20 +126,12 @@ public class EnemyChase : MonoBehaviour
         if (playerObject != null)
         {
             player = playerObject.transform;
-            Debug.Log(gameObject.name + " found player by tag: " + player.name);
-            return;
+            Debug.Log(gameObject.name + " found player: " + player.name);
         }
-
-        PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
-
-        if (playerMovement != null)
+        else
         {
-            player = playerMovement.transform;
-            Debug.Log(gameObject.name + " found player by PlayerMovement: " + player.name);
-            return;
+            Debug.LogError(gameObject.name + " could not find Player. Set Player Tag = Player.");
         }
-
-        Debug.LogError(gameObject.name + " could not find player.");
     }
 
     public Transform GetTarget()
@@ -117,8 +139,9 @@ public class EnemyChase : MonoBehaviour
         if (player == null)
             return null;
 
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-        if (distanceToPlayer <= detectionRange)
+        float distance = Vector3.Distance(transform.position, player.position);
+
+        if (distance <= detectionRange)
             return player;
 
         return null;
@@ -129,10 +152,11 @@ public class EnemyChase : MonoBehaviour
         Vector3 direction = targetPosition - transform.position;
         direction.y = 0f;
 
-        if (direction.sqrMagnitude < 0.01f)
+        if (direction.sqrMagnitude <= 0.01f)
             return;
 
         Quaternion targetRotation = Quaternion.LookRotation(direction);
+
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
             targetRotation,

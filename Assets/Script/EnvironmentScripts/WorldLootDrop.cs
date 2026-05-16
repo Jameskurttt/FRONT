@@ -18,6 +18,15 @@ public class WorldLootDrop : MonoBehaviour
     public SpriteRenderer iconRenderer;
     public SpriteRenderer glowRenderer;
 
+    [Header("Drop Splash")]
+    public bool useDropSplash = true;
+    public float splashMinDistance = 0.8f;
+    public float splashMaxDistance = 2.2f;
+    public float splashJumpHeight = 1.2f;
+    public float splashDuration = 0.35f;
+    public LayerMask groundLayer = ~0;
+    public float groundRayHeight = 5f;
+
     [Header("Spawn Animation")]
     public float spawnRiseHeight = 0.6f;
     public float spawnDuration = 0.25f;
@@ -49,6 +58,7 @@ public class WorldLootDrop : MonoBehaviour
 
     private bool isPickingUp;
     private bool visualsReady;
+    private bool isDropping;
 
     private void Awake()
     {
@@ -59,9 +69,7 @@ public class WorldLootDrop : MonoBehaviour
         }
 
         if (glowRenderer != null)
-        {
             glowBaseScale = glowRenderer.transform.localScale;
-        }
     }
 
     private void Start()
@@ -69,31 +77,17 @@ public class WorldLootDrop : MonoBehaviour
         mainCamera = Camera.main;
 
         FindPlayerReferences();
-
         ApplyItemLook();
-        StartCoroutine(PlaySpawnAnimation());
-    }
 
-    private void FindPlayerReferences()
-    {
-        playerWeaponPickup = FindObjectOfType<PlayerWeaponPickup>();
-
-        if (playerWeaponPickup != null)
-        {
-            player = playerWeaponPickup.transform;
-            playerArmorEquipment = playerWeaponPickup.GetComponent<PlayerArmorEquipment>();
-
-            Debug.Log("WorldLootDrop found PlayerWeaponPickup directly on: " + player.name);
-        }
+        if (useDropSplash)
+            StartCoroutine(DropSplashRoutine());
         else
-        {
-            Debug.LogError("WorldLootDrop could not find PlayerWeaponPickup in scene.");
-        }
+            StartCoroutine(PlaySpawnAnimation());
     }
 
     private void Update()
     {
-        if (!visualsReady || isPickingUp)
+        if (!visualsReady || isPickingUp || isDropping)
             return;
 
         FaceCamera();
@@ -135,6 +129,63 @@ public class WorldLootDrop : MonoBehaviour
         runtimeRarity = forcedRarity;
 
         ApplyItemLook();
+    }
+
+    private IEnumerator DropSplashRoutine()
+    {
+        isDropping = true;
+
+        Vector3 startPos = transform.position;
+
+        Vector2 randomCircle = Random.insideUnitCircle.normalized;
+        float randomDistance = Random.Range(splashMinDistance, splashMaxDistance);
+
+        Vector3 targetPos = startPos + new Vector3(randomCircle.x, 0f, randomCircle.y) * randomDistance;
+
+        Ray ray = new Ray(targetPos + Vector3.up * groundRayHeight, Vector3.down);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, groundRayHeight * 2f, groundLayer))
+        {
+            targetPos = hit.point;
+        }
+
+        float timer = 0f;
+
+        while (timer < splashDuration)
+        {
+            timer += Time.deltaTime;
+
+            float t = timer / splashDuration;
+            float smoothT = 1f - Mathf.Pow(1f - t, 3f);
+
+            Vector3 flatPos = Vector3.Lerp(startPos, targetPos, smoothT);
+            float jump = Mathf.Sin(t * Mathf.PI) * splashJumpHeight;
+
+            transform.position = flatPos + Vector3.up * jump;
+
+            yield return null;
+        }
+
+        transform.position = targetPos;
+
+        isDropping = false;
+
+        StartCoroutine(PlaySpawnAnimation());
+    }
+
+    private void FindPlayerReferences()
+    {
+        playerWeaponPickup = FindObjectOfType<PlayerWeaponPickup>();
+
+        if (playerWeaponPickup != null)
+        {
+            player = playerWeaponPickup.transform;
+            playerArmorEquipment = playerWeaponPickup.GetComponent<PlayerArmorEquipment>();
+        }
+        else
+        {
+            Debug.LogError("WorldLootDrop could not find PlayerWeaponPickup in scene.");
+        }
     }
 
     public int GetRolledWeaponDamage()
@@ -184,9 +235,6 @@ public class WorldLootDrop : MonoBehaviour
 
         switch (runtimeRarity)
         {
-            case LootRarity.Common:
-                break;
-
             case LootRarity.Uncommon:
                 minDamage += 2;
                 maxDamage += 3;
@@ -330,8 +378,6 @@ public class WorldLootDrop : MonoBehaviour
 
             if (playerWeaponPickup != null)
                 playerWeaponPickup.EquipFromLoot(itemData, rolledWeaponDamage, runtimeRarity);
-            else
-                Debug.LogError("Cannot equip weapon because PlayerWeaponPickup is still null.");
         }
 
         if (visualRoot != null)

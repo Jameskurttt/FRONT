@@ -7,11 +7,6 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material
-    second: {fileID: 2100000, guid: 5cbcb417193507d4abd47a27117b4ecd, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
       name: Pineleaves.001
     second: {fileID: 2100000, guid: e05b685ce82f06c45b21efc687ec3de8, type: 2}
   materials:
