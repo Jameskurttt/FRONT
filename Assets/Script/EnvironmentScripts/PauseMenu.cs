@@ -64,6 +64,8 @@ public class PauseMenu : MonoBehaviour
         isPaused = true;
         Time.timeScale = 0f;
 
+        AudioListener.pause = true;
+
         PlayUI(openSound);
 
         if (pauseMenuCanvas != null)
@@ -84,10 +86,12 @@ public class PauseMenu : MonoBehaviour
         ResumeGame(true);
     }
 
-    void ResumeGame(bool playCloseSound)
+    public void ResumeGame(bool playCloseSound)
     {
         isPaused = false;
         Time.timeScale = 1f;
+
+        AudioListener.pause = false;
 
         if (playCloseSound)
             PlayUI(closeSound);

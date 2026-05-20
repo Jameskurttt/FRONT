@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -23,6 +24,10 @@ public class EnemyHealth : MonoBehaviour
     public int expReward = 3;
     public int goldReward = 10;
 
+    [Header("Animation")]
+    public Animator enemyAnimator;
+    public float deathDelay = 2f;
+
     [Header("Loot Drop")]
     public GameObject lootDropPrefab;
     public EnemyLootItem[] possibleDrops;
@@ -39,6 +44,11 @@ public class EnemyHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
         hitFlash = GetComponent<EnemyHitFlash>();
+
+        if (enemyAnimator == null)
+        {
+            enemyAnimator = GetComponentInChildren<Animator>();
+        }
     }
 
     public void TakeDamage(int damage)
@@ -56,16 +66,44 @@ public class EnemyHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            Die();
+            StartCoroutine(Die());
         }
     }
 
-    private void Die()
+    private IEnumerator Die()
     {
-        if (isDead) return;
+        if (isDead) yield break;
         isDead = true;
 
         Debug.Log($"{gameObject.name} died");
+
+        // Stop movement immediately
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (agent != null)
+        {
+            agent.isStopped = true;
+            agent.enabled = false;
+        }
+
+        // Disable other logic scripts immediately so no behaviors execute mid-death
+        EnemyChase chase = GetComponent<EnemyChase>();
+        if (chase != null) chase.enabled = false;
+
+        EnemyMeleeAttack attack = GetComponent<EnemyMeleeAttack>();
+        if (attack != null) attack.enabled = false;
+
+        // Disable collider
+        Collider col = GetComponent<Collider>();
+        if (col != null)
+        {
+            col.enabled = false;
+        }
+
+        // Play die animation (matches "Die" trigger)
+        if (enemyAnimator != null)
+        {
+            enemyAnimator.SetTrigger("Die");
+        }
 
         GiveDefeatRewards(expReward, 1);
 
@@ -75,6 +113,8 @@ public class EnemyHealth : MonoBehaviour
         }
 
         TryDropLoot();
+
+        yield return new WaitForSeconds(deathDelay);
 
         Destroy(gameObject);
     }

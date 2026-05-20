@@ -58,6 +58,22 @@ public class GameAudioManager : MonoBehaviour
         musicSource.Play();
     }
 
+    public void StopBackgroundMusic()
+    {
+        if (musicSource != null && musicSource.isPlaying)
+        {
+            musicSource.Stop();
+        }
+    }
+
+    public void ResumeBackgroundMusic()
+    {
+        if (musicSource != null && !musicSource.isPlaying)
+        {
+            musicSource.Play();
+        }
+    }
+
     public void PlaySFX(AudioClip clip)
     {
         if (sfxSource != null && clip != null)

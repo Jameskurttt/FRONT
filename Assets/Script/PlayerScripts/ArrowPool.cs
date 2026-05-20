@@ -32,7 +32,12 @@ public class ArrowPool : MonoBehaviour
     {
         for (int i = 0; i < poolSize; i++)
         {
-            GameObject arrow = Instantiate(arrowPrefab, poolParent);
+            
+            GameObject arrow = Instantiate(arrowPrefab);
+
+            if (poolParent != null)
+                arrow.transform.SetParent(poolParent, false);
+
             arrow.SetActive(false);
             pool.Add(arrow);
         }
@@ -46,7 +51,12 @@ public class ArrowPool : MonoBehaviour
                 return pool[i];
         }
 
-        GameObject newArrow = Instantiate(arrowPrefab, poolParent);
+        
+        GameObject newArrow = Instantiate(arrowPrefab);
+
+        if (poolParent != null)
+            newArrow.transform.SetParent(poolParent, false);
+
         newArrow.SetActive(false);
         pool.Add(newArrow);
 

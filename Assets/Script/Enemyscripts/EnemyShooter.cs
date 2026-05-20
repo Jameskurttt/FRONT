@@ -17,6 +17,9 @@ public class EnemyShooter : MonoBehaviour
     public float shootCooldown = 1.5f;
     public float bulletSpeed = 20f;
 
+    [Header("Rotation")]
+    public float rotationSpeed = 5f;
+
     [Header("Animator")]
     public string attackTriggerName = "Attack";
 
@@ -40,38 +43,51 @@ public class EnemyShooter : MonoBehaviour
             return;
 
         Transform player = chaseScript.GetTarget();
-
         if (player == null)
             return;
 
-        float distanceToPlayer =
-            Vector3.Distance(transform.position, player.position);
+        float distance = Vector3.Distance(transform.position, player.position);
 
-        // Stop and shoot
-        if (distanceToPlayer <= shootRange)
+        if (distance <= shootRange)
         {
-            if (agent != null)
+            if (agent != null && agent.enabled)
             {
                 agent.isStopped = true;
                 agent.ResetPath();
             }
 
-            chaseScript.FaceTarget(player.position);
+            RotateToward(player);
+
+            shootTimer -= Time.deltaTime;
+
+            if (shootTimer <= 0f)
+            {
+                shootTimer = shootCooldown;
+                Shoot(player);
+            }
         }
         else
         {
-            if (agent != null)
+            if (agent != null && agent.enabled)
                 agent.isStopped = false;
         }
+    }
 
-        shootTimer -= Time.deltaTime;
+    private void RotateToward(Transform target)
+    {
+        Vector3 direction = target.position - transform.position;
+        direction.y = 0f;
 
-        if (distanceToPlayer <= shootRange && shootTimer <= 0f)
-        {
-            shootTimer = shootCooldown;
+        if (direction.sqrMagnitude < 0.01f)
+            return;
 
-            Shoot(player);
-        }
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        transform.rotation = Quaternion.RotateTowards(
+            transform.rotation,
+            targetRotation,
+            rotationSpeed * 180f * Time.deltaTime
+        );
     }
 
     private void Shoot(Transform player)
@@ -79,18 +95,14 @@ public class EnemyShooter : MonoBehaviour
         if (bulletPrefab == null || firePoint == null)
             return;
 
-        // Play attack animation
         if (animator != null)
         {
             animator.ResetTrigger(attackTriggerName);
             animator.SetTrigger(attackTriggerName);
         }
 
-        // Aim lower so arrow does not shoot upward
         Vector3 targetPos = player.position + Vector3.up * 0.4f;
-
-        Vector3 direction =
-            (targetPos - firePoint.position).normalized;
+        Vector3 direction = (targetPos - firePoint.position).normalized;
 
         GameObject bullet = Instantiate(
             bulletPrefab,
@@ -102,15 +114,9 @@ public class EnemyShooter : MonoBehaviour
 
         if (rb != null)
         {
-            rb.isKinematic = false;
-
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
-
-            rb.AddForce(
-                direction * bulletSpeed,
-                ForceMode.VelocityChange
-            );
+            rb.AddForce(direction * bulletSpeed, ForceMode.VelocityChange);
         }
     }
 }

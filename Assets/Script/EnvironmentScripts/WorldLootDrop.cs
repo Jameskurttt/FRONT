@@ -175,7 +175,7 @@ public class WorldLootDrop : MonoBehaviour
 
     private void FindPlayerReferences()
     {
-        playerWeaponPickup = FindObjectOfType<PlayerWeaponPickup>();
+        playerWeaponPickup = FindAnyObjectByType<PlayerWeaponPickup>();
 
         if (playerWeaponPickup != null)
         {

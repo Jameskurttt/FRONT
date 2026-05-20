@@ -161,11 +161,11 @@ public class ShopManager : MonoBehaviour
 
     private void RefreshStatsUI()
     {
-        SkillTreeManager skillTreeManager = FindObjectOfType<SkillTreeManager>();
+        SkillTreeManager skillTreeManager = FindAnyObjectByType<SkillTreeManager>();
         if (skillTreeManager != null)
             skillTreeManager.RefreshStatsUI();
 
-        PauseMenu pauseMenu = FindObjectOfType<PauseMenu>();
+        PauseMenu pauseMenu = FindAnyObjectByType<PauseMenu>();
         if (pauseMenu != null)
             pauseMenu.RefreshPauseStats();
     }

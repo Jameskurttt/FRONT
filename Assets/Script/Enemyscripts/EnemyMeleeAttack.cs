@@ -6,7 +6,6 @@ public class EnemyMeleeAttack : MonoBehaviour
     [Header("References")]
     public EnemyChase enemyChase;
     public Animator animator;
-    public NavMeshAgent agent;
 
     [Header("Attack Settings")]
     public float attackRange = 2f;
@@ -14,61 +13,65 @@ public class EnemyMeleeAttack : MonoBehaviour
     public int damage = 10;
 
     [Header("Animator")]
-    public string attackTriggerName = "Attack";
+    public string attackBoolName = "isAttacking";
 
     private float nextAttackTime;
 
     private void Awake()
     {
-        if (enemyChase == null)
-            enemyChase = GetComponent<EnemyChase>();
-
-        if (animator == null)
-            animator = GetComponentInChildren<Animator>();
-
-        if (agent == null)
-            agent = GetComponent<NavMeshAgent>();
+        if (enemyChase == null) enemyChase = GetComponent<EnemyChase>();
+        if (animator == null) animator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
     {
-        if (enemyChase == null || animator == null)
-            return;
+        if (enemyChase == null) return;
 
         Transform target = enemyChase.GetTarget();
-
         if (target == null)
+        {
+            SetAttack(false);
             return;
+        }
 
         float distance = Vector3.Distance(transform.position, target.position);
 
-        if (distance <= attackRange && Time.time >= nextAttackTime)
+        if (distance > attackRange)
+        {
+            SetAttack(false);
+            return;
+        }
+
+        // Face target ONLY during attack (safe since NavMesh rotates)
+        Vector3 dir = target.position - transform.position;
+        dir.y = 0;
+
+        if (dir != Vector3.zero)
+        {
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                Quaternion.LookRotation(dir),
+                10f * Time.deltaTime
+            );
+        }
+
+        if (Time.time >= nextAttackTime)
         {
             nextAttackTime = Time.time + attackCooldown;
 
-            if (agent != null)
+            SetAttack(true);
+
+            PlayerHealth ph = target.GetComponent<PlayerHealth>();
+            if (ph != null)
             {
-                agent.isStopped = true;
-                agent.ResetPath();
-            }
-
-            enemyChase.FaceTarget(target.position);
-
-            animator.SetTrigger(attackTriggerName);
-
-            PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
-
-            if (playerHealth != null)
-            {
-                playerHealth.TakeDamage(damage);
+                ph.TakeDamage(damage);
             }
         }
-        else if (distance > attackRange)
-        {
-            if (agent != null)
-            {
-                agent.isStopped = false;
-            }
-        }
+    }
+
+    private void SetAttack(bool value)
+    {
+        if (animator != null)
+            animator.SetBool(attackBoolName, value);
     }
 }

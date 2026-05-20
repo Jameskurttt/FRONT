@@ -5,8 +5,7 @@ public class SwordDamage : MonoBehaviour
 {
     private Weapon weapon;
     private PlayerHealth playerStats;
-
-    private List<EnemyHealth> hitEnemies = new List<EnemyHealth>();
+    private List<GameObject> hitTargets = new List<GameObject>();
 
     private void Awake()
     {
@@ -16,12 +15,12 @@ public class SwordDamage : MonoBehaviour
             playerStats = weapon.GetComponentInParent<PlayerHealth>();
 
         if (playerStats == null)
-            playerStats = FindObjectOfType<PlayerHealth>();
+            playerStats = FindAnyObjectByType<PlayerHealth>();
     }
 
     public void StartDamage()
     {
-        hitEnemies.Clear();
+        hitTargets.Clear();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -33,20 +32,31 @@ public class SwordDamage : MonoBehaviour
             return;
 
         EnemyHealth enemy = other.GetComponentInParent<EnemyHealth>();
+        BossHealth boss = other.GetComponentInParent<BossHealth>();
 
-        if (enemy == null)
+        if (enemy == null && boss == null)
             return;
 
-        if (hitEnemies.Contains(enemy))
+        GameObject targetObject = enemy != null ? enemy.gameObject : boss.gameObject;
+
+        if (hitTargets.Contains(targetObject))
             return;
 
-        hitEnemies.Add(enemy);
+        hitTargets.Add(targetObject);
 
         int finalDamage = GetFinalDamage();
 
-        enemy.TakeDamage(finalDamage);
+        if (enemy != null)
+        {
+            enemy.TakeDamage(finalDamage);
+            Debug.Log("Sword hit: " + enemy.name + " | Final Damage: " + finalDamage);
+        }
+        else if (boss != null)
+        {
+            boss.TakeDamage(finalDamage);
+            Debug.Log("Sword hit Boss: " + boss.bossName + " | Final Damage: " + finalDamage);
+        }
 
-        // HIT SOUND
         PlayerMovement playerMovement = weapon.GetComponentInParent<PlayerMovement>();
 
         if (playerMovement != null)
@@ -55,7 +65,8 @@ public class SwordDamage : MonoBehaviour
 
             if (animator != null)
             {
-                AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+               
+                AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(1);
 
                 if (stateInfo.IsName("SWORD_ATTACK1"))
                 {
@@ -71,8 +82,6 @@ public class SwordDamage : MonoBehaviour
                 }
             }
         }
-
-        Debug.Log("Sword hit: " + enemy.name + " | Final Damage: " + finalDamage);
     }
 
     private int GetFinalDamage()

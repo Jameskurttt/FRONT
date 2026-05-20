@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Combat")]
     public PlayerWeaponPickup weaponPickup;
+    [Tooltip("How often the bow can physically fire. Matches animation length.")]
+    public float bowAttackCooldown = 0.5f;
 
     [Header("Audio Sources")]
     public AudioSource footstepSource;
@@ -55,6 +57,7 @@ public class PlayerMovement : MonoBehaviour
     private bool queuedCombo2;
     private bool queuedCombo3;
     private int comboStep;
+    private float lastBowShotTime;
 
     void Start()
     {
@@ -120,8 +123,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 input = new Vector3(h, 0f, v).normalized;
         Vector3 rightDir = Vector3.Cross(Vector3.up, forwardDir);
 
-        Vector3 targetMove =
-            (forwardDir * input.z + rightDir * input.x) * GetMoveSpeed();
+        Vector3 targetMove = (forwardDir * input.z + rightDir * input.x) * GetMoveSpeed();
 
         currentMove = Vector3.Lerp(
             currentMove,
@@ -261,11 +263,15 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleSwordCombat()
     {
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(1);
+
+        if (stateInfo.IsName("IdleCombat"))
+        {
+            ResetCombo();
+        }
 
         bool inCombo1 = stateInfo.IsName("SWORD_ATTACK1");
         bool inCombo2 = stateInfo.IsName("SWORD_ATTACK2");
-        bool inCombo3 = stateInfo.IsName("SWORD_ATTACK3");
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -291,51 +297,40 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (inCombo1)
+        if (inCombo1 && queuedCombo2 && stateInfo.normalizedTime >= 0.45f)
         {
-            comboStep = 1;
-
-            if (queuedCombo2 && stateInfo.normalizedTime >= 0.45f)
-            {
-                queuedCombo2 = false;
-                comboStep = 2;
-                animator.ResetTrigger("Attack1");
-                animator.SetTrigger("Attack2");
-            }
-
-            if (stateInfo.normalizedTime >= 0.95f && !queuedCombo2)
-                ResetCombo();
-        }
-
-        if (inCombo2)
-        {
+            queuedCombo2 = false;
             comboStep = 2;
-
-            if (queuedCombo3 && stateInfo.normalizedTime >= 0.45f)
-            {
-                queuedCombo3 = false;
-                comboStep = 3;
-                animator.ResetTrigger("Attack2");
-                animator.SetTrigger("Attack3");
-            }
-
-            if (stateInfo.normalizedTime >= 0.95f && !queuedCombo3)
-                ResetCombo();
+            animator.ResetTrigger("Attack1");
+            animator.SetTrigger("Attack2");
         }
 
-        if (inCombo3)
+        if (inCombo2 && queuedCombo3 && stateInfo.normalizedTime >= 0.45f)
         {
+            queuedCombo3 = false;
             comboStep = 3;
-
-            if (stateInfo.normalizedTime >= 0.95f)
-                ResetCombo();
+            animator.ResetTrigger("Attack2");
+            animator.SetTrigger("Attack3");
         }
     }
 
     void HandleBowCombat()
     {
-        if (Input.GetMouseButtonDown(0))
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(1);
+
+        if (stateInfo.IsName("IdleCombat"))
+        {
+            isAttacking = false;
+        }
+
+        if (Input.GetMouseButtonDown(0) && !isAttacking && Time.time >= lastBowShotTime + bowAttackCooldown)
+        {
+            isAttacking = true;
+            lastBowShotTime = Time.time;
+
+            // Trigger the animation timeline state transition
             animator.SetTrigger("Shoot");
+        }
     }
 
     void ResetCombo()
@@ -356,11 +351,12 @@ public class PlayerMovement : MonoBehaviour
         return defaultMoveSpeed + bonusSpeed;
     }
 
-    public void PlayJumpSound()
-    {
-        if (sfxSource != null && jumpSound != null)
-            sfxSource.PlayOneShot(jumpSound, jumpVolume);
-    }
+    // Sound Methods utilized by PlayerAnimationSoundEvents or Projectile scripts
+    public void PlayJumpSound() { if (sfxSource != null && jumpSound != null) sfxSource.PlayOneShot(jumpSound, jumpVolume); }
+    public void PlaySwordCombo1HitSound() { if (sfxSource != null && swordCombo1HitSound != null) sfxSource.PlayOneShot(swordCombo1HitSound, hitVolume); }
+    public void PlaySwordCombo2HitSound() { if (sfxSource != null && swordCombo2HitSound != null) sfxSource.PlayOneShot(swordCombo2HitSound, hitVolume); }
+    public void PlaySwordCombo3HitSound() { if (sfxSource != null && swordCombo3HitSound != null) sfxSource.PlayOneShot(swordCombo3HitSound, hitVolume); }
+    public void PlayBowHitEnemySound() { if (sfxSource != null && bowHitEnemySound != null) sfxSource.PlayOneShot(bowHitEnemySound, hitVolume); }
 
     public void PlaySwordCombo1Sound()
     {
@@ -383,30 +379,8 @@ public class PlayerMovement : MonoBehaviour
     public void PlayBowShootSound()
     {
         if (sfxSource != null && bowShootSound != null)
+        {
             sfxSource.PlayOneShot(bowShootSound, attackVolume);
-    }
-
-    public void PlaySwordCombo1HitSound()
-    {
-        if (sfxSource != null && swordCombo1HitSound != null)
-            sfxSource.PlayOneShot(swordCombo1HitSound, hitVolume);
-    }
-
-    public void PlaySwordCombo2HitSound()
-    {
-        if (sfxSource != null && swordCombo2HitSound != null)
-            sfxSource.PlayOneShot(swordCombo2HitSound, hitVolume);
-    }
-
-    public void PlaySwordCombo3HitSound()
-    {
-        if (sfxSource != null && swordCombo3HitSound != null)
-            sfxSource.PlayOneShot(swordCombo3HitSound, hitVolume);
-    }
-
-    public void PlayBowHitEnemySound()
-    {
-        if (sfxSource != null && bowHitEnemySound != null)
-            sfxSource.PlayOneShot(bowHitEnemySound, hitVolume);
+        }
     }
 }

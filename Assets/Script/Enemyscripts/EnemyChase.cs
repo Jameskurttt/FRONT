@@ -12,30 +12,21 @@ public class EnemyChase : MonoBehaviour
     public Transform player;
 
     [Header("Chase Settings")]
-    public float detectionRange = 999f;
+    public float detectionRange = 10f;
     public float stoppingDistance = 1.5f;
-    public float rotationSpeed = 8f;
 
     [Header("Animation")]
-    public string runBoolName = "IsRunning";
+    public string runBoolName = "isRunning"; // IMPORTANT FIXED
 
     private void Awake()
     {
-        if (agent == null)
-            agent = GetComponent<NavMeshAgent>();
+        if (agent == null) agent = GetComponent<NavMeshAgent>();
+        if (animator == null) animator = GetComponentInChildren<Animator>();
 
-        if (animator == null)
-            animator = GetComponentInChildren<Animator>();
+        agent.stoppingDistance = stoppingDistance;
 
-        if (agent != null)
-        {
-            agent.updateRotation = false;
-            agent.stoppingDistance = stoppingDistance;
-            agent.isStopped = false;
-        }
-
-        if (animator != null)
-            animator.applyRootMotion = false;
+        // IMPORTANT: we control rotation manually (prevents jitter)
+        agent.updateRotation = false;
     }
 
     private void Start()
@@ -45,10 +36,7 @@ public class EnemyChase : MonoBehaviour
 
     private void Update()
     {
-        if (agent == null)
-            return;
-
-        if (!agent.enabled || !agent.isOnNavMesh)
+        if (agent == null || !agent.enabled || !agent.isOnNavMesh)
             return;
 
         if (player == null)
@@ -61,106 +49,65 @@ public class EnemyChase : MonoBehaviour
 
         if (distance > detectionRange)
         {
-            StopEnemy();
+            StopMoving();
             return;
         }
 
         if (distance <= stoppingDistance)
         {
-            StopEnemy();
-            FaceTarget(player.position);
+            StopMoving();
             return;
         }
 
-        ChasePlayer();
+        MoveToPlayer();
     }
 
-    private void ChasePlayer()
+    private void MoveToPlayer()
     {
         agent.isStopped = false;
-        agent.stoppingDistance = stoppingDistance;
         agent.SetDestination(player.position);
 
         SetRunning(true);
-
-        Vector3 direction = agent.desiredVelocity;
-        direction.y = 0f;
-
-        if (direction.sqrMagnitude > 0.01f)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                targetRotation,
-                rotationSpeed * Time.deltaTime
-            );
-        }
     }
 
-    private void StopEnemy()
+    private void StopMoving()
     {
         agent.isStopped = true;
+        agent.ResetPath();
+
         SetRunning(false);
     }
 
     private void SetRunning(bool value)
     {
-        if (animator == null)
-            return;
+        if (animator == null) return;
 
-        foreach (AnimatorControllerParameter parameter in animator.parameters)
+        // SAFE: prevents crash if parameter missing
+        if (HasParameter(runBoolName))
+            animator.SetBool(runBoolName, value);
+
+        Debug.Log("isRunning = " + value);
+    }
+
+    private bool HasParameter(string name)
+    {
+        foreach (AnimatorControllerParameter p in animator.parameters)
         {
-            if (parameter.name == runBoolName)
-            {
-                animator.SetBool(runBoolName, value);
-                return;
-            }
+            if (p.name == name)
+                return true;
         }
+        return false;
     }
 
     private void FindPlayer()
     {
-        GameObject playerObject = GameObject.FindGameObjectWithTag(playerTag);
-
-        if (playerObject != null)
-        {
-            player = playerObject.transform;
-            Debug.Log(gameObject.name + " found player: " + player.name);
-        }
-        else
-        {
-            Debug.LogError(gameObject.name + " could not find Player. Set Player Tag = Player.");
-        }
+        GameObject obj = GameObject.FindGameObjectWithTag(playerTag);
+        if (obj != null)
+            player = obj.transform;
     }
 
     public Transform GetTarget()
     {
-        if (player == null)
-            return null;
-
-        float distance = Vector3.Distance(transform.position, player.position);
-
-        if (distance <= detectionRange)
-            return player;
-
-        return null;
-    }
-
-    public void FaceTarget(Vector3 targetPosition)
-    {
-        Vector3 direction = targetPosition - transform.position;
-        direction.y = 0f;
-
-        if (direction.sqrMagnitude <= 0.01f)
-            return;
-
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-        transform.rotation = Quaternion.Slerp(
-            transform.rotation,
-            targetRotation,
-            rotationSpeed * Time.deltaTime
-        );
+        return player;
     }
 }

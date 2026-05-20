@@ -77,7 +77,7 @@ public class ArrowProjectile : MonoBehaviour
         {
             enemy.TakeDamage(damage);
 
-            PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
+            PlayerMovement playerMovement = FindAnyObjectByType<PlayerMovement>();
 
             if (playerMovement != null)
                 playerMovement.PlayBowHitEnemySound();
@@ -92,7 +92,7 @@ public class ArrowProjectile : MonoBehaviour
         {
             boss.TakeDamage(damage);
 
-            PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
+            PlayerMovement playerMovement = FindAnyObjectByType<PlayerMovement>();
 
             if (playerMovement != null)
                 playerMovement.PlayBowHitEnemySound();

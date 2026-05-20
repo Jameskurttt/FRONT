@@ -658,7 +658,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 23, y: 39}
+  m_AnchoredPosition: {x: 23, y: -118}
   m_SizeDelta: {x: 945.615, y: 507.0372}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &648237442
@@ -681,37 +681,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Project Manager: Viana
-
-    Lead Designer: Viana
-
-
-    Sound Designer:
-    Saja
-
-    Composer: Saja
-
-
-    Level Designer: Aquino
-
-
-    Art Director: Viana
-
-    3D/2D
-    Artist: Viana & Moncada
-
-    Concept Artist: Viana & Moncada
-
-    Animator: Viana
-    & Moncada
-
-    UI/UX: Viana & Aquino
-
-
-    Technical Director: Felicidario
-
-    Gameplay
-    Programmer: Felicidario & Pido'
+  m_text: "Project Manager: Jan Joshua Viana & James Kurt Airiel G. Felicidaio\n\nLead
+    Designer: Jan Joshua Viana\n\nSound Designer: James Kurt Airiel G. Felicidaio\n\nComposer:
+    James Kurt Airiel G. Felicidaio\n\nLevel Designer: Jan Joshua Viana & James Kurt
+    Airiel G. Felicidaio \n\nArt Director: Jan Joshua Viana & Ash Joshua Moncada\n\n3D/2D
+    Artist: Ash Joshua Moncada &Jan Joshua Viana\n\nConcept Artist: Jan Joshua Viana\n\nAnimator:
+    Jan Joshua Viana \n\nUI/UX: Jan Joshua Viana & James Kurt Airiel G. Felicidaio\n\nTechnical
+    Director: James Kurt Airiel G. Felicidaio & Ash Joshua\n Moncada\nGameplay Programmer:
+    James Kurt Airiel G. Felicidaio"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fce72f6bc8c9c2843bc7ac4c705e7d36, type: 2}
   m_sharedMaterial: {fileID: 3331767691872361413, guid: fce72f6bc8c9c2843bc7ac4c705e7d36, type: 2}

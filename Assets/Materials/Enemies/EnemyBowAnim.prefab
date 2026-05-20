@@ -1155,6 +1155,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Goblin Archer Anim
       objectReference: {fileID: 0}
+    - target: {fileID: 1630794972795428178, guid: 89ff25d22e712904f9930d1118e222e5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 21dcd04b8481c88458496e10560aec63, type: 2}
     - target: {fileID: 5866666021909216657, guid: 89ff25d22e712904f9930d1118e222e5, type: 3}
       propertyPath: m_Controller
       value: 
