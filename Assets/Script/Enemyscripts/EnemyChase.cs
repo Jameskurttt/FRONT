@@ -15,17 +15,27 @@ public class EnemyChase : MonoBehaviour
     public float detectionRange = 10f;
     public float stoppingDistance = 1.5f;
 
+    [Header("Rotation")]
+    public float rotationSpeed = 8f;
+
     [Header("Animation")]
-    public string runBoolName = "isRunning"; // IMPORTANT FIXED
+    public string runBoolName = "isRunning";
+
+    private bool isRunning = false;
 
     private void Awake()
     {
-        if (agent == null) agent = GetComponent<NavMeshAgent>();
-        if (animator == null) animator = GetComponentInChildren<Animator>();
+        // Auto assign references
+        if (agent == null)
+            agent = GetComponent<NavMeshAgent>();
 
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
+
+        // Setup agent
         agent.stoppingDistance = stoppingDistance;
 
-        // IMPORTANT: we control rotation manually (prevents jitter)
+        // We rotate manually
         agent.updateRotation = false;
     }
 
@@ -36,30 +46,39 @@ public class EnemyChase : MonoBehaviour
 
     private void Update()
     {
+        // Safety checks
         if (agent == null || !agent.enabled || !agent.isOnNavMesh)
             return;
 
+        // Find player again if missing
         if (player == null)
         {
             FindPlayer();
             return;
         }
 
+        // Rotate toward player
+        RotateToPlayer();
+
+        // Distance to player
         float distance = Vector3.Distance(transform.position, player.position);
 
+        // Outside detection range
         if (distance > detectionRange)
         {
             StopMoving();
             return;
         }
 
-        if (distance <= stoppingDistance)
+        // Chase player
+        if (distance > stoppingDistance)
+        {
+            MoveToPlayer();
+        }
+        else
         {
             StopMoving();
-            return;
         }
-
-        MoveToPlayer();
     }
 
     private void MoveToPlayer()
@@ -67,7 +86,11 @@ public class EnemyChase : MonoBehaviour
         agent.isStopped = false;
         agent.SetDestination(player.position);
 
-        SetRunning(true);
+        if (!isRunning)
+        {
+            SetRunning(true);
+            isRunning = true;
+        }
     }
 
     private void StopMoving()
@@ -75,33 +98,49 @@ public class EnemyChase : MonoBehaviour
         agent.isStopped = true;
         agent.ResetPath();
 
-        SetRunning(false);
+        if (isRunning)
+        {
+            SetRunning(false);
+            isRunning = false;
+        }
+    }
+
+    private void RotateToPlayer()
+    {
+        if (player == null)
+            return;
+
+        Vector3 direction = player.position - transform.position;
+
+        // Ignore vertical tilt
+        direction.y = 0f;
+
+        // Prevent errors
+        if (direction.sqrMagnitude < 0.001f)
+            return;
+
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            lookRotation,
+            Time.deltaTime * rotationSpeed
+        );
     }
 
     private void SetRunning(bool value)
     {
-        if (animator == null) return;
+        if (animator == null)
+            return;
 
-        // SAFE: prevents crash if parameter missing
-        if (HasParameter(runBoolName))
-            animator.SetBool(runBoolName, value);
+        animator.SetBool(runBoolName, value);
 
-        Debug.Log("isRunning = " + value);
-    }
-
-    private bool HasParameter(string name)
-    {
-        foreach (AnimatorControllerParameter p in animator.parameters)
-        {
-            if (p.name == name)
-                return true;
-        }
-        return false;
     }
 
     private void FindPlayer()
     {
         GameObject obj = GameObject.FindGameObjectWithTag(playerTag);
+
         if (obj != null)
             player = obj.transform;
     }

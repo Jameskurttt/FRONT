@@ -117,9 +117,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.4
-  m_Height: 2.35
+  m_Height: 1.95
   m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0.09}
+  m_Center: {x: 0, y: 0.64, z: 0.09}
 --- !u!54 &7330782528153954865
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -157,8 +157,8 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.3
-  m_Speed: 6
-  m_Acceleration: 12
+  m_Speed: 2
+  m_Acceleration: 9
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 1.2
@@ -211,6 +211,7 @@ MonoBehaviour:
   player: {fileID: 6430014280134543535, guid: 5f51c0759367ef34cb88f976e484a56e, type: 3}
   detectionRange: 40
   stoppingDistance: 1.2
+  rotationSpeed: 8
   runBoolName: isRunning
 --- !u!114 &6464055860361226209
 MonoBehaviour:
@@ -253,15 +254,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 07e4b5f2748923846b22bea430740e58, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.0542
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 07e4b5f2748923846b22bea430740e58, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.03188
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 07e4b5f2748923846b22bea430740e58, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.43607
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 07e4b5f2748923846b22bea430740e58, type: 3}
       propertyPath: m_LocalRotation.w

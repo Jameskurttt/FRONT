@@ -22,6 +22,10 @@ public class ArrowProjectile : MonoBehaviour
     {
         timer = lifeTime;
 
+        // RESET SCALE: This ensures that when arrows are recycled from the ArrowPool,
+        // regular basic attacks shrink back down to your prefab's standard size (4, 4, 4).
+        transform.localScale = new Vector3(4f, 4f, 4f);
+
         if (rb != null)
         {
             rb.isKinematic = true;

@@ -1,0 +1,1017 @@
+fileFormatVersion: 2
+guid: d0659dbdb0091674cbf896e0b3902fa4
+ModelImporter:
+  serializedVersion: 24200
+  internalIDToNameTable: []
+  externalObjects: {}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Goblin Archer Rig|12312312321
+      takeName: Goblin Archer Rig|12312312321
+      internalID: -2169841712423640775
+      firstFrame: 0
+      lastFrame: 12
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Goblin Archer Rig|Basi BowAction
+      takeName: Goblin Archer Rig|Basi BowAction
+      internalID: 8083741429825531580
+      firstFrame: 0
+      lastFrame: 0
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Goblin Archer Rig|G_Attack.001
+      takeName: Goblin Archer Rig|G_Attack.001
+      internalID: 5756006843406229124
+      firstFrame: 0
+      lastFrame: 23
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Goblin Archer Rig|GA_Attack
+      takeName: Goblin Archer Rig|GA_Attack
+      internalID: -2941127208982936450
+      firstFrame: 0
+      lastFrame: 40
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Goblin Archer Rig|GA_Death
+      takeName: Goblin Archer Rig|GA_Death
+      internalID: -4503012192653888925
+      firstFrame: 0
+      lastFrame: 48
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Goblin Archer Rig|GA_Idle
+      takeName: Goblin Archer Rig|GA_Idle
+      internalID: 4259245534411090551
+      firstFrame: 0
+      lastFrame: 47
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Goblin Archer Rig|GA_Run
+      takeName: Goblin Archer Rig|GA_Run
+      internalID: -5096076568742462698
+      firstFrame: 0
+      lastFrame: 35
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Goblin Archer Rig|GA_Walk
+      takeName: Goblin Archer Rig|GA_Walk
+      internalID: 5619013918193879721
+      firstFrame: 0
+      lastFrame: 47
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton:
+    - name: Goblin Archer Anim (2)(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Basi Bow
+      parentName: Goblin Archer Anim (2)(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 0.9999999, y: 0.9999999, z: 0.9999999}
+    - name: Body
+      parentName: Goblin Archer Anim (2)(Clone)
+      position: {x: -0.0003059839, y: 0.008311033, z: 0.0000000024675755}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 0.9999999, y: 0.9999999, z: 0.9999999}
+    - name: Costume Leg
+      parentName: Goblin Archer Anim (2)(Clone)
+      position: {x: -0.12146862, y: 0.16809171, z: -0.028759358}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 0.9999999, y: 0.9999999, z: 0.9999999}
+    - name: Goblin Archer Rig
+      parentName: Goblin Archer Anim (2)(Clone)
+      position: {x: -0, y: 0.78804433, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 0.09250445, y: 0.09250445, z: 0.09250445}
+    - name: ROOT
+      parentName: Goblin Archer Rig
+      position: {x: -0, y: 0, z: -8.518989}
+      rotation: {x: 1, y: -7.1054274e-15, z: 0.0000000754979, w: -0.00000008940697}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Bone
+      parentName: ROOT
+      position: {x: 0.0000010781994, y: -0.55921733, z: -7.140591}
+      rotation: {x: -0.0002416566, y: 0.70710677, z: 0.70710677, w: -0.00024154982}
+      scale: {x: 1, y: 1.0000051, z: 1.0000051}
+    - name: Bone.001
+      parentName: Bone
+      position: {x: 3.6768152e-14, y: 0.000000230968, z: 0.000000044703484}
+      rotation: {x: -0.97855127, y: -1.598721e-14, z: -1.065814e-14, w: -0.20600367}
+      scale: {x: 1, y: 0.99999946, z: 0.99999946}
+    - name: Torso
+      parentName: Bone.001
+      position: {x: 3.5783833e-21, y: 1.4929518, z: -0.0000000018626451}
+      rotation: {x: 0.24556525, y: -0.000000115559025, z: -0.000000029273632, w: 0.96938}
+      scale: {x: 0.99999994, y: 1.0000005, z: 1.0000008}
+    - name: Neck
+      parentName: Torso
+      position: {x: -0.000000044703484, y: 2.046464, z: 0}
+      rotation: {x: 0.11696023, y: 0.00000023678206, z: 1.9539924e-14, w: 0.9931366}
+      scale: {x: 1, y: 0.99999887, z: 0.9999987}
+    - name: Head
+      parentName: Neck
+      position: {x: -0.000000037252903, y: 1.2702074, z: 0.000000018626451}
+      rotation: {x: 0.017080942, y: 2.8421713e-14, z: 0.000000004072428, w: 0.99985415}
+      scale: {x: 0.99999994, y: 1.0000004, z: 1}
+    - name: Head_end
+      parentName: Head
+      position: {x: -0, y: 2.1194396, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Shoulder.R
+      parentName: Torso
+      position: {x: -0.61988944, y: 1.528272, z: 0.035615698}
+      rotation: {x: -0.025114682, y: 0.031904243, z: 0.7851106, w: 0.6180233}
+      scale: {x: 1.0000015, y: 1.0000027, z: 0.9999992}
+    - name: Arm1.R
+      parentName: Shoulder.R
+      position: {x: -0.00000014994293, y: 0.89437824, z: 0.000000059604645}
+      rotation: {x: -0.022184284, y: 0.0009867752, z: -0.084556624, w: 0.9961712}
+      scale: {x: 1.0000024, y: 1.0000039, z: 1.0000007}
+    - name: Arm2.R
+      parentName: Arm1.R
+      position: {x: 0.00000016391277, y: 2.7880845, z: 0.0000004172325}
+      rotation: {x: 0.04372848, y: 0.0026197135, z: -0.0013007722, w: 0.99903923}
+      scale: {x: 1.0000039, y: 1.0000036, z: 1.0000005}
+    - name: Hand.R
+      parentName: Arm2.R
+      position: {x: 0.00000008195639, y: 2.1646254, z: -0.00000012107193}
+      rotation: {x: -0.04141496, y: 0.0076958574, z: 0.062740594, w: 0.9971406}
+      scale: {x: 1.0000051, y: 1.0000007, z: 1.0000011}
+    - name: Finger.001.R
+      parentName: Hand.R
+      position: {x: -0.08039898, y: 1.6000614, z: -0.3945718}
+      rotation: {x: 0.00402756, y: -0.00000050896773, z: -0.046382483, w: 0.9989157}
+      scale: {x: 0.9999979, y: 0.99999917, z: 0.9999994}
+    - name: Finger.002.R
+      parentName: Finger.001.R
+      position: {x: -0.000000026077032, y: 0.6034332, z: 0.00000011979137}
+      rotation: {x: -0.004409191, y: 0.0017723852, z: 0.040059026, w: 0.99918604}
+      scale: {x: 1.000005, y: 1.0000039, z: 0.99999946}
+    - name: Finger.003.R
+      parentName: Finger.002.R
+      position: {x: 0.00000019930303, y: 0.38868633, z: 0.00000035646372}
+      rotation: {x: 0.00031556794, y: -0.00016491546, z: 0.0009710735, w: 0.99999946}
+      scale: {x: 1.0000008, y: 0.9999983, z: 1.0000002}
+    - name: Finger.003.R_end
+      parentName: Finger.003.R
+      position: {x: -0, y: 0.43291923, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Finger.004.R
+      parentName: Hand.R
+      position: {x: -0.05505012, y: 1.6538181, z: -0.0134985}
+      rotation: {x: 0.0040275557, y: -0.00000035855913, z: -0.04638211, w: 0.99891573}
+      scale: {x: 1, y: 1.0000011, z: 0.9999994}
+    - name: Finger.005.R
+      parentName: Finger.004.R
+      position: {x: -0.000000026077032, y: 0.603433, z: 0.000000075262506}
+      rotation: {x: -0.0049935775, y: 0.0023135035, z: 0.039903063, w: 0.9991884}
+      scale: {x: 1.0000026, y: 1.0000004, z: 1.0000001}
+    - name: Finger.006.R
+      parentName: Finger.005.R
+      position: {x: -0.00000012293458, y: 0.5675743, z: -0.00000035529956}
+      rotation: {x: 0.007236511, y: -0.003526316, z: -0.028928408, w: 0.99954915}
+      scale: {x: 1.0000043, y: 1.0000038, z: 1.0000012}
+    - name: Finger.006.R_end
+      parentName: Finger.006.R
+      position: {x: -0, y: 0.41580203, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Finger.007.R
+      parentName: Hand.R
+      position: {x: -0.09530929, y: 1.56844, z: 0.33610946}
+      rotation: {x: 0.004311458, y: 0.00025510212, z: -0.06483253, w: 0.9978868}
+      scale: {x: 0.99999905, y: 1.0000029, z: 0.99999905}
+    - name: Finger.008.R
+      parentName: Finger.007.R
+      position: {x: 0.000000028871, y: 0.53449273, z: 0.000000056286808}
+      rotation: {x: -0.009553398, y: 0.0028266413, z: 0.03919398, w: 0.999182}
+      scale: {x: 0.99999994, y: 0.9999997, z: 0.9999994}
+    - name: Finger.009.R
+      parentName: Finger.008.R
+      position: {x: 0.00000015646219, y: 0.4303833, z: -0.000000052154064}
+      rotation: {x: 0.016565789, y: -0.0075728935, z: 0.03928736, w: 0.99906194}
+      scale: {x: 1.0000023, y: 1.000001, z: 0.9999999}
+    - name: Finger.009.R_end
+      parentName: Finger.009.R
+      position: {x: -0, y: 0.59844637, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Finger.010.R
+      parentName: Hand.R
+      position: {x: -0.32950342, y: 0.28474185, z: 0.48764244}
+      rotation: {x: 0.06524085, y: -0.04903958, z: 0.047150098, w: 0.99554795}
+      scale: {x: 1.0000044, y: 0.9999975, z: 0.99999934}
+    - name: Finger.011.R
+      parentName: Finger.010.R
+      position: {x: 0.00000014156103, y: 0.70400965, z: 0.0000002719462}
+      rotation: {x: -0.038645677, y: -0.028655311, z: -0.0067806207, w: 0.998819}
+      scale: {x: 1.0000008, y: 0.9999977, z: 1.000006}
+    - name: Finger.R
+      parentName: Finger.011.R
+      position: {x: 0.00000023841858, y: 0.4973138, z: -0.000000059604645}
+      rotation: {x: -0.030110214, y: 0.0550982, z: -0.023057368, w: 0.99776053}
+      scale: {x: 0.9999977, y: 1.0000029, z: 1.0000046}
+    - name: Finger.R_end
+      parentName: Finger.R
+      position: {x: -0, y: 0.30060595, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Shoulder.L
+      parentName: Torso
+      position: {x: 0.6108062, y: 1.5262665, z: 0.031790704}
+      rotation: {x: -0.01840779, y: -0.02760643, z: -0.79528886, w: 0.60532194}
+      scale: {x: 1.0000002, y: 1.0000001, z: 0.99999857}
+    - name: Arm1.L
+      parentName: Shoulder.L
+      position: {x: 0.00000010756776, y: 0.8386739, z: 0.000000067055225}
+      rotation: {x: -0.023314504, y: -0.009120705, z: 0.10044408, w: 0.99462765}
+      scale: {x: 0.99999785, y: 1.0000024, z: 1.0000013}
+    - name: Arm2.L
+      parentName: Arm1.L
+      position: {x: -0.00000017881393, y: 2.7880855, z: 0.00000007636845}
+      rotation: {x: 0.043451227, y: -0.0026272144, z: 0.0015756831, w: 0.99905086}
+      scale: {x: 1.000004, y: 1.000002, z: 0.99999905}
+    - name: Hand.L
+      parentName: Arm2.L
+      position: {x: 0.00000017881393, y: 2.1646256, z: 0.000000014901161}
+      rotation: {x: -0.04127925, y: -0.008146564, z: -0.05180512, w: 0.99777055}
+      scale: {x: 1.0000055, y: 1.0000025, z: 0.9999996}
+    - name: Finger.001.L
+      parentName: Hand.L
+      position: {x: 0.08039871, y: 1.6000618, z: -0.394572}
+      rotation: {x: -0.21469927, y: -0.009991836, z: 0.0059018224, w: 0.97661126}
+      scale: {x: 0.9999931, y: 0.9999966, z: 1.0000007}
+    - name: Finger.002.L
+      parentName: Finger.001.L
+      position: {x: 0.000000059604645, y: 0.6034337, z: 0.00000021606684}
+      rotation: {x: -0.004409789, y: -0.0017724703, z: -0.040058456, w: 0.99918604}
+      scale: {x: 1.000002, y: 1.0000008, z: 1.0000002}
+    - name: Finger.003.L
+      parentName: Finger.002.L
+      position: {x: 0.0000001238659, y: 0.38868633, z: 0.00000014901161}
+      rotation: {x: 0.0003155591, y: 0.0001649448, z: -0.0009712226, w: 0.9999995}
+      scale: {x: 1.0000043, y: 1.0000013, z: 0.9999974}
+    - name: Finger.003.L_end
+      parentName: Finger.003.L
+      position: {x: -0, y: 0.43291923, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Finger.004.L
+      parentName: Hand.L
+      position: {x: 0.055049494, y: 1.6538182, z: -0.013498958}
+      rotation: {x: 0.0407435, y: 0.001815334, z: 0.019051075, w: 0.99898636}
+      scale: {x: 0.9999965, y: 0.99999946, z: 1.000001}
+    - name: Finger.005.L
+      parentName: Finger.004.L
+      position: {x: -0, y: 0.6034332, z: 0.00000018626451}
+      rotation: {x: -0.004993474, y: -0.0023135245, z: -0.03990158, w: 0.9991885}
+      scale: {x: 1.0000055, y: 1.0000021, z: 0.9999985}
+    - name: Finger.006.L
+      parentName: Finger.005.L
+      position: {x: 0.000000029802322, y: 0.56757414, z: -0.00000008940697}
+      rotation: {x: 0.0072365543, y: 0.003526317, z: 0.028928595, w: 0.9995491}
+      scale: {x: 1.0000027, y: 1.000003, z: 1.0000021}
+    - name: Finger.006.L_end
+      parentName: Finger.006.L
+      position: {x: -0, y: 0.41580203, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Finger.007.L
+      parentName: Hand.L
+      position: {x: 0.09530862, y: 1.5684402, z: 0.33610946}
+      rotation: {x: 0.05488754, y: 0.004515035, z: 0.032177255, w: 0.9979637}
+      scale: {x: 0.999995, y: 1.0000019, z: 1.0000007}
+    - name: Finger.008.L
+      parentName: Finger.007.L
+      position: {x: -0.000000059604645, y: 0.534493, z: -0.000000052154064}
+      rotation: {x: -0.0095529, y: -0.0028265286, z: -0.03919243, w: 0.99918205}
+      scale: {x: 1.000004, y: 1.0000025, z: 0.99999905}
+    - name: Finger.009.L
+      parentName: Finger.008.L
+      position: {x: -0.000000044703484, y: 0.43038347, z: -0.00000043213367}
+      rotation: {x: 0.016565742, y: 0.007572835, z: -0.03928735, w: 0.999062}
+      scale: {x: 1.0000058, y: 1.0000066, z: 0.99999857}
+    - name: Finger.009.L_end
+      parentName: Finger.009.L
+      position: {x: -0, y: 0.59844637, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Finger.010.L
+      parentName: Hand.L
+      position: {x: 0.16955534, y: 0.25896502, z: 0.48896697}
+      rotation: {x: -0.16821219, y: -0.04258993, z: 0.07516433, w: -0.98195785}
+      scale: {x: 1.0000021, y: 0.9999945, z: 1.0000023}
+    - name: Finger.011.L
+      parentName: Finger.010.L
+      position: {x: -0.00000017136335, y: 0.7040093, z: -0.00000014528632}
+      rotation: {x: -0.038644865, y: 0.028655231, z: 0.00678076, w: 0.9988191}
+      scale: {x: 1.0000023, y: 1.0000011, z: 1.000001}
+    - name: Finger.L
+      parentName: Finger.011.L
+      position: {x: 0.00000014901161, y: 0.49731398, z: 0.00000043213367}
+      rotation: {x: 0.030110449, y: 0.055098053, z: -0.023058252, w: -0.9977605}
+      scale: {x: 1.0000011, y: 1.0000056, z: 1.0000042}
+    - name: Finger.L_end
+      parentName: Finger.L
+      position: {x: -0, y: 0.30060595, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Weapon Slot
+      parentName: Hand.L
+      position: {x: 0.6653647, y: 1.4773977, z: -0.61733305}
+      rotation: {x: -0.7064591, y: -0.0029422399, z: -0.00019429806, w: -0.70774776}
+      scale: {x: 0.9999977, y: 1.0000011, z: 0.99999714}
+    - name: MAIN
+      parentName: Weapon Slot
+      position: {x: -0.011683442, y: 0.9809441, z: 0.01345285}
+      rotation: {x: 0.67326194, y: 0.17541097, z: -0.21430212, w: -0.6855829}
+      scale: {x: 1.0000035, y: 1.0000044, z: 1}
+    - name: Bone.014
+      parentName: MAIN
+      position: {x: -0.00000033527613, y: -0.00000029802322, z: 0.00000045076013}
+      rotation: {x: 0.54204166, y: 0.6714742, z: 0.45408255, w: 0.22163574}
+      scale: {x: 1.000001, y: 1.0000099, z: 0.99998325}
+    - name: Bone.015
+      parentName: Bone.014
+      position: {x: -0.000000059604645, y: 0.98081523, z: 0.00000011175871}
+      rotation: {x: 0.093302585, y: 0.90450144, z: 0.095959194, w: -0.4049243}
+      scale: {x: 1.0000005, y: 1.0000057, z: 1.000009}
+    - name: Bone.016
+      parentName: Bone.015
+      position: {x: 0.000000029802322, y: 0.79191625, z: 0.000000052154064}
+      rotation: {x: 0.072191164, y: 0.2184803, z: -0.009407794, w: 0.9731219}
+      scale: {x: 1.0000194, y: 0.9999987, z: 0.9999838}
+    - name: Bone.017
+      parentName: Bone.016
+      position: {x: -0.00000008940697, y: 0.6268638, z: -0.000000013038516}
+      rotation: {x: -0.11745311, y: -0.39748418, z: -0.06477429, w: -0.9077529}
+      scale: {x: 1.000003, y: 0.9999974, z: 1.0000001}
+    - name: Bone.018
+      parentName: Bone.017
+      position: {x: -0.000000059604645, y: 0.67035544, z: -0.00000011920929}
+      rotation: {x: 0.036331914, y: 0.28404742, z: 0.09521698, w: 0.9533786}
+      scale: {x: 1.0000125, y: 1.0000025, z: 0.99998015}
+    - name: Bone.019
+      parentName: Bone.018
+      position: {x: -0.00000010430813, y: 0.69125766, z: 0}
+      rotation: {x: -0.0013554282, y: 0.10776827, z: 0.040922023, w: 0.99333256}
+      scale: {x: 0.99999803, y: 1.0000048, z: 0.9999998}
+    - name: Bone.020
+      parentName: Bone.019
+      position: {x: 0.00000004004687, y: 0.699667, z: -0.000000044703484}
+      rotation: {x: -0.0064848177, y: 0.07633108, z: 0.029325526, w: 0.9966301}
+      scale: {x: 1.0000015, y: 1.0000021, z: 0.999998}
+    - name: Bone.021
+      parentName: Bone.020
+      position: {x: -0.00000007636845, y: 0.6496432, z: 0.000000044703484}
+      rotation: {x: 0.0030647642, y: -0.029551532, z: -0.011314955, w: 0.9994945}
+      scale: {x: 0.99999964, y: 1.0000011, z: 1.0000029}
+    - name: Bone.021_end
+      parentName: Bone.021
+      position: {x: -0, y: 0.4654833, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: TOP_LIMIT
+      parentName: MAIN
+      position: {x: 2.7922285, y: -0.8590296, z: 4.506997}
+      rotation: {x: 0.52666754, y: 0.00000038370484, z: 0.8500713, w: 0.0000004023313}
+      scale: {x: 0.9999886, y: 0.9999979, z: 1.0000087}
+    - name: TOP_LIMIT_end
+      parentName: TOP_LIMIT
+      position: {x: -0, y: 2.331837, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: TOP_IK.001
+      parentName: MAIN
+      position: {x: 0.7719561, y: -0.37650427, z: 1.2460314}
+      rotation: {x: 0.029257592, y: 0.5755025, z: 0.7493635, w: -0.3261831}
+      scale: {x: 0.9999877, y: 1.0000118, z: 1.0000021}
+    - name: TOP_IK.001_end
+      parentName: TOP_IK.001
+      position: {x: -0, y: 3.866296, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Bone.022
+      parentName: MAIN
+      position: {x: -0.000000007450581, y: -0.0000011473894, z: 0.0000002719462}
+      rotation: {x: -0.51633716, y: -0.13875307, z: 0.4831107, w: 0.6933597}
+      scale: {x: 0.99998766, y: 1.0000114, z: 0.99999774}
+    - name: Bone.023
+      parentName: Bone.022
+      position: {x: -0.000000059604645, y: 0.9808146, z: -0.0000003874302}
+      rotation: {x: 0.061928175, y: -0.13837416, z: -0.11865279, w: 0.9812946}
+      scale: {x: 1.000006, y: 1.0000066, z: 0.99999785}
+    - name: Bone.024
+      parentName: Bone.023
+      position: {x: -0.00000014901161, y: 0.79191524, z: 0.000000014901161}
+      rotation: {x: -0.0034488542, y: -0.28858954, z: 0.07272018, w: 0.95468104}
+      scale: {x: 1.000004, y: 0.99999166, z: 0.9999993}
+    - name: Bone.025
+      parentName: Bone.024
+      position: {x: 0.00000029802322, y: 0.6268633, z: -0.00000020861626}
+      rotation: {x: 0.049087405, y: -0.12699713, z: 0.12482517, w: 0.9827924}
+      scale: {x: 0.9999957, y: 0.9999984, z: 1.0000092}
+    - name: Bone.026
+      parentName: Bone.025
+      position: {x: 0.00000017881393, y: 0.6703545, z: 0.0000008940697}
+      rotation: {x: 0.054328028, y: -0.058713034, z: 0.08622541, w: 0.99305916}
+      scale: {x: 0.9999977, y: 1.000003, z: 1.000003}
+    - name: Bone.027
+      parentName: Bone.026
+      position: {x: 0.0000002682209, y: 0.6912566, z: -0.00000020861626}
+      rotation: {x: 0.024246726, y: -0.012473283, z: 0.03299309, w: 0.99908364}
+      scale: {x: 1.0000005, y: 1.000005, z: 1.0000039}
+    - name: Bone.028
+      parentName: Bone.027
+      position: {x: -0.00000059604645, y: 0.69966364, z: 0.00000013411045}
+      rotation: {x: 0.018144224, y: -0.0024054681, z: 0.02393339, w: 0.99954605}
+      scale: {x: 0.9999978, y: 1.0000004, z: 1.0000013}
+    - name: Bone.029
+      parentName: Bone.028
+      position: {x: 0.000000067055225, y: 0.6496436, z: -0.0000007003546}
+      rotation: {x: -0.008738518, y: -0.18893209, z: -0.0078143105, w: 0.9819202}
+      scale: {x: 0.99999917, y: 1.0000026, z: 1.0000045}
+    - name: Bone.029_end
+      parentName: Bone.029
+      position: {x: -0, y: 0.46548352, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: BOTTOM_LIMIT.001
+      parentName: MAIN
+      position: {x: -2.7922301, y: -0.859028, z: -4.5070004}
+      rotation: {x: 0.5266535, y: 0.000000027939674, z: 0.8500801, w: -0.00000020861623}
+      scale: {x: 0.9999898, y: 0.9999987, z: 1.000009}
+    - name: BOTTOM_LIMIT.001_end
+      parentName: BOTTOM_LIMIT.001
+      position: {x: -0, y: 2.331837, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: BOTTOM_LIMIT.002
+      parentName: MAIN
+      position: {x: -0.77195615, y: -0.3765041, z: -1.2460312}
+      rotation: {x: -0.19374168, y: -0.45324516, z: 0.72447604, w: 0.48183772}
+      scale: {x: 1.0000023, y: 1.000011, z: 0.9999834}
+    - name: BOTTOM_LIMIT.002_end
+      parentName: BOTTOM_LIMIT.002
+      position: {x: -0, y: 3.8662963, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: String
+      parentName: MAIN
+      position: {x: 0.00000017695129, y: -0.88993657, z: -0.00000022677705}
+      rotation: {x: -0.13408878, y: -0.9392858, z: -0.023359805, w: -0.31498703}
+      scale: {x: 1.0000058, y: 0.99999756, z: 0.9999904}
+    - name: String_end
+      parentName: String
+      position: {x: -0, y: 2.202023, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: BOTTOM_IK.002
+      parentName: MAIN
+      position: {x: -2.7922306, y: -0.85902786, z: -4.507}
+      rotation: {x: 0.5266537, y: -0.00000008568167, z: 0.8500799, w: -0.00000029057261}
+      scale: {x: 0.9999888, y: 0.9999971, z: 1.0000086}
+    - name: BOTTOM_IK.002_end
+      parentName: BOTTOM_IK.002
+      position: {x: -0, y: 1.3234758, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: TOP_IK
+      parentName: MAIN
+      position: {x: 2.7922301, y: -0.8590294, z: 4.5070004}
+      rotation: {x: 0.5266534, y: -0.000000052154054, z: 0.85008013, w: -0.00000017136331}
+      scale: {x: 0.9999894, y: 0.99999803, z: 1.0000085}
+    - name: TOP_IK_end
+      parentName: TOP_IK
+      position: {x: -0, y: 1.3234754, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Leg1.R
+      parentName: Bone
+      position: {x: -0.72634006, y: 0.5378925, z: 0.00000008940697}
+      rotation: {x: -0.0390217, y: -0.004509805, z: 0.11471734, w: 0.9926213}
+      scale: {x: 0.9999998, y: 1.0000011, z: 1.0000012}
+    - name: Leg2.R
+      parentName: Leg1.R
+      position: {x: 0.00000008940697, y: 3.3815982, z: 0.00000023841858}
+      rotation: {x: 0.12152837, y: -0.007973835, z: -0.13361993, w: 0.9835207}
+      scale: {x: 1.0000037, y: 1.0000029, z: 1.0000045}
+    - name: Foot.R
+      parentName: Leg2.R
+      position: {x: -0.000000029802322, y: 2.7784371, z: -0.00000029802322}
+      rotation: {x: 0.25738776, y: 0.54838973, z: 0.38222995, w: 0.69779694}
+      scale: {x: 1.000005, y: 1.0000067, z: 1.000006}
+    - name: Foot2.R
+      parentName: Foot.R
+      position: {x: -0.0000003874302, y: 1.1849918, z: 0.000000059604645}
+      rotation: {x: 0.00039246678, y: 0.22204714, z: -0.101776496, w: -0.9697095}
+      scale: {x: 0.9999977, y: 0.99999964, z: 1.0000038}
+    - name: Foot2.R_end
+      parentName: Foot2.R
+      position: {x: -0, y: 0.71857995, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Leg1.L
+      parentName: Bone
+      position: {x: 0.72634006, y: 0.568214, z: 0.00000011920929}
+      rotation: {x: -0.0390217, y: 0.004509812, z: -0.11471735, w: 0.9926213}
+      scale: {x: 0.9999998, y: 1.0000007, z: 1.0000012}
+    - name: Leg2.L
+      parentName: Leg1.L
+      position: {x: 0.0000002682209, y: 3.3815982, z: -0.000000014901161}
+      rotation: {x: 0.12154002, y: 0.0079791285, z: 0.13359895, w: 0.9835221}
+      scale: {x: 1.0000037, y: 1.0000039, z: 1.0000045}
+    - name: Foot.L
+      parentName: Leg2.L
+      position: {x: -0.00000017881393, y: 2.778437, z: -0.00000020861626}
+      rotation: {x: 0.112340644, y: -0.7534727, z: -0.44683504, w: 0.46903825}
+      scale: {x: 1.0000029, y: 1.0000052, z: 1.0000029}
+    - name: Foot2.L
+      parentName: Foot.L
+      position: {x: -0.0000008046627, y: 1.1849921, z: -0.0000004172325}
+      rotation: {x: -0.065073095, y: 0.22663136, z: -0.07825676, w: 0.9686483}
+      scale: {x: 0.99998516, y: 0.9999975, z: 1.0000159}
+    - name: Foot2.L_end
+      parentName: Foot2.L
+      position: {x: -0, y: 0.71857995, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Bone.002
+      parentName: Bone
+      position: {x: 7.578962e-15, y: 1.0099436, z: -0.5868589}
+      rotation: {x: -0.08798623, y: -0.000000118746954, z: 0.00000001048879, w: 0.99612176}
+      scale: {x: 1, y: 1.0000023, z: 1.0000023}
+    - name: Bone.003
+      parentName: Bone.002
+      position: {x: -1.0839518e-14, y: 1.2936642, z: -0.000000029802322}
+      rotation: {x: -0.007923743, y: -0, z: 0.000000001889156, w: 0.9999686}
+      scale: {x: 1, y: 1.0000043, z: 1.0000043}
+    - name: Bone.004
+      parentName: Bone.003
+      position: {x: -4.2817678e-14, y: 1.0010511, z: -0.00000017881393}
+      rotation: {x: 0.0099283615, y: -2.8362697e-14, z: -0.000000002367099, w: 0.9999507}
+      scale: {x: 1, y: 1.000002, z: 1.000002}
+    - name: Bone.004_end
+      parentName: Bone.004
+      position: {x: -0, y: 0.63722587, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Bone.005
+      parentName: Bone
+      position: {x: 7.933524e-15, y: 1.0235914, z: 1.0918303}
+      rotation: {x: 0.114791006, y: -0.0000001184213, z: -0.000000013684144, w: 0.9933897}
+      scale: {x: 1, y: 1.0000015, z: 1.0000015}
+    - name: Bone.006
+      parentName: Bone.005
+      position: {x: -1.0658141e-14, y: 1.2936641, z: -0.00000005960465}
+      rotation: {x: -0.020348571, y: -3.5527137e-14, z: 0.0000000048514917, w: 0.999793}
+      scale: {x: 1, y: 1.0000079, z: 1.0000074}
+    - name: Bone.007
+      parentName: Bone.006
+      position: {x: -1.4210855e-14, y: 0.96860373, z: 0.00000031292436}
+      rotation: {x: -0.010845545, y: 5.7390704e-14, z: 0.0000000025857603, w: 0.9999412}
+      scale: {x: 1, y: 1.0000017, z: 1.000002}
+    - name: Bone.007_end
+      parentName: Bone.007
+      position: {x: -0, y: 0.5916837, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Bone.008
+      parentName: Bone
+      position: {x: 1.1381543, y: 1.0099436, z: -0.5868589}
+      rotation: {x: -0.08798623, y: -0.000000118746954, z: 0.000000010488776, w: 0.99612176}
+      scale: {x: 1, y: 1.0000018, z: 1.0000018}
+    - name: Bone.009
+      parentName: Bone.008
+      position: {x: 0.000000022351742, y: 1.2936641, z: -0.00000009685755}
+      rotation: {x: -0.007923743, y: -0, z: 0.0000000018891702, w: 0.9999686}
+      scale: {x: 1, y: 1.0000043, z: 1.0000043}
+    - name: Bone.010
+      parentName: Bone.009
+      position: {x: -0.00000008940697, y: 1.0010518, z: 0.0000002682209}
+      rotation: {x: 0.0099283615, y: -2.8503208e-14, z: -0.000000002367099, w: 0.9999507}
+      scale: {x: 1.0000001, y: 1.000002, z: 1.0000015}
+    - name: Bone.010_end
+      parentName: Bone.010
+      position: {x: -0, y: 0.63722587, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Bone.011
+      parentName: Bone
+      position: {x: -1.2916799, y: 0.53803, z: -0.64825463}
+      rotation: {x: -0.08798623, y: -0.00000011874698, z: 0.000000010488776, w: 0.99612176}
+      scale: {x: 1, y: 1.0000024, z: 1.000002}
+    - name: Bone.012
+      parentName: Bone.011
+      position: {x: 0.0000001238659, y: 1.2936643, z: 0.000000007450581}
+      rotation: {x: -0.007923743, y: -0, z: 0.0000000018891693, w: 0.9999686}
+      scale: {x: 0.99999994, y: 1.0000042, z: 1.0000039}
+    - name: Bone.013
+      parentName: Bone.012
+      position: {x: -0.000000044703484, y: 1.0010515, z: -0.000000014901161}
+      rotation: {x: 0.009928287, y: -1.4235126e-14, z: -0.0000000023670874, w: 0.99995077}
+      scale: {x: 1, y: 1.000004, z: 1.0000046}
+    - name: Bone.013_end
+      parentName: Bone.013
+      position: {x: -0, y: 0.63722587, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: CTRL_LEG.R
+      parentName: Goblin Archer Rig
+      position: {x: 0.715013, y: -4.3145614, z: -4.4831343}
+      rotation: {x: 0.9934339, y: 0.00022726507, z: -0.11439039, w: -0.0019737484}
+      scale: {x: 1, y: 1, z: 0.99999994}
+    - name: CTRL_LEG.R_end
+      parentName: CTRL_LEG.R
+      position: {x: -0, y: 1.9106829, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: IK_LEG.R
+      parentName: Goblin Archer Rig
+      position: {x: -1.3259865, y: -0.7986962, z: -7.1657014}
+      rotation: {x: 0.9261048, y: -0.15574893, z: -0.20163807, w: -0.27823436}
+      scale: {x: 1.0000001, y: 0.99999976, z: 0.9999998}
+    - name: IK_LEG.R_end
+      parentName: IK_LEG.R
+      position: {x: -0, y: 0.76706326, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: CTRL_ARM.R
+      parentName: Goblin Archer Rig
+      position: {x: 2.0624394, y: 4.2683053, z: -0.910409}
+      rotation: {x: 0.005268365, y: -0.7411189, z: 0.0047721863, w: 0.6713362}
+      scale: {x: 1.0000019, y: 0.9999991, z: 1}
+    - name: CTRL_ARM.R_end
+      parentName: CTRL_ARM.R
+      position: {x: -0, y: 1.5059925, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: IK_HAND.R
+      parentName: Goblin Archer Rig
+      position: {x: -3.2790017, y: 0.7848133, z: -2.78584}
+      rotation: {x: 0.3776653, y: -0.5946552, z: 0.5978034, w: 0.3826032}
+      scale: {x: 1.0000014, y: 1.0000019, z: 0.99999994}
+    - name: IK_HAND.R_end
+      parentName: IK_HAND.R
+      position: {x: -0, y: 0.84622735, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: CTRL_LEG.L
+      parentName: Goblin Archer Rig
+      position: {x: -0.715013, y: -4.3145614, z: -4.4831343}
+      rotation: {x: 0.9934339, y: -0.00022726507, z: 0.11439039, w: -0.0019737484}
+      scale: {x: 1, y: 1, z: 0.99999994}
+    - name: CTRL_LEG.L_end
+      parentName: CTRL_LEG.L
+      position: {x: -0, y: 1.9106829, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: IK_LEG.L
+      parentName: Goblin Archer Rig
+      position: {x: 1.3259867, y: 2.324, z: -7.1657014}
+      rotation: {x: 0.9261048, y: 0.15574893, z: 0.20163807, w: -0.27823436}
+      scale: {x: 1.0000001, y: 0.99999994, z: 1.0000002}
+    - name: IK_LEG.L_end
+      parentName: IK_LEG.L
+      position: {x: -0, y: 0.76706326, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: CTRL_ARM.L
+      parentName: Goblin Archer Rig
+      position: {x: -2.0624394, y: 4.2683053, z: -0.910409}
+      rotation: {x: -0.005268365, y: -0.7411189, z: 0.0047721863, w: -0.6713362}
+      scale: {x: 1.0000019, y: 0.9999991, z: 1}
+    - name: CTRL_ARM.L_end
+      parentName: CTRL_ARM.L
+      position: {x: -0, y: 1.5059925, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: IK_HAND.L
+      parentName: Goblin Archer Rig
+      position: {x: 3.2790017, y: 0.78481305, z: -2.78584}
+      rotation: {x: 0.3776653, y: 0.5946552, z: -0.5978034, w: 0.3826032}
+      scale: {x: 1.0000019, y: 1.0000019, z: 0.99999994}
+    - name: IK_HAND.L_end
+      parentName: IK_HAND.L
+      position: {x: -0, y: 0.84622735, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Head Wear
+      parentName: Goblin Archer Anim (2)(Clone)
+      position: {x: -0.00030598382, y: 1.2917958, z: 0.06971962}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 0.9999999, y: 0.9999999, z: 0.9999999}
+    - name: Loin
+      parentName: Goblin Archer Anim (2)(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 0.9999999, y: 0.9999999, z: 0.9999999}
+    - name: Quiver
+      parentName: Goblin Archer Anim (2)(Clone)
+      position: {x: -0.034392543, y: 0.9747747, z: -0.18765981}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 0.9999999, y: 0.9999999, z: 0.9999999}
+    - name: Quiver strap
+      parentName: Goblin Archer Anim (2)(Clone)
+      position: {x: -0, y: 0.91906023, z: -0.027339362}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 0.9999999, y: 0.9999999, z: 0.9999999}
+    - name: Right arm strap
+      parentName: Goblin Archer Anim (2)(Clone)
+      position: {x: -0.19810097, y: 0.9926716, z: -0.04807455}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 0.9999999, y: 0.9999999, z: 0.9999999}
+    - name: Right armband
+      parentName: Goblin Archer Anim (2)(Clone)
+      position: {x: 0.19979665, y: 1.0089785, z: -0.054522943}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 0.9999999, y: 0.9999999, z: 0.9999999}
+    - name: feather.001
+      parentName: Goblin Archer Anim (2)(Clone)
+      position: {x: 0.19979665, y: 1.0089782, z: -0.054522943}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 0.9999999, y: 0.9999999, z: 0.9999999}
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

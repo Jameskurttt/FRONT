@@ -77,31 +77,35 @@ public class EnemyHealth : MonoBehaviour
 
         Debug.Log($"{gameObject.name} died");
 
-        // Stop movement immediately
+        // STOP NAVMESH
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         if (agent != null)
         {
             agent.isStopped = true;
+            agent.ResetPath();
             agent.enabled = false;
         }
 
-        // Disable other logic scripts immediately so no behaviors execute mid-death
+        // STOP ALL AI BEHAVIOUR
         EnemyChase chase = GetComponent<EnemyChase>();
         if (chase != null) chase.enabled = false;
 
         EnemyMeleeAttack attack = GetComponent<EnemyMeleeAttack>();
         if (attack != null) attack.enabled = false;
 
-        // Disable collider
+        // DISABLE COLLIDER
         Collider col = GetComponent<Collider>();
         if (col != null)
         {
             col.enabled = false;
         }
 
-        // Play die animation (matches "Die" trigger)
         if (enemyAnimator != null)
         {
+            enemyAnimator.ResetTrigger("Attack");
+            enemyAnimator.SetBool("isRunning", false);
+
+            enemyAnimator.CrossFade("Death", 0f);
             enemyAnimator.SetTrigger("Die");
         }
 
