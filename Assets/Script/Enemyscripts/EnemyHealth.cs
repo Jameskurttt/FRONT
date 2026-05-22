@@ -77,7 +77,7 @@ public class EnemyHealth : MonoBehaviour
 
         Debug.Log($"{gameObject.name} died");
 
-        // STOP NAVMESH
+        // 1. STOP NAVMESH
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         if (agent != null)
         {
@@ -86,29 +86,36 @@ public class EnemyHealth : MonoBehaviour
             agent.enabled = false;
         }
 
-        // STOP ALL AI BEHAVIOUR
+        // 2. STOP ALL AI BEHAVIOUR
         EnemyChase chase = GetComponent<EnemyChase>();
         if (chase != null) chase.enabled = false;
 
         EnemyMeleeAttack attack = GetComponent<EnemyMeleeAttack>();
         if (attack != null) attack.enabled = false;
 
-        // DISABLE COLLIDER
+        // FIX: Added explicit shutdown for the shooter script component
+        EnemyShooter shooter = GetComponent<EnemyShooter>();
+        if (shooter != null) shooter.enabled = false;
+
+        // 3. DISABLE COLLIDER
         Collider col = GetComponent<Collider>();
         if (col != null)
         {
             col.enabled = false;
         }
 
+        // 4. ANIMATION STATE MACHINE OVERRIDES
         if (enemyAnimator != null)
         {
             enemyAnimator.ResetTrigger("Attack");
             enemyAnimator.SetBool("isRunning", false);
 
-            enemyAnimator.CrossFade("Death", 0f);
+            // Force crossfade directly into the exact string name of your death node
+            enemyAnimator.CrossFade("Goblin Archer Rig|GA_Death", 0.1f);
             enemyAnimator.SetTrigger("Die");
         }
 
+        // 5. REWARDS AND LOOT
         GiveDefeatRewards(expReward, 1);
 
         if (GoldManager.instance != null)

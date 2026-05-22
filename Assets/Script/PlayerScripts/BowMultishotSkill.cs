@@ -124,4 +124,9 @@ public class BowMultishotSkill : MonoBehaviour
         }
         return null;
     }
+
+    public float GetRemainingCooldown()
+    {
+        return Mathf.Max(0, nextSkillTime - Time.time);
+    }
 }

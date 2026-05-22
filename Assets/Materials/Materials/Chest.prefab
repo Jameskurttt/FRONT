@@ -136,15 +136,30 @@ MonoBehaviour:
   horizontalSpread: 1.2
   possibleLoot:
   - itemName: sword
-    itemData: {fileID: 11400000, guid: 6f2a9049fba3f3c41b87e3e7079bd6cf, type: 2}
+    itemData: {fileID: 11400000, guid: 64f717eccfec8914a9df94d44b7c0725, type: 2}
     dropChance: 100
-    minDropAmount: 2
-    maxDropAmount: 2
+    minDropAmount: 1
+    maxDropAmount: 1
   - itemName: bow
-    itemData: {fileID: 11400000, guid: 9d46f93c06a019b4d8d046c57a9478a3, type: 2}
+    itemData: {fileID: 11400000, guid: 8d2ddae5b2a70ef48b6b8836297bb6e2, type: 2}
     dropChance: 100
-    minDropAmount: 2
-    maxDropAmount: 2
+    minDropAmount: 1
+    maxDropAmount: 1
+  - itemName: bow
+    itemData: {fileID: 11400000, guid: 0b7e659756ac186458e1ca3ca4310d7b, type: 2}
+    dropChance: 20.6
+    minDropAmount: 1
+    maxDropAmount: 1
+  - itemName: bow
+    itemData: {fileID: 11400000, guid: c93bcdfbdc887d741ab114ce95efe1b4, type: 2}
+    dropChance: 38.9
+    minDropAmount: 1
+    maxDropAmount: 1
+  - itemName: bow
+    itemData: {fileID: 11400000, guid: 9c7524adc94abde4b922b74acd50b8b0, type: 2}
+    dropChance: 30.6
+    minDropAmount: 1
+    maxDropAmount: 1
   giveGoldDirectly: 1
   goldDropChance: 100
   minGold: 5

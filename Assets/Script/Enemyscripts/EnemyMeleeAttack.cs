@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections; 
 
 public class EnemyMeleeAttack : MonoBehaviour
 {
@@ -10,12 +11,14 @@ public class EnemyMeleeAttack : MonoBehaviour
     [Header("Attack Settings")]
     public float attackRange = 2f;
     public float attackCooldown = 1.5f;
+    public float hitDelay = 0.4f;  
     public int damage = 10;
 
     [Header("Animator")]
     public string attackBoolName = "isAttacking";
 
     private float nextAttackTime;
+    private bool isAttackingRoutine; 
 
     private void Awake()
     {
@@ -42,7 +45,7 @@ public class EnemyMeleeAttack : MonoBehaviour
             return;
         }
 
-        // Face target ONLY during attack (safe since NavMesh rotates)
+        
         Vector3 dir = target.position - transform.position;
         dir.y = 0;
 
@@ -55,18 +58,40 @@ public class EnemyMeleeAttack : MonoBehaviour
             );
         }
 
-        if (Time.time >= nextAttackTime)
+        
+        if (Time.time >= nextAttackTime && !isAttackingRoutine)
         {
-            nextAttackTime = Time.time + attackCooldown;
+            StartCoroutine(AttackRoutine(target));
+        }
+    }
 
-            SetAttack(true);
+    private IEnumerator AttackRoutine(Transform target)
+    {
+        isAttackingRoutine = true;
+        nextAttackTime = Time.time + attackCooldown;
 
-            PlayerHealth ph = target.GetComponent<PlayerHealth>();
-            if (ph != null)
+        
+        SetAttack(true);
+
+        
+        yield return new WaitForSeconds(hitDelay);
+
+        
+        if (target != null)
+        {
+            float distance = Vector3.Distance(transform.position, target.position);
+
+            if (distance <= attackRange)
             {
-                ph.TakeDamage(damage);
+                PlayerHealth ph = target.GetComponent<PlayerHealth>();
+                if (ph != null)
+                {
+                    ph.TakeDamage(damage);
+                }
             }
         }
+
+        isAttackingRoutine = false;
     }
 
     private void SetAttack(bool value)

@@ -15,21 +15,20 @@ public class GoblinKingAttack : MonoBehaviour
     public float attackCooldown = 2f;
     public int damage = 25;
 
+    [Header("Combat Timings")]
+    public float hitFrameDelay = 0.3f; 
+    public float attackRecovery = 0.5f;
+
     private bool isAttacking;
     private float nextAttackTime;
 
     private void Start()
     {
-        if (agent == null)
-            agent = GetComponent<NavMeshAgent>();
-
-        if (animator == null)
-            animator = GetComponentInChildren<Animator>();
+        if (agent == null) agent = GetComponent<NavMeshAgent>();
+        if (animator == null) animator = GetComponentInChildren<Animator>();
 
         GameObject target = GameObject.FindGameObjectWithTag("Player");
-
-        if (target != null)
-            player = target.transform;
+        if (target != null) player = target.transform;
     }
 
     private void Update()
@@ -38,7 +37,6 @@ public class GoblinKingAttack : MonoBehaviour
 
         float distance = Vector3.Distance(transform.position, player.position);
 
-        // OUTSIDE DETECTION RANGE
         if (distance > detectionRange)
         {
             agent.isStopped = true;
@@ -46,7 +44,6 @@ public class GoblinKingAttack : MonoBehaviour
             return;
         }
 
-        // ATTACK RANGE
         if (distance <= attackRange)
         {
             agent.isStopped = true;
@@ -59,12 +56,11 @@ public class GoblinKingAttack : MonoBehaviour
                 StartCoroutine(Attack());
             }
         }
-        else
+        else if (!isAttacking)
         {
-            // CHASE PLAYER
+            
             agent.isStopped = false;
             agent.SetDestination(player.position);
-
             animator.SetBool("isRunning", true);
         }
     }
@@ -72,13 +68,11 @@ public class GoblinKingAttack : MonoBehaviour
     private IEnumerator Attack()
     {
         isAttacking = true;
-
         nextAttackTime = Time.time + attackCooldown;
-
         animator.SetTrigger("Attack");
 
-        // wait until hit frame
-        yield return new WaitForSeconds(0.8f);
+        
+        yield return new WaitForSeconds(hitFrameDelay);
 
         if (player != null)
         {
@@ -87,17 +81,12 @@ public class GoblinKingAttack : MonoBehaviour
             if (distance <= attackRange)
             {
                 PlayerHealth ph = player.GetComponent<PlayerHealth>();
-
-                if (ph != null)
-                {
-                    ph.TakeDamage(damage);
-                }
+                if (ph != null) ph.TakeDamage(damage);
             }
         }
 
-        // wait before allowing another attack
-        yield return new WaitForSeconds(0.5f);
-
+        
+        yield return new WaitForSeconds(attackRecovery);
         isAttacking = false;
     }
 
@@ -108,13 +97,8 @@ public class GoblinKingAttack : MonoBehaviour
 
         if (direction != Vector3.zero)
         {
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                lookRotation,
-                10f * Time.deltaTime
-            );
+            Quaternion lookRot = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, 10f * Time.deltaTime);
         }
     }
 }

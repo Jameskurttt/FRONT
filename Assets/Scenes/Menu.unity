@@ -2826,9 +2826,9 @@ GameObject:
   - component: {fileID: 1591612623}
   - component: {fileID: 1591612622}
   - component: {fileID: 1591612621}
-  - component: {fileID: 1591612625}
   - component: {fileID: 1591612626}
   - component: {fileID: 1591612627}
+  - component: {fileID: 1591612628}
   m_Layer: 5
   m_Name: Start
   m_TagString: Untagged
@@ -2988,28 +2988,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1591612619}
   m_CullTransparentMesh: 1
---- !u!95 &1591612625
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1591612619}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9bfb8f9fd9cafa546afb2d1a73d8fe74, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &1591612626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3034,6 +3012,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd012c37b76e5b643a95eb9a7e2d9a94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIHoverSound
+--- !u!95 &1591612628
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1591612619}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 069bf5e79e5458f4190f19d4172fe2fc, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1598305848
 GameObject:
   m_ObjectHideFlags: 0

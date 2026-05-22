@@ -11,6 +11,10 @@ public class PlayerWeaponPickup : MonoBehaviour
     public LayerMask interactLayer;
     public Camera playerCamera;
 
+    // NEW: Reference to the crosshair UI element to track its screen position
+    [Tooltip("Assign your crosshair UI Image/GameObject here. If left empty, it will default to the center of the screen.")]
+    public RectTransform crosshairUI;
+
     [Header("Drop Settings")]
     public Transform dropPoint;
     public GameObject lootDropPrefab;
@@ -72,7 +76,18 @@ public class PlayerWeaponPickup : MonoBehaviour
         targetLootDrop = null;
         targetArmorPickup = null;
 
-        Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        // UPDATED: Dynamically check the crosshair's position
+        Ray ray;
+        if (crosshairUI != null)
+        {
+            // Converts the UI position directly into a world space ray pointing forward
+            ray = playerCamera.ScreenPointToRay(crosshairUI.position);
+        }
+        else
+        {
+            // Fallback to the perfect center of the screen if you forget to assign it
+            ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        }
 
         if (Physics.Raycast(ray, out RaycastHit hit, pickupRange, interactLayer))
         {

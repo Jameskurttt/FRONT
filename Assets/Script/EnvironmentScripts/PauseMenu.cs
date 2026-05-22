@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI; // Added for Slider support
 
 public class PauseMenu : MonoBehaviour
 {
@@ -7,6 +8,10 @@ public class PauseMenu : MonoBehaviour
     public GameObject pauseMenuCanvas;
     public GameObject settingsPanel;
     public GameObject quitConfirmPanel;
+
+    [Header("Sensitivity Settings")]
+    public ThirdPersonCamera gameCamera; // Drag your Camera here in the Inspector
+    public Slider sensitivitySlider;     // Drag your UI Slider here
 
     [Header("Pause Stats UI")]
     public TMP_Text pauseStatsText;
@@ -25,7 +30,30 @@ public class PauseMenu : MonoBehaviour
 
     void Start()
     {
+        
+        if (sensitivitySlider != null)
+        {
+            
+            float savedSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", 140f);
+
+            sensitivitySlider.minValue = 10f;  
+            sensitivitySlider.maxValue = 500f; 
+            sensitivitySlider.value = savedSensitivity;
+
+            
+            sensitivitySlider.onValueChanged.AddListener(OnSensitivitySliderChanged);
+        }
+
         ResumeGame(false);
+    }
+
+    
+    void OnSensitivitySliderChanged(float value)
+    {
+        if (gameCamera != null)
+        {
+            gameCamera.UpdateSensitivity(value);
+        }
     }
 
     void Update()

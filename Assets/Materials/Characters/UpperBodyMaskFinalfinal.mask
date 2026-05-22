@@ -1,0 +1,205 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UpperBodyMaskFinalfinal
+  m_Mask: 01000000010000000100000000000000000000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Armature
+    m_Weight: 1
+  - m_Path: Armature/CTRL_ARM.L
+    m_Weight: 1
+  - m_Path: Armature/CTRL_ARM.L/CTRL_ARM.L_end
+    m_Weight: 1
+  - m_Path: Armature/CTRL_ARM.R
+    m_Weight: 1
+  - m_Path: Armature/CTRL_ARM.R/CTRL_ARM.R_end
+    m_Weight: 1
+  - m_Path: Armature/Heel_Bone.L
+    m_Weight: 0
+  - m_Path: Armature/Heel_Bone.L/CTRL_LEG.L
+    m_Weight: 0
+  - m_Path: Armature/Heel_Bone.L/CTRL_LEG.L/CTRL_LEG.L_end
+    m_Weight: 0
+  - m_Path: Armature/Heel_Bone.R
+    m_Weight: 0
+  - m_Path: Armature/Heel_Bone.R/CTRL_LEG.R
+    m_Weight: 0
+  - m_Path: Armature/Heel_Bone.R/CTRL_LEG.R/CTRL_LEG.R_end
+    m_Weight: 0
+  - m_Path: Armature/IK_FOOT.L
+    m_Weight: 0
+  - m_Path: Armature/IK_FOOT.L/IK_FOOT.L_end
+    m_Weight: 0
+  - m_Path: Armature/IK_FOOT.R
+    m_Weight: 0
+  - m_Path: Armature/IK_FOOT.R/IK_FOOT.R_end
+    m_Weight: 0
+  - m_Path: Armature/IK_HANDS_.L
+    m_Weight: 1
+  - m_Path: Armature/IK_HANDS_.L/IK_HANDS_.L_end
+    m_Weight: 1
+  - m_Path: Armature/IK_HANDS_.R
+    m_Weight: 1
+  - m_Path: Armature/IK_HANDS_.R/IK_HANDS_.R_end
+    m_Weight: 1
+  - m_Path: Armature/ROOT
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone
+    m_Weight: 0
+  - m_Path: Armature/ROOT/Hip_Bone/Hip_Bone.001
+    m_Weight: 0
+  - m_Path: Armature/ROOT/Hip_Bone/Hip_Bone.001/Hip_Bone.001_end
+    m_Weight: 0
+  - m_Path: Armature/ROOT/Hip_Bone/Hip_Bone.002
+    m_Weight: 0
+  - m_Path: Armature/ROOT/Hip_Bone/Hip_Bone.002/Hip_Bone.002_end
+    m_Weight: 0
+  - m_Path: Armature/ROOT/Hip_Bone/Hip_Bone.003
+    m_Weight: 0
+  - m_Path: Armature/ROOT/Hip_Bone/Hip_Bone.003/Hip_Bone.003_end
+    m_Weight: 0
+  - m_Path: Armature/ROOT/Hip_Bone/Leg_thigh.L
+    m_Weight: 0
+  - m_Path: Armature/ROOT/Hip_Bone/Leg_thigh.L/Leg_2.L
+    m_Weight: 0
+  - m_Path: Armature/ROOT/Hip_Bone/Leg_thigh.L/Leg_2.L/Foot_1.L
+    m_Weight: 0
+  - m_Path: Armature/ROOT/Hip_Bone/Leg_thigh.L/Leg_2.L/Foot_1.L/Foot_2.L
+    m_Weight: 0
+  - m_Path: Armature/ROOT/Hip_Bone/Leg_thigh.L/Leg_2.L/Foot_1.L/Foot_2.L/Foot_2.L_end
+    m_Weight: 0
+  - m_Path: Armature/ROOT/Hip_Bone/Leg_thigh.R
+    m_Weight: 0
+  - m_Path: Armature/ROOT/Hip_Bone/Leg_thigh.R/Leg_2.R
+    m_Weight: 0
+  - m_Path: Armature/ROOT/Hip_Bone/Leg_thigh.R/Leg_2.R/Foot_1.R
+    m_Weight: 0
+  - m_Path: Armature/ROOT/Hip_Bone/Leg_thigh.R/Leg_2.R/Foot_1.R/Foot_2.R
+    m_Weight: 0
+  - m_Path: Armature/ROOT/Hip_Bone/Leg_thigh.R/Leg_2.R/Foot_1.R/Foot_2.R/Foot_2.R_end
+    m_Weight: 0
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Neck_Bone
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Neck_Bone/Head_Bone
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Neck_Bone/Head_Bone/Head_Bone_end
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L/Finger_Bone.L.001
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L/Finger_Bone.L.001/Finger_Bone.L.002
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L/Finger_Bone.L.001/Finger_Bone.L.002/Finger_Bone.L.003
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L/Finger_Bone.L.001/Finger_Bone.L.002/Finger_Bone.L.003/Finger_Bone.L.003_end
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L/Finger_Bone.L.004
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L/Finger_Bone.L.004/Finger_Bone.L.005
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L/Finger_Bone.L.004/Finger_Bone.L.005/Finger_Bone.L.006
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L/Finger_Bone.L.004/Finger_Bone.L.005/Finger_Bone.L.006/Finger_Bone.L.006_end
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L/Finger_Bone.L.007
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L/Finger_Bone.L.007/Finger_Bone.L.008
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L/Finger_Bone.L.007/Finger_Bone.L.008/Finger_Bone.L.009
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L/Finger_Bone.L.007/Finger_Bone.L.008/Finger_Bone.L.009/Finger_Bone.L.009_end
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L/Finger_Bone.L.010
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L/Finger_Bone.L.010/Finger_Bone.L.011
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L/Finger_Bone.L.010/Finger_Bone.L.011/Finger_Bone.L.012
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L/Finger_Bone.L.010/Finger_Bone.L.011/Finger_Bone.L.012/Finger_Bone.L.012_end
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L/Finger_Bone.L.013
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L/Finger_Bone.L.013/Finger_Bone.L.014
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L/Finger_Bone.L.013/Finger_Bone.L.014/Finger_Bone.L
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.L/Bisep_Bone.L/Tricep_Bone.L/Arm_Bone.L/Finger_Bone.L.013/Finger_Bone.L.014/Finger_Bone.L/Finger_Bone.L_end
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Finger_Bone.R.001
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Finger_Bone.R.001/Finger_Bone.R.002
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Finger_Bone.R.001/Finger_Bone.R.002/Finger_Bone.R.003
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Finger_Bone.R.001/Finger_Bone.R.002/Finger_Bone.R.003/Finger_Bone.R.003_end
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Finger_Bone.R.004
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Finger_Bone.R.004/Finger_Bone.R.005
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Finger_Bone.R.004/Finger_Bone.R.005/Finger_Bone.R.006
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Finger_Bone.R.004/Finger_Bone.R.005/Finger_Bone.R.006/Finger_Bone.R.006_end
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Finger_Bone.R.007
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Finger_Bone.R.007/Finger_Bone.R.008
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Finger_Bone.R.007/Finger_Bone.R.008/Finger_Bone.R.009
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Finger_Bone.R.007/Finger_Bone.R.008/Finger_Bone.R.009/Finger_Bone.R.009_end
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Finger_Bone.R.010
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Finger_Bone.R.010/Finger_Bone.R.011
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Finger_Bone.R.010/Finger_Bone.R.011/Finger_Bone.R.012
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Finger_Bone.R.010/Finger_Bone.R.011/Finger_Bone.R.012/Finger_Bone.R.012_end
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Finger_Bone.R.013
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Finger_Bone.R.013/Finger_Bone.R.014
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Finger_Bone.R.013/Finger_Bone.R.014/Finger_Bone.R
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Finger_Bone.R.013/Finger_Bone.R.014/Finger_Bone.R/Finger_Bone.R_end
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Weapon
+      Bone
+    m_Weight: 1
+  - m_Path: Armature/ROOT/Hip_Bone/Spine_Bone/Torso_Bone/Shoulder_Bone.R/Bisep_Bone.R/Tricep_Bone.R/Arm_Bone.R/Weapon
+      Bone/Weapon Bone_end
+    m_Weight: 1
+  - m_Path: Back hair
+    m_Weight: 1
+  - m_Path: Bag
+    m_Weight: 1
+  - m_Path: Body
+    m_Weight: 1

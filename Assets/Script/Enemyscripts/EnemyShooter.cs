@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections; 
 
 public class EnemyShooter : MonoBehaviour
 {
@@ -12,9 +13,10 @@ public class EnemyShooter : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform firePoint;
 
-    [Header("Range")]
+    [Header("Range & Timing")]
     public float shootRange = 10f;
     public float shootCooldown = 1.5f;
+    public float shootDelay = 0.3f; 
     public float bulletSpeed = 20f;
 
     [Header("Rotation")]
@@ -24,6 +26,7 @@ public class EnemyShooter : MonoBehaviour
     public string attackTriggerName = "Attack";
 
     private float shootTimer;
+    private bool isShootingRoutine;
 
     private void Awake()
     {
@@ -39,6 +42,8 @@ public class EnemyShooter : MonoBehaviour
 
     private void Update()
     {
+        if (!this.enabled) return;
+
         if (chaseScript == null)
             return;
 
@@ -60,10 +65,11 @@ public class EnemyShooter : MonoBehaviour
 
             shootTimer -= Time.deltaTime;
 
-            if (shootTimer <= 0f)
+            
+            if (shootTimer <= 0f && !isShootingRoutine)
             {
                 shootTimer = shootCooldown;
-                Shoot(player);
+                StartCoroutine(ShootRoutine(player));
             }
         }
         else
@@ -90,10 +96,9 @@ public class EnemyShooter : MonoBehaviour
         );
     }
 
-    private void Shoot(Transform player)
+    private IEnumerator ShootRoutine(Transform player)
     {
-        if (bulletPrefab == null || firePoint == null)
-            return;
+        isShootingRoutine = true;
 
         if (animator != null)
         {
@@ -101,22 +106,31 @@ public class EnemyShooter : MonoBehaviour
             animator.SetTrigger(attackTriggerName);
         }
 
-        Vector3 targetPos = player.position + Vector3.up * 0.4f;
-        Vector3 direction = (targetPos - firePoint.position).normalized;
+        
+        yield return new WaitForSeconds(shootDelay);
 
-        GameObject bullet = Instantiate(
-            bulletPrefab,
-            firePoint.position,
-            Quaternion.LookRotation(direction)
-        );
-
-        Rigidbody rb = bullet.GetComponent<Rigidbody>();
-
-        if (rb != null)
+        
+        if (player != null && bulletPrefab != null && firePoint != null)
         {
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-            rb.AddForce(direction * bulletSpeed, ForceMode.VelocityChange);
+            Vector3 targetPos = player.position + Vector3.up * 0.4f;
+            Vector3 direction = (targetPos - firePoint.position).normalized;
+
+            GameObject bullet = Instantiate(
+                bulletPrefab,
+                firePoint.position,
+                transform.rotation
+            );
+
+            Rigidbody rb = bullet.GetComponent<Rigidbody>();
+
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+                rb.AddForce(direction * bulletSpeed, ForceMode.VelocityChange);
+            }
         }
+
+        isShootingRoutine = false;
     }
 }

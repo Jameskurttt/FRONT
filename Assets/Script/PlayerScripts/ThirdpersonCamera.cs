@@ -8,7 +8,7 @@ public class ThirdPersonCamera : MonoBehaviour
     public float sideOffset = 1.0f;
     public float height = 1.7f;
 
-    public float mouseSensitivity = 140f;
+    public float mouseSensitivity = 140f; 
     public float minPitch = -15f;
     public float maxPitch = 45f;
 
@@ -20,13 +20,27 @@ public class ThirdPersonCamera : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        
+        mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", 140f);
+
         if (player != null)
             yaw = player.eulerAngles.y;
+    }
+
+    
+    public void UpdateSensitivity(float newSensitivity)
+    {
+        mouseSensitivity = newSensitivity;
+        PlayerPrefs.SetFloat("MouseSensitivity", newSensitivity);
+        PlayerPrefs.Save();
     }
 
     void LateUpdate()
     {
         if (player == null) return;
+
+      
+        if (Time.timeScale == 0f) return;
 
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
@@ -44,9 +58,7 @@ public class ThirdPersonCamera : MonoBehaviour
             - rotation * Vector3.forward * distance
             + rotation * Vector3.right * sideOffset;
 
-        
         transform.position = wantedPosition;
-
         transform.rotation = rotation;
     }
 }
